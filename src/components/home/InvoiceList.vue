@@ -18,10 +18,15 @@
 </template>
 <script setup>
 import { ref, computed } from "vue";
+import { useStore } from "vuex";
 import illustrationEmptyImage from "../../assets/illustration-empty.svg";
 
-const invoices = ref([]);
+const store = useStore();
 
+// STORE GETTERS
+const invoices = computed(() => store.getters.invoices);
+
+// STORE ACTIONS
 const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 </script>
 <style lang="scss" scoped>
