@@ -1,14 +1,14 @@
 <template>
   <main>
     <InvoiceListHeader />
+    <InvoiceList />
   </main>
 </template>
 
-
 <script setup>
 import InvoiceListHeader from "../components/home/InvoiceListHeader.vue";
+import InvoiceList from "../components/home/InvoiceList.vue";
 </script>
-
 
 <style lang="scss" scoped>
 @import "../sass/variables";
@@ -26,9 +26,7 @@ main {
 @media screen and (min-width: $desktop-min) {
   main {
     flex: 1;
-    padding: 4rem unset unset unset;
+    padding: 4rem 0 0 0;
   }
 }
 </style>
-
-
