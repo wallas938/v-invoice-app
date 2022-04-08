@@ -7,7 +7,7 @@
         <small>No invoices</small>
       </div>
       <div class="filter">
-        <span data-test=filter @click="toggleFilter"
+        <span data-test="filter" @click="toggleFilter"
           >Filter <span class="hide-for-mobile">by status</span>
         </span>
         <svg
@@ -24,14 +24,18 @@
             fill-rule="evenodd"
           />
         </svg>
-        <div data-test=filter-dropdown v-if="state.showFilter" class="dropdown">
+        <div
+          data-test="filter-dropdown"
+          v-if="state.showFilter"
+          class="dropdown"
+        >
           <div class="check draft" @click="onCheck('draft')">
             <span
               class="square draft-checkbox"
-              :class="{ '--checked': state.currentFilter === 'draft' }"
+              :class="{ '--checked': isChecked('draft') }"
             >
               <svg
-                v-if="state.currentFilter === 'draft'"
+                v-if="isChecked('draft')"
                 width="10"
                 height="8"
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,17 +51,13 @@
             </span>
             <span class="value">Draft</span>
           </div>
-          <div
-            class="check pending"
-            :class="{ '--checked': state.currentFilter === 'pending' }"
-            @click="onCheck('pending')"
-          >
+          <div class="check pending" @click="onCheck('pending')">
             <span
               class="square pending-checkbox"
-              :class="{ '--checked': state.currentFilter === 'pending' }"
+              :class="{ '--checked': isChecked('pending') }"
             >
               <svg
-                v-if="state.currentFilter === 'pending'"
+                v-if="isChecked('pending')"
                 width="10"
                 height="8"
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,10 +76,10 @@
           <div class="check paid" @click="onCheck('paid')">
             <span
               class="square paid-checkbox"
-              :class="{ '--checked': state.currentFilter === 'paid' }"
+              :class="{ '--checked': isChecked('paid') }"
             >
               <svg
-                v-if="state.currentFilter === 'paid'"
+                v-if="isChecked('paid')"
                 width="10"
                 height="8"
                 xmlns="http://www.w3.org/2000/svg"
@@ -121,10 +121,11 @@
 <!-- LOGIC -->
 <script lang="ts" setup>
 import { reactive } from "@vue/reactivity";
+import { computed } from "vue";
 
 const state = reactive({
   showFilter: false,
-  currentFilter: "",
+  currentFilter: [],
 });
 
 function toggleFilter() {
@@ -132,7 +133,13 @@ function toggleFilter() {
 }
 
 function onCheck(filter: string) {
-  state.currentFilter = filter === state.currentFilter ? '' : filter;
+  state.currentFilter = [...state.currentFilter].includes(filter)
+    ? [...state.currentFilter].filter((f: string) => f !== filter)
+    : [...state.currentFilter, filter];
+}
+
+function isChecked(filter: string): boolean {
+  return state.currentFilter.includes(filter);
 }
 </script>
 
