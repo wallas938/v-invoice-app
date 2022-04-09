@@ -2,6 +2,7 @@
   <div class="invoice-list">
     <div class="empty-list" v-if="isInvoicesEmpty">
       <img
+        data-test="illustration-empty-image"
         :src="illustrationEmptyImage"
         alt="illustration of an empty list of invoies"
       />
