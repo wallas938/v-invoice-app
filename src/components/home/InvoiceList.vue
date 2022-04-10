@@ -1,6 +1,6 @@
 <template>
   <div class="invoice-list">
-    <div class="empty-list" v-if="isInvoicesEmpty">
+    <div data-test="empty-list" class="empty-list" v-if="isInvoicesEmpty">
       <img
         data-test="illustration-empty-image"
         :src="illustrationEmptyImage"
@@ -14,7 +14,7 @@
       >
     </div>
 
-    <div v-else>NO</div>
+    <div data-test="no-empty-list" v-else>NO</div>
   </div>
 </template>
 <script setup>
@@ -28,7 +28,7 @@ const store = useStore();
 const invoices = computed(() => store.getters.invoices);
 
 // STORE ACTIONS
-const isInvoicesEmpty = computed(() => invoices.value.length === 0);
+const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
 </script>
 <style lang="scss" scoped>
 @import "../../sass/variables";
