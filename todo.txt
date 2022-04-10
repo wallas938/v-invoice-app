@@ -1,3 +1,7 @@
 Invoice App - Vue
 
-    -> Permettre le choix multiple lors des choix de filtrages ( InvoiceListHeader )
+    InvoiceListHeader
+
+    -> revoir la couleur des icons du switch dans le cmp InvoiceListHeader
+
+    -> Tester l'existance des informations en fonction du nombre d'invoices présents
