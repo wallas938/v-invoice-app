@@ -16,8 +16,15 @@ import './sass/_helpers.scss';
 */
 import TheHeader from './components/layout/TheHeader.vue';
 
+/* 
+    Base components
+*/
+
+import VContainerVue from './components/shared/VContainer.vue';
+
 const app = createApp(App)
 
 app.component('TheHeader', TheHeader);
+app.component('v-container', VContainerVue);
 
 app.use(router).use(store).mount('#app')

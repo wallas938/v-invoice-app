@@ -1,9 +1,11 @@
 @import "./variables";
+@import "./colors";
 
 body,
 html,
 #app {
     height: 100%;
+    background-color: $global-bg;
 }
 
 html {

@@ -5,6 +5,7 @@ import InvoiceListVue from "../../components/home/InvoiceList.vue";
 
 
 export interface Invoice {
+    invoiceCode: string;
     fromStreet: string;
     fromCity: string;
     fromPostCode: string;
@@ -16,9 +17,10 @@ export interface Invoice {
     toPostCode: string;
     toCountry: string;
     invoiceDate: string;
-    term: string;
+    due: string;
     desc: string;
     items: Item[];
+    status: string;
     totalAmount: string;
 };
 
@@ -85,6 +87,7 @@ describe('InvoiceListVue', async () => {
                     return {
                         invoices: [
                             {
+                                invoiceCode: 'RT3080',
                                 fromStreet: '19 Union Terrace',
                                 fromCity: 'London',
                                 fromPostCode: 'E1 3EZ',
@@ -96,7 +99,8 @@ describe('InvoiceListVue', async () => {
                                 toPostCode: 'BD1 9PB',
                                 toCountry: 'United Kingdom',
                                 invoiceDate: '21 Aug 2021',
-                                term: '20 Sep 2021',
+                                due: '20 Sep 2021',
+                                status: 'Paid',
                                 desc: 'Graphic Design',
                                 items: [] as Item[],
                                 totalAmount: '£ 556.00',
