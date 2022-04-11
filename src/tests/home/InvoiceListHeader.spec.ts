@@ -1,19 +1,66 @@
 import { mount, VueWrapper } from "@vue/test-utils";
 import { beforeEach, describe, expect, test } from "vitest";
+import { createStore, Store } from "vuex";
 import InvoiceListHeader from "../../components/home/InvoiceListHeader.vue";
 
+export interface Invoice {
+    invoiceCode: string;
+    fromStreet: string;
+    fromCity: string;
+    fromPostCode: string;
+    fromCountry: string;
+    clientName: string;
+    email: string;
+    toStreet: string;
+    toCity: string;
+    toPostCode: string;
+    toCountry: string;
+    invoiceDate: string;
+    due: string;
+    desc: string;
+    items: Item[];
+    status: string;
+    totalAmount: string;
+};
+
+export interface Item {
+    itemName: string;
+    quantity: number;
+    price: string;
+    total: string;
+}
+
+/* 
+
+{
+                                invoiceCode: 'RT3080',
+                                fromStreet: '19 Union Terrace',
+                                fromCity: 'London',
+                                fromPostCode: 'E1 3EZ',
+                                fromCountry: 'United Kingdom',
+                                clientName: 'Alex Grim',
+                                email: 'alexgrim@mail.com',
+                                toStreet: '84 Church Way',
+                                toCity: 'Bradford',
+                                toPostCode: 'BD1 9PB',
+                                toCountry: 'United Kingdom',
+                                invoiceDate: '21 Aug 2021',
+                                due: '20 Sep 2021',
+                                status: 'Paid',
+                                desc: 'Graphic Design',
+                                items: [] as Item[],
+                                totalAmount: '£ 556.00',
+                            } as Invoice 
+*/
 const filter = '[data-test=filter]';
 const filterDropdown = '[data-test=filter-dropdown]';
 
 let wrapper: VueWrapper<any>;
+let store: Store<any>;
 
 test('mount InvoiceListHeader', async () => {
     expect(InvoiceListHeader).toBeTruthy();
 });
-
-beforeEach(() => {
-    wrapper = mount(InvoiceListHeader);
-})
 
 /* 
 
@@ -21,6 +68,29 @@ beforeEach(() => {
 */
 
 describe('InvoiceListHeader default values', async () => {
+
+    beforeEach(() => {
+        store = createStore({
+            state() {
+                return {
+                    invoices: [
+                    ]
+                }
+            },
+            getters: {
+                invoices(state) {
+                    return state.invoices;
+                }
+            }
+        })
+
+        wrapper = mount(InvoiceListHeader, {
+            global: {
+                plugins: [store]
+            }
+        });
+    });
+
     test('filter dropdown do not exists by default', async () => {
         expect(wrapper.find(filterDropdown).exists()).toBeFalsy();
     });
@@ -30,7 +100,7 @@ describe('InvoiceListHeader default values', async () => {
         wrapper.find(filterDropdown).findAll('.square').forEach(element => {
             expect(element.classes().includes('--checked')).toBe(false);
         });
-    })
+    });
 });
 
 
@@ -41,7 +111,59 @@ describe('InvoiceListHeader default values', async () => {
 
 describe('InvoiceListHeader events', async () => {
 
+    describe('header list info', () => {
+
+        beforeEach(() => {
+            store = createStore({
+                state() {
+                    return {
+                        invoices: [
+                        ]
+                    }
+                },
+                getters: {
+                    invoices(state) {
+                        return state.invoices;
+                    }
+                }
+            })
+
+            wrapper = mount(InvoiceListHeader, {
+                global: {
+                    plugins: [store]
+                }
+            });
+        });
+
+        test('if no invoices, "No invoices" should appear', async () => {
+            expect(wrapper.find('.info').get('small').text()).toEqual('No invoices');
+        })
+    })
+
     describe('dropdown states', async () => {
+
+        beforeEach(() => {
+            store = createStore({
+                state() {
+                    return {
+                        invoices: [
+                        ]
+                    }
+                },
+                getters: {
+                    invoices(state) {
+                        return state.invoices;
+                    }
+                }
+            })
+
+            wrapper = mount(InvoiceListHeader, {
+                global: {
+                    plugins: [store]
+                }
+            });
+        });
+
         test('show dropdown', async () => {
             await wrapper.get(filter).trigger("click");
             expect(wrapper.find(filterDropdown).exists()).toBeTruthy();
@@ -49,6 +171,7 @@ describe('InvoiceListHeader events', async () => {
         });
 
         test('show and hide dropdown', async () => {
+
             await wrapper.get(filter).trigger("click");
 
             await wrapper.get(filter).trigger("click");
@@ -58,25 +181,49 @@ describe('InvoiceListHeader events', async () => {
     });
 
     describe('dropdown checkboxes states', async () => {
+
         beforeEach(async () => {
+            store = createStore({
+                state() {
+                    return {
+                        invoices: [
+                        ]
+                    }
+                },
+                getters: {
+                    invoices(state) {
+                        return state.invoices;
+                    }
+                }
+            })
+
+            wrapper = mount(InvoiceListHeader, {
+                global: {
+                    plugins: [store]
+                }
+            });
+
             const filterButton = wrapper.get(filter);
             await filterButton.trigger("click");
+
         });
 
         describe('dropdown checkboxes checking', async () => {
+
+
             test('draft checkbox checking state', async () => {
                 const draftButton = wrapper.find(filterDropdown).find('.draft');
                 await draftButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.draft-checkbox').classes().includes('--checked')).toBe(true)
             });
 
-            test('draft checkbox checking state', async () => {
+            test('pending checkbox checking state', async () => {
                 const pendingButton = wrapper.find(filterDropdown).find('.pending');
                 await pendingButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.pending-checkbox').classes().includes('--checked')).toBe(true)
             });
 
-            test('draft checkbox checking state', async () => {
+            test('paid checkbox checking state', async () => {
                 const paidButton = wrapper.find(filterDropdown).find('.paid');
                 await paidButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.paid-checkbox').classes().includes('--checked')).toBe(true)
@@ -84,6 +231,8 @@ describe('InvoiceListHeader events', async () => {
         });
 
         describe('dropdown checkboxes unchecking', async () => {
+
+
             test('draft checkbox checking state', async () => {
                 const draftButton = wrapper.find(filterDropdown).find('.draft');
                 await draftButton.trigger("click");
@@ -91,14 +240,14 @@ describe('InvoiceListHeader events', async () => {
                 expect(wrapper.find(filterDropdown).find('.draft-checkbox').classes().includes('--checked')).toBe(false)
             });
 
-            test('draft checkbox checking state', async () => {
+            test('pending checkbox checking state', async () => {
                 const pendingButton = wrapper.find(filterDropdown).find('.pending');
                 await pendingButton.trigger("click");
                 await pendingButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.pending-checkbox').classes().includes('--checked')).toBe(false)
             });
 
-            test('draft checkbox checking state', async () => {
+            test('paid checkbox checking state', async () => {
                 const paidButton = wrapper.find(filterDropdown).find('.paid');
                 await paidButton.trigger("click");
                 await paidButton.trigger("click");
@@ -107,5 +256,5 @@ describe('InvoiceListHeader events', async () => {
         });
 
 
-    })
+    });
 })

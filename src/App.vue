@@ -9,6 +9,7 @@
 
 <style lang="scss" scoped>
 @import "sass/variables";
+
 @media screen and (min-width: $desktop-min) {
   .root {
     display: flex;

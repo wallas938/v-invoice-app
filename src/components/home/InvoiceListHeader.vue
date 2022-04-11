@@ -4,11 +4,17 @@
     <header class="invoice-header">
       <div class="info">
         <p>Invoices</p>
-        <small>No invoices</small>
+        <small v-if="invoicesCount">
+          <span class="hide-for-mobile">There are </span>
+          <span>{{ invoicesCount }}</span>
+          <span class="hide-for-mobile"> total</span> invoices
+        </small>
+        <small v-else>No invoices</small>
       </div>
       <div class="filter">
         <span data-test="filter" @click="toggleFilter"
-          >Filter <span class="hide-for-mobile">by status</span>
+          >Filter
+          <span class="hide-for-mobile">by status</span>
         </span>
         <svg
           @click="toggleFilter"
@@ -122,6 +128,9 @@
 <script lang="ts" setup>
 import { reactive } from "@vue/reactivity";
 import { computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const state = reactive({
   showFilter: false,
@@ -137,6 +146,12 @@ function onCheck(filter: string) {
     ? [...state.currentFilter].filter((f: string) => f !== filter)
     : [...state.currentFilter, filter];
 }
+
+// COMPUTED
+
+const invoicesCount = computed(() => store.getters.invoices.length);
+
+// Functions
 
 function isChecked(filter: string): boolean {
   return state.currentFilter.includes(filter);
@@ -206,7 +221,7 @@ function isChecked(filter: string): boolean {
       width: 10.666666rem;
       height: 7.111111rem;
       padding: 1.333333rem;
-
+      z-index: 99;
       .check {
         display: flex;
         .square {
@@ -217,6 +232,7 @@ function isChecked(filter: string): boolean {
           display: flex;
           justify-content: center;
           padding-top: 3px;
+          transition: background-color 550ms ease-in-out;
         }
 
         &:hover {
@@ -249,7 +265,10 @@ function isChecked(filter: string): boolean {
       padding: 0.333333rem;
       display: flex;
       align-items: center;
-
+      transition: background-color 150ms ease-in-out;
+      &:hover {
+        background-color: $violet-2;
+      }
       .circle {
         width: 1.777777rem;
         height: 1.777777rem;
