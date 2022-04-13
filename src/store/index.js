@@ -15,7 +15,7 @@ export default createStore({
     state() {
         return {
             invoices: [
-                /* {
+                {
                     invoiceCode: 'RT3080',
                     fromStreet: '19 Union Terrace',
                     fromCity: 'London',
@@ -109,7 +109,7 @@ export default createStore({
                     desc: 'Graphic Design',
                     items: [],
                     totalAmount: '£ 3,102.04',
-                } */
+                }
             ],
             filters: []
         }

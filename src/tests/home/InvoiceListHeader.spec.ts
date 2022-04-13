@@ -103,7 +103,25 @@ describe('InvoiceListHeader events', async () => {
     describe('header list info', () => {
 
         beforeEach(() => {
-            store = appState
+            store = createStore({
+                state() {
+                    return {
+                        invoices: [],
+                        filters: []
+                    }
+                },
+                getters: {
+                    invoices(state) {
+                        if (state.filters.length <= 0) {
+                            return state.invoices;
+                        }
+                        return state.invoices.filter((invoice: Invoice) => state.filters.includes(invoice.status.toLowerCase()));
+                    },
+                    filters(state) {
+                        return state.filters;
+                    }
+                }
+            })
 
             wrapper = mount(InvoiceListHeader, {
                 global: {

@@ -105,12 +105,19 @@ describe('InvoiceListVue', async () => {
                                 items: [] as Item[],
                                 totalAmount: '£ 556.00',
                             } as Invoice
-                        ]
+                        ],
+                        filters: []
                     }
                 },
                 getters: {
                     invoices(state) {
-                        return state.invoices;
+                        if (state.filters.length <= 0) {
+                            return state.invoices;
+                        }
+                        return state.invoices.filter((invoice: Invoice) => state.filters.includes(invoice.status.toLowerCase()));
+                    },
+                    filters(state) {
+                        return state.filters;
                     }
                 }
             })
