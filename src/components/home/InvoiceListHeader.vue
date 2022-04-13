@@ -36,11 +36,7 @@
             fill-rule="evenodd"
           />
         </svg>
-        <div
-          data-test="filter-dropdown"
-          v-if="state.showFilter"
-          class="dropdown"
-        >
+        <div data-test="filter-dropdown" v-if="showFilter" class="dropdown">
           <div class="check draft" @click="onCheck('draft')">
             <span
               class="square draft-checkbox"
@@ -132,25 +128,20 @@
 
 <!-- LOGIC -->
 <script lang="ts" setup>
-import { reactive } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
-const state = reactive({
-  showFilter: false,
-  currentFilter: [],
-});
+const showFilter = ref(false);
 
 function toggleFilter() {
-  state.showFilter = !state.showFilter;
+  showFilter.value = !showFilter.value;
 }
 
 function onCheck(filter: string) {
-  state.currentFilter = [...state.currentFilter].includes(filter)
-    ? [...state.currentFilter].filter((f: string) => f !== filter)
-    : [...state.currentFilter, filter];
+  store.dispatch("handleFilters", { filter: filter });
 }
 
 // COMPUTED
@@ -159,10 +150,12 @@ const invoicesCount = computed(() => store.getters.invoices.length);
 
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
+const filters = computed(() => store.getters["filters"]);
+
 // Functions
 
 function isChecked(filter: string): boolean {
-  return state.currentFilter.includes(filter);
+  return filters.value.includes(filter);
 }
 </script>
 

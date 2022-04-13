@@ -2,6 +2,7 @@ import { mount, shallowMount, VueWrapper } from "@vue/test-utils";
 import { beforeEach, describe, expect, test } from "vitest";
 import { createStore, Store } from "vuex";
 import InvoiceListHeader from "../../components/home/InvoiceListHeader.vue";
+import appState from '../../store/index'
 
 export interface Invoice {
     invoiceCode: string;
@@ -70,21 +71,9 @@ test('mount InvoiceListHeader', async () => {
 describe('InvoiceListHeader default values', async () => {
 
     beforeEach(() => {
-        store = createStore({
-            state() {
-                return {
-                    invoices: [
-                    ]
-                }
-            },
-            getters: {
-                invoices(state) {
-                    return state.invoices;
-                }
-            }
-        })
+        store = appState
 
-        wrapper = shallowMount(InvoiceListHeader, {
+        wrapper = mount(InvoiceListHeader, {
             global: {
                 plugins: [store]
             }
@@ -114,21 +103,9 @@ describe('InvoiceListHeader events', async () => {
     describe('header list info', () => {
 
         beforeEach(() => {
-            store = createStore({
-                state() {
-                    return {
-                        invoices: [
-                        ]
-                    }
-                },
-                getters: {
-                    invoices(state) {
-                        return state.invoices;
-                    }
-                }
-            })
+            store = appState
 
-            wrapper = shallowMount(InvoiceListHeader, {
+            wrapper = mount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }
@@ -143,21 +120,9 @@ describe('InvoiceListHeader events', async () => {
     describe('dropdown states', async () => {
 
         beforeEach(() => {
-            store = createStore({
-                state() {
-                    return {
-                        invoices: [
-                        ]
-                    }
-                },
-                getters: {
-                    invoices(state) {
-                        return state.invoices;
-                    }
-                }
-            })
+            store = appState
 
-            wrapper = shallowMount(InvoiceListHeader, {
+            wrapper = mount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }
@@ -183,38 +148,27 @@ describe('InvoiceListHeader events', async () => {
     describe('dropdown checkboxes states', async () => {
 
         beforeEach(async () => {
-            store = createStore({
-                state() {
-                    return {
-                        invoices: [
-                        ]
-                    }
-                },
-                getters: {
-                    invoices(state) {
-                        return state.invoices;
-                    }
-                }
-            })
+            store = appState
 
-            wrapper = shallowMount(InvoiceListHeader, {
+            wrapper = mount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }
             });
-
             const filterButton = wrapper.get(filter);
             await filterButton.trigger("click");
-
         });
 
         describe('dropdown checkboxes checking', async () => {
 
 
             test('draft checkbox checking state', async () => {
+
                 const draftButton = wrapper.find(filterDropdown).find('.draft');
+
                 await draftButton.trigger("click");
-                expect(wrapper.find(filterDropdown).find('.draft-checkbox').classes().includes('--checked')).toBe(true)
+
+                expect(wrapper.find(filterDropdown).find('.draft-checkbox').classes().includes('--checked')).toBe(true);
             });
 
             test('pending checkbox checking state', async () => {
@@ -233,28 +187,156 @@ describe('InvoiceListHeader events', async () => {
         describe('dropdown checkboxes unchecking', async () => {
 
 
-            test('draft checkbox checking state', async () => {
+            test('draft checkbox unchecking state', async () => {
+
+                store = createStore({
+                    state() {
+                        return {
+                            invoices: [],
+                            filters: ['draft']
+                        }
+                    },
+                    getters: {
+                        invoices(state) {
+                            return state.invoices;
+                        },
+                        filters(state) {
+                            return state.filters;
+                        }
+                    },
+                    mutations: {
+                        UPDATE_FILTERS(state, payload) {
+                            state.filters = payload.filters
+                        }
+                    },
+                    actions: {
+                        handleFilters(context, payload) {
+                            /* add a new filter or remove it if it was already added */
+                            const filters = [...context.getters.filters].includes(payload.filter)
+                                ? [...context.getters.filters].filter((f) => f !== payload.filter)
+                                : [...context.getters.filters, payload.filter];
+
+                            context.commit('UPDATE_FILTERS', { filters: filters });
+                        }
+                    }
+                })
+
+                wrapper = mount(InvoiceListHeader, {
+                    global: {
+                        plugins: [store]
+                    }
+                });
+
+                /* Display dropdown */
+                const filterButton = wrapper.get(filter);
+                await filterButton.trigger("click");
+
+                /* Uncheck the draft filter */
                 const draftButton = wrapper.find(filterDropdown).find('.draft');
-                await draftButton.trigger("click");
                 await draftButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.draft-checkbox').classes().includes('--checked')).toBe(false)
             });
 
             test('pending checkbox checking state', async () => {
+
+                store = createStore({
+                    state() {
+                        return {
+                            invoices: [],
+                            filters: ['pending']
+                        }
+                    },
+                    getters: {
+                        invoices(state) {
+                            return state.invoices;
+                        },
+                        filters(state) {
+                            return state.filters;
+                        }
+                    },
+                    mutations: {
+                        UPDATE_FILTERS(state, payload) {
+                            state.filters = payload.filters
+                        }
+                    },
+                    actions: {
+                        handleFilters(context, payload) {
+                            /* add a new filter or remove it if it was already added */
+                            const filters = [...context.getters.filters].includes(payload.filter)
+                                ? [...context.getters.filters].filter((f) => f !== payload.filter)
+                                : [...context.getters.filters, payload.filter];
+
+                            context.commit('UPDATE_FILTERS', { filters: filters });
+                        }
+                    }
+                })
+
+                wrapper = mount(InvoiceListHeader, {
+                    global: {
+                        plugins: [store]
+                    }
+                });
+
+                /* Display dropdown */
+                const filterButton = wrapper.get(filter);
+                await filterButton.trigger("click");
+
+                /* Uncheck the pending filter */
                 const pendingButton = wrapper.find(filterDropdown).find('.pending');
-                await pendingButton.trigger("click");
                 await pendingButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.pending-checkbox').classes().includes('--checked')).toBe(false)
             });
 
             test('paid checkbox checking state', async () => {
+
+                store = createStore({
+                    state() {
+                        return {
+                            invoices: [],
+                            filters: ['paid']
+                        }
+                    },
+                    getters: {
+                        invoices(state) {
+                            return state.invoices;
+                        },
+                        filters(state) {
+                            return state.filters;
+                        }
+                    },
+                    mutations: {
+                        UPDATE_FILTERS(state, payload) {
+                            state.filters = payload.filters
+                        }
+                    },
+                    actions: {
+                        handleFilters(context, payload) {
+                            /* add a new filter or remove it if it was already added */
+                            const filters = [...context.getters.filters].includes(payload.filter)
+                                ? [...context.getters.filters].filter((f) => f !== payload.filter)
+                                : [...context.getters.filters, payload.filter];
+
+                            context.commit('UPDATE_FILTERS', { filters: filters });
+                        }
+                    }
+                })
+
+                wrapper = mount(InvoiceListHeader, {
+                    global: {
+                        plugins: [store]
+                    }
+                });
+
+                /* Display dropdown */
+                const filterButton = wrapper.get(filter);
+                await filterButton.trigger("click");
+
+                /* Uncheck the pending filter */
                 const paidButton = wrapper.find(filterDropdown).find('.paid');
-                await paidButton.trigger("click");
                 await paidButton.trigger("click");
                 expect(wrapper.find(filterDropdown).find('.paid-checkbox').classes().includes('--checked')).toBe(false)
             });
         });
-
 
     });
 })
