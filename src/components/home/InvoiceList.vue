@@ -62,6 +62,7 @@ const store = useStore();
 
 // COMPUTED
 const invoices = computed(() => store.getters.invoices);
+
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 const getStatusColor = (status) => {
@@ -76,7 +77,7 @@ const getStatusColor = (status) => {
 };
 
 // STORE ACTIONS
-const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
+const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 </script>
 <style lang="scss" scoped>
 @import "../../sass/variables";
