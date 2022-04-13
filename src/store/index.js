@@ -3,9 +3,15 @@ import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
 
+/* Modules */
+import layoutModule from './modules/layout';
+
 
 // Create a new store instance.
 export default createStore({
+    modules: {
+        layout: layoutModule,
+    },
     state() {
         return {
             invoices: [

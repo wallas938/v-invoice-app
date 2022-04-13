@@ -1,4 +1,4 @@
-import { mount, VueWrapper } from "@vue/test-utils";
+import { mount, shallowMount, VueWrapper } from "@vue/test-utils";
 import { beforeEach, describe, expect, test } from "vitest";
 import { createStore, Store } from "vuex";
 import InvoiceListHeader from "../../components/home/InvoiceListHeader.vue";
@@ -84,7 +84,7 @@ describe('InvoiceListHeader default values', async () => {
             }
         })
 
-        wrapper = mount(InvoiceListHeader, {
+        wrapper = shallowMount(InvoiceListHeader, {
             global: {
                 plugins: [store]
             }
@@ -128,7 +128,7 @@ describe('InvoiceListHeader events', async () => {
                 }
             })
 
-            wrapper = mount(InvoiceListHeader, {
+            wrapper = shallowMount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }
@@ -157,7 +157,7 @@ describe('InvoiceListHeader events', async () => {
                 }
             })
 
-            wrapper = mount(InvoiceListHeader, {
+            wrapper = shallowMount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }
@@ -197,7 +197,7 @@ describe('InvoiceListHeader events', async () => {
                 }
             })
 
-            wrapper = mount(InvoiceListHeader, {
+            wrapper = shallowMount(InvoiceListHeader, {
                 global: {
                     plugins: [store]
                 }

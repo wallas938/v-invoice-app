@@ -1,7 +1,13 @@
 <!-- TEMPLATE -->
 <template>
   <div class="cmp-container">
-    <header class="invoice-header">
+    <header
+      class="invoice-header"
+      :class="{
+        '--light-mode': currentMode === 'light',
+        '--dark-mode': currentMode === 'dark',
+      }"
+    >
       <div class="info">
         <p>Invoices</p>
         <small v-if="invoicesCount">
@@ -151,6 +157,8 @@ function onCheck(filter: string) {
 
 const invoicesCount = computed(() => store.getters.invoices.length);
 
+const currentMode = computed(() => store.getters["layout/currentMode"]);
+
 // Functions
 
 function isChecked(filter: string): boolean {
@@ -167,12 +175,11 @@ function isChecked(filter: string): boolean {
   grid-template-columns: 1fr 1fr 5rem;
   grid-template-rows: 1fr;
   grid-template-areas: "info filter link";
-
+  transition: all 650ms ease-in-out;
   .info {
     grid-area: info;
     p {
       font-style: normal;
-      color: $black-2;
       font-weight: bold;
       font-size: 1.111111rem;
       line-height: 1.222222rem;
@@ -181,7 +188,6 @@ function isChecked(filter: string): boolean {
 
     small {
       font-style: normal;
-      color: $violet-gray;
       font-weight: 500;
       font-size: 0.666666rem;
       line-height: 0.833333rem;
@@ -199,7 +205,6 @@ function isChecked(filter: string): boolean {
     position: relative;
 
     span {
-      color: $black-2;
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
@@ -227,18 +232,11 @@ function isChecked(filter: string): boolean {
         .square {
           width: 0.888888rem;
           height: 0.888888rem;
-          background-color: $blue-gray-light;
           border-radius: 2px;
           display: flex;
           justify-content: center;
           padding-top: 3px;
           transition: background-color 550ms ease-in-out;
-        }
-
-        &:hover {
-          .square {
-            border: 1px solid $violet-1;
-          }
         }
 
         .value {
@@ -286,6 +284,84 @@ function isChecked(filter: string): boolean {
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
         margin-left: 0.444444rem;
+      }
+    }
+  }
+}
+
+.--light-mode {
+  .info {
+    p {
+      color: $black-2;
+    }
+
+    small {
+      color: $violet-gray;
+    }
+  }
+
+  .filter {
+    span {
+      color: $black-2;
+    }
+
+    .dropdown {
+      background-color: #fff;
+      box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
+
+      .check {
+        .square {
+          background-color: $blue-gray-light;
+        }
+
+        &:hover {
+          .square {
+            border: 1px solid $violet-1;
+          }
+        }
+
+        .--checked {
+          background-color: $violet-1 !important;
+        }
+      }
+    }
+  }
+}
+
+.--dark-mode {
+  .info {
+    p {
+      color: #fff;
+    }
+
+    small {
+      color: $blue-gray-light;
+    }
+  }
+
+  .filter {
+    span {
+      color: #fff;
+    }
+
+    .dropdown {
+      background-color: $dark-blue;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+
+      .check {
+        .square {
+          background-color: $black-1;
+        }
+
+        &:hover {
+          .square {
+            border: 1px solid $violet-1;
+          }
+        }
+
+        .--checked {
+          background-color: $violet-1 !important;
+        }
       }
     }
   }
