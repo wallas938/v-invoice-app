@@ -1,5 +1,11 @@
 <template>
-  <div class="invoice-list">
+  <div
+    class="invoice-list"
+    :class="{
+      '--light-mode': currentMode === 'light',
+      '--dark-mode': currentMode === 'dark',
+    }"
+  >
     <div data-test="empty-list" class="empty-list" v-if="isInvoicesEmpty">
       <img
         data-test="illustration-empty-image"
@@ -56,6 +62,7 @@ const store = useStore();
 
 // COMPUTED
 const invoices = computed(() => store.getters.invoices);
+const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 const getStatusColor = (status) => {
   switch (status.toLowerCase()) {
@@ -81,6 +88,7 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
     flex-direction: column;
     align-items: center;
     padding-top: 5.666666rem;
+    transition: all 650ms ease-in-out;
 
     @media (orientation: landscape) {
       padding-top: 0rem;
@@ -99,7 +107,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
       font-size: 1.111111rem;
       line-height: 1.244444rem;
       letter-spacing: -0.625px;
-      color: $black-2;
       margin-bottom: 1.333333rem;
     }
 
@@ -109,7 +116,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $violet-gray;
       text-align: center;
       width: 11.166666rem;
     }
@@ -117,17 +123,17 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
 
   .no-empty-list {
     padding-top: 1.777777rem;
-
+    transition: all 650ms ease-in-out;
     .item-container {
       cursor: pointer;
-      transition: border 250ms ease-in-out;
+      transition: all 650ms ease-in-out;
       border: 1px solid transparent;
       &:not(:last-child) {
         margin-bottom: 0.888888rem;
       }
 
       &:hover {
-        border: 1px solid $violet-1;
+        border: 1px solid $violet-1; // used for dark and light mode !!!
       }
 
       .invoice-item {
@@ -135,7 +141,7 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, auto);
-
+        transition: all 650ms ease-in-out;
         grid-template-areas:
           "code   clientName"
           "due    status"
@@ -150,7 +156,7 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
           letter-spacing: -0.25px;
           margin-bottom: 1.333333rem;
           .hash {
-            color: $blue-violet;
+            color: $blue-violet; // used for dark and light mode !!!
           }
         }
 
@@ -161,7 +167,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
           font-size: 0.666666rem;
           line-height: 0.833333rem;
           letter-spacing: -0.25px;
-          color: #858bb2;
           text-align: end;
         }
 
@@ -172,7 +177,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
           font-size: 0.666666rem;
           line-height: 0.833333rem;
           letter-spacing: -0.25px;
-          color: $violet-gray;
           margin-bottom: 0.444444rem;
         }
 
@@ -223,18 +227,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
           }
         }
 
-        .status--draft {
-          background-color: rgba(#373b53, 0.06);
-
-          span {
-            color: #373b53;
-          }
-
-          span::before {
-            background-color: #373b53;
-          }
-        }
-
         .status--pending {
           background-color: rgba(#ff8f00, 0.06);
 
@@ -253,7 +245,103 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
           font-size: 0.888888rem;
           line-height: 1.333333rem;
           letter-spacing: -0.8px;
+        }
+      }
+    }
+  }
+}
+
+.--light-mode {
+  .empty-list {
+    background-color: $global-bg;
+    h2 {
+      color: $black-2;
+    }
+
+    small {
+      color: $violet-gray;
+    }
+  }
+
+  .no-empty-list {
+    background-color: $global-bg;
+    .item-container {
+      &:hover {
+        border: 1px solid $violet-1;
+      }
+
+      .invoice-item {
+        .clientName {
+          color: #858bb2;
+        }
+
+        .due {
+          color: $violet-gray;
+        }
+
+        .total {
           color: $black-2;
+        }
+
+        .status--draft {
+          background-color: rgba(#373b53, 0.06);
+
+          span {
+            color: #373b53;
+          }
+
+          span::before {
+            background-color: #373b53;
+          }
+        }
+      }
+    }
+  }
+}
+
+.--dark-mode {
+  .empty-list {
+    background-color: $black-3;
+    h2 {
+      color: #fff;
+    }
+
+    small {
+      color: $blue-gray-light;
+    }
+  }
+
+  .no-empty-list {
+    background-color: $black-3;
+    .item-container {
+      background-color: $black-1;
+      .invoice-item {
+        .code {
+          color: #fff;
+        }
+
+        .clientName {
+          color: #fff;
+        }
+
+        .due {
+          color: $blue-gray-light;
+        }
+
+        .total {
+          color: #fff;
+        }
+
+        .status--draft {
+          background-color: rgba($blue-gray-light, 0.06);
+
+          span {
+            color: $blue-gray-light;
+          }
+
+          span::before {
+            background-color: $blue-gray-light;
+          }
         }
       }
     }
@@ -282,6 +370,8 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
     }
 
     .no-empty-list {
+      max-width: 53.333333rem; // 960px
+      margin: 0 auto;
       padding-top: 3.111111rem;
       .item-container {
         .invoice-item {
@@ -348,7 +438,6 @@ const isInvoicesEmpty = computed(() => store.getters.invoices.length === 0);
 
     .no-empty-list {
       width: 40.555555rem;
-      margin: 0 auto;
       padding-top: 3.611111rem;
       .item-container {
         .invoice-item {

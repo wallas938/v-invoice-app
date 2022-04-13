@@ -5,3 +5,7 @@ Invoice App - Vue
     -> revoir la couleur des icons du switch dans le cmp InvoiceListHeader
 
     -> Tester l'existance des informations en fonction du nombre d'invoices présents
+
+    Test / Store
+
+    -> Utiliser des stub/mock a la place du Store complet
