@@ -117,4 +117,4 @@ export default createStore({
     mutations: mutations,
     actions: actions,
     getters: getters
-})
+});

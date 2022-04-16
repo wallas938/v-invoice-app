@@ -27,25 +27,28 @@
         :key="invoice"
       >
         <div class="invoice-item">
-          <p class="code">
+          <router-link :to="navigateToDetail(invoice.invoiceCode)" class="code">
             <span class="hash">#</span>{{ invoice.invoiceCode }}
-          </p>
+          </router-link>
           <p class="clientName">{{ invoice.clientName }}</p>
           <p class="due">{{ invoice.due }}</p>
-          <div class="status" :class="getStatusColor(invoice.status)">
+          <VStatusIndicator :status="invoice.status" />
+          <!-- <div class="status" :class="getStatusColor(invoice.status)">
             <span>{{ invoice.status }}</span>
-          </div>
+          </div> -->
           <p class="total">{{ invoice.totalAmount }}</p>
           <div class="arrow hide-for-mobile">
-            <svg width="7" height="10" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M1 1l4 4-4 4"
-                stroke="#7C5DFA"
-                stroke-width="2"
-                fill="none"
-                fill-rule="evenodd"
-              />
-            </svg>
+            <router-link :to="navigateToDetail(invoice.invoiceCode)">
+              <svg width="7" height="10" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M1 1l4 4-4 4"
+                  stroke="#7C5DFA"
+                  stroke-width="2"
+                  fill="none"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </router-link>
           </div>
         </div>
       </v-container>
@@ -64,8 +67,10 @@ const store = useStore();
 const invoices = computed(() => store.getters.invoices);
 
 const currentMode = computed(() => store.getters["layout/currentMode"]);
+const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
-const getStatusColor = (status) => {
+// FUNCITONS
+function getStatusColor(status) {
   switch (status.toLowerCase()) {
     case "paid":
       return "status--paid";
@@ -74,10 +79,13 @@ const getStatusColor = (status) => {
     case "draft":
       return "status--draft";
   }
-};
+}
+
+function navigateToDetail(invoiceCode) {
+  return `/invoices/${invoiceCode}`;
+}
 
 // STORE ACTIONS
-const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 </script>
 <style lang="scss" scoped>
 @import "../../sass/variables";
@@ -126,7 +134,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
     padding-top: 1.777777rem;
     transition: all 650ms ease-in-out;
     .item-container {
-      cursor: pointer;
       transition: all 650ms ease-in-out;
       border: 1px solid transparent;
       &:not(:last-child) {
@@ -149,6 +156,8 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
           "total  status";
 
         .code {
+          cursor: pointer;
+          transition: all 200ms ease-in-out;
           grid-area: code;
           font-weight: bold;
           font-style: normal;
@@ -159,6 +168,10 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
           .hash {
             color: $blue-violet; // used for dark and light mode !!!
           }
+        }
+
+        .code:hover {
+          transform: scale(1.05);
         }
 
         .clientName {
@@ -179,65 +192,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
           line-height: 0.833333rem;
           letter-spacing: -0.25px;
           margin-bottom: 0.444444rem;
-        }
-
-        .status {
-          grid-area: status;
-          mix-blend-mode: normal;
-          border-radius: 6px;
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 0;
-          width: 5.777777rem;
-          height: 2.222222rem;
-          justify-self: flex-end;
-          padding-left: 8px;
-          span {
-            font-style: normal;
-            font-weight: 700;
-            font-size: 0.666666rem;
-            line-height: 0.833333rem;
-            letter-spacing: -0.25px;
-            position: relative;
-            z-index: 1;
-          }
-
-          span::before {
-            content: "";
-            top: 0.222222rem;
-            left: -0.888888rem;
-            bottom: 0;
-            position: absolute;
-            width: 0.444444rem;
-            height: 0.444444rem;
-            border-radius: 100%;
-          }
-        }
-
-        .status--paid {
-          background-color: rgba(#33d69f, 0.06);
-
-          span {
-            color: #33d69f;
-          }
-
-          span::before {
-            background-color: #33d69f;
-          }
-        }
-
-        .status--pending {
-          background-color: rgba(#ff8f00, 0.06);
-
-          span {
-            color: #ff8f00;
-          }
-
-          span::before {
-            background-color: #ff8f00;
-          }
         }
 
         .total {
@@ -272,6 +226,10 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
       }
 
       .invoice-item {
+        .code:hover {
+          color: $dark-blue;
+        }
+
         .clientName {
           color: #858bb2;
         }
@@ -282,18 +240,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
         .total {
           color: $black-2;
-        }
-
-        .status--draft {
-          background-color: rgba(#373b53, 0.06);
-
-          span {
-            color: #373b53;
-          }
-
-          span::before {
-            background-color: #373b53;
-          }
         }
       }
     }
@@ -321,6 +267,10 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
           color: #fff;
         }
 
+        .code:hover {
+          color: $red;
+        }
+
         .clientName {
           color: #fff;
         }
@@ -331,18 +281,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
         .total {
           color: #fff;
-        }
-
-        .status--draft {
-          background-color: rgba($blue-gray-light, 0.06);
-
-          span {
-            color: $blue-gray-light;
-          }
-
-          span::before {
-            background-color: $blue-gray-light;
-          }
         }
       }
     }
@@ -396,10 +334,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
           .due {
             grid-area: due;
             margin-bottom: unset;
-          }
-
-          .status {
-            grid-area: status;
           }
 
           .total {
@@ -460,10 +394,6 @@ const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
           .due {
             grid-area: due;
-          }
-
-          .status {
-            grid-area: status;
           }
 
           .total {

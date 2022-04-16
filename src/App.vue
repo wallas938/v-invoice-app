@@ -40,7 +40,6 @@ const currentMode = computed(() => store.getters["layout/currentMode"]);
 @media screen and (min-width: $desktop-min) {
   .root {
     display: flex;
-    height: 100%;
   }
 }
 </style>
