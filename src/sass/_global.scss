@@ -22,14 +22,15 @@ html {
 
     .container {
         // 1090px
-        max-width: 74rem;
+        max-width: 60.555555rem !important;
+        margin: 0 auto;
     }
 }
 
 @media screen and (min-width: $desktop-min) {
 
     .container {
-        max-width: 1110px;
+        max-width: 90rem !important; // 1620px
         margin: 0 auto;
     }
 }

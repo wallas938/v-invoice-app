@@ -21,10 +21,12 @@ import TheHeader from './components/layout/TheHeader.vue';
 */
 
 import VContainerVue from './components/shared/VContainer.vue';
+import VStatusIndicatorVue from './components/shared/VStatusIndicator.vue';
 
 const app = createApp(App)
 
 app.component('TheHeader', TheHeader);
 app.component('v-container', VContainerVue);
+app.component('VStatusIndicator', VStatusIndicatorVue);
 
 app.use(router).use(store).mount('#app')
