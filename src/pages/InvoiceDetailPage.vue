@@ -1,5 +1,11 @@
 <template>
-  <div class="root">
+  <div
+    class="root"
+    :class="{
+      '--light-mode': currentMode === 'light',
+      '--dark-mode': currentMode === 'dark',
+    }"
+  >
     <div class="link">
       <router-link to="../">Go Back</router-link>
     </div>
@@ -106,7 +112,24 @@
 </template>
 
 <script setup>
-/* const invoice = computed(() => store.getters.currentInvoice); */
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+
+// COMPUTED
+const currentMode = computed(() => store.getters["layout/currentMode"]);
+
+// FUNCITONS
+function getStatusColor(status) {
+  switch (status.toLowerCase()) {
+    case "paid":
+      return "status--paid";
+    case "pending":
+      return "status--pending";
+    case "draft":
+      return "status--draft";
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -120,13 +143,14 @@
     margin-bottom: 1.777777rem;
     padding: 0 1.333333rem;
     position: relative;
+    transition: all 550ms ease-in-out;
     a {
+      transition: all 550ms ease-in-out;
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $black-2;
       margin-left: 1.314444rem;
     }
 
@@ -140,18 +164,19 @@
   .status-container {
     padding: 1.333333rem; // 24px
     margin: 0 1.333333rem 0.888888rem 1.333333rem;
+    transition: all 550ms ease-in-out;
     > .wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       p {
+        transition: all 550ms ease-in-out;
         font-style: normal;
         font-weight: 500;
         font-size: 0.666666rem;
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
-        color: $ligth-violet;
       }
     }
   }
@@ -159,6 +184,7 @@
   .detail-container {
     padding: 1.333333rem 0; // 24px
     margin: 0 1.333333rem 3.111111rem 1.333333rem;
+    transition: all 550ms ease-in-out;
     .detail {
       .top {
         padding: 0 1.333333rem;
@@ -171,6 +197,7 @@
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
         margin-bottom: 0.222222rem;
+        transition: all 550ms ease-in-out;
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
@@ -183,7 +210,7 @@
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
         margin-bottom: 1.666666rem; // 30px
-        color: $ligth-violet;
+        transition: all 550ms ease-in-out;
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
@@ -197,7 +224,7 @@
         line-height: 1rem;
         letter-spacing: -0.23px;
         margin-bottom: 1.722222rem; // 31px
-        color: $ligth-violet;
+        transition: all 550ms ease-in-out;
       }
 
       .detail-grid-container {
@@ -217,7 +244,7 @@
           font-size: 0.666666rem; //12px
           line-height: 0.833333rem; // 15px
           letter-spacing: -0.25px;
-          color: $blue-violet;
+          transition: all 550ms ease-in-out;
         }
 
         .date {
@@ -226,7 +253,7 @@
           font-size: 0.833333rem;
           line-height: 1.111111rem;
           letter-spacing: -0.3125px;
-          color: $black-2;
+          transition: all 550ms ease-in-out;
         }
 
         .invoice-date {
@@ -241,7 +268,7 @@
           font-size: 0.611111rem; // 11px
           line-height: 1rem;
           letter-spacing: -0.229167px;
-          color: $blue-violet;
+          transition: all 550ms ease-in-out;
 
           > .label {
             margin-bottom: 0.666666rem;
@@ -250,17 +277,17 @@
           > .name {
             font-style: normal;
             font-weight: bold;
+            transition: all 550ms ease-in-out;
             font-size: 0.833333rem;
             line-height: 1.111111rem;
             letter-spacing: -0.3125px;
-            color: $black-2;
             margin-bottom: 0.444444rem;
           }
         }
         .due {
           grid-area: due;
           padding-top: 1.777777rem; // 32px
-
+          transition: all 550ms ease-in-out;
           > .label {
             margin-bottom: 0.666666rem;
           }
@@ -268,32 +295,36 @@
         .sent-to {
           grid-area: sentTo;
           padding-top: 2rem;
-
+          transition: all 550ms ease-in-out;
           > .label {
             margin-bottom: 0.666666rem;
           }
 
           .email {
             font-style: normal;
+            transition: all 550ms ease-in-out;
             font-weight: bold;
             font-size: 0.833333rem;
             line-height: 1.111111rem;
             letter-spacing: -0.3125px;
-            color: $black-2;
           }
         }
       }
     }
 
     .resume-container {
+      transition: all 550ms ease-in-out;
+
       padding: 0 1.333333rem 0 1.333333rem;
       .body {
         border-radius: 0.444444rem 0.444444rem 0 0;
         overflow: hidden;
-        background-color: $light-bg-2; // $light-bg-2
         padding: 1.333333rem;
+        transition: all 550ms ease-in-out;
 
         .item {
+          transition: all 550ms ease-in-out;
+
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           grid-template-rows: repeat(2, 1fr);
@@ -308,8 +339,12 @@
             font-size: 0.666666rem;
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
-            color: $black-2;
             margin-bottom: 0.444444rem;
+            transition: all 550ms ease-in-out;
+          }
+
+          .price {
+            transition: all 550ms ease-in-out;
           }
 
           .qty {
@@ -319,7 +354,7 @@
             font-size: 0.666666rem;
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
-            color: $ligth-violet;
+            transition: all 550ms ease-in-out;
           }
 
           .total {
@@ -332,7 +367,7 @@
             font-size: 0.666666rem;
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
-            color: $black-2;
+            transition: all 550ms ease-in-out;
           }
         }
 
@@ -342,8 +377,8 @@
       }
 
       .footer {
+        transition: all 550ms ease-in-out;
         padding: 1.333333rem;
-        background-color: $black-4;
         border-radius: 0 0 0.444444rem 0.444444rem;
         color: #fff;
         display: flex;
@@ -369,13 +404,17 @@
   }
 
   .mobile-cta-container {
+    transition: all 550ms ease-in-out;
+    border-radius: unset;
     .cta {
       grid-area: cta;
       justify-self: flex-end;
       padding: 1.166666rem 1.333333rem 1.222222rem 1.333333rem;
       display: flex;
       justify-content: space-evenly;
+      transition: all 550ms ease-in-out;
       > button {
+        transition: all 550ms ease-in-out;
         border-radius: 1.333333rem;
         border: none;
         font-style: normal;
@@ -401,6 +440,301 @@
   }
 }
 
+.--light-mode {
+  .link {
+    a {
+      color: $black-2;
+    }
+  }
+
+  .link:hover {
+    a {
+      color: $blue-violet;
+    }
+  }
+
+  .status-container {
+    > .wrapper {
+      p {
+        color: $light-violet;
+      }
+
+      .cta {
+        .edit {
+          color: $blue-violet;
+          background-color: $light-bg-2;
+
+          &:hover {
+            color: $blue-violet;
+            background-color: $blue-gray-light;
+          }
+        }
+        .delete {
+          color: #fff;
+          background-color: $red;
+          &:hover {
+            color: $blue-violet;
+            background-color: $red-blurred;
+          }
+        }
+        .mark-as-paid {
+          color: #fff;
+          background-color: $violet-1;
+          &:hover {
+            background-color: $violet-2;
+          }
+        }
+      }
+    }
+  }
+
+  .detail-container {
+    .detail {
+      .top .description {
+        color: $light-violet;
+      }
+
+      .from {
+        color: $light-violet;
+      }
+
+      .detail-grid-container {
+        .label {
+          color: $blue-violet;
+        }
+
+        .date {
+          color: $black-2;
+        }
+
+        .bill-to {
+          color: $blue-violet;
+
+          > .name {
+            color: $black-2;
+          }
+        }
+
+        .sent-to {
+          .email {
+            color: $black-2;
+          }
+        }
+      }
+    }
+
+    .resume-container {
+      .body {
+        background-color: $light-bg-2;
+
+        .head {
+          color: $blue-violet;
+        }
+
+        .item {
+          .name {
+            color: $black-2;
+          }
+
+          .qty {
+            color: $light-violet;
+          }
+
+          .total {
+            color: $black-2;
+          }
+
+          .price {
+            color: $black-2;
+          }
+        }
+      }
+
+      .footer {
+        background-color: $black-4;
+        color: #fff;
+        align-items: center;
+      }
+    }
+  }
+
+  .mobile-cta-container {
+    .cta {
+      .edit {
+        color: $blue-violet;
+        background-color: $light-bg-2;
+
+        &:hover {
+          color: $blue-violet;
+          background-color: $blue-gray-light;
+        }
+      }
+      .delete {
+        color: #fff;
+        background-color: $red;
+        &:hover {
+          background-color: $red-blurred;
+        }
+      }
+      .mark-as-paid {
+        color: #fff;
+        background-color: $violet-1;
+        &:hover {
+          background-color: $violet-2;
+        }
+      }
+    }
+  }
+}
+
+.--dark-mode {
+  .link {
+    a {
+      color: #fff;
+    }
+  }
+
+  .link:hover {
+    a {
+      color: $violet-gray;
+    }
+  }
+
+  .status-container {
+    background-color: $black-1;
+    > .wrapper {
+      p {
+        color: $blue-gray-light;
+      }
+
+      .cta {
+        .edit {
+          color: $blue-gray-light;
+          background-color: $dark-blue;
+          &:hover {
+            color: $blue-gray-light;
+            background-color: $blue-violet;
+          }
+        }
+        .delete {
+          color: #fff;
+          background-color: $red;
+          &:hover {
+            background-color: $red-blurred;
+          }
+        }
+        .mark-as-paid {
+          color: #fff;
+          background-color: $violet-1;
+          &:hover {
+            background-color: $violet-2;
+          }
+        }
+      }
+    }
+  }
+
+  .detail-container {
+    background-color: $black-1;
+    .detail {
+      .top .invoice-code {
+        color: #fff;
+      }
+
+      .top .description {
+        color: $blue-gray-light;
+      }
+
+      .from {
+        color: $blue-gray-light;
+      }
+
+      .detail-grid-container {
+        .label {
+          color: $blue-gray-light;
+        }
+
+        .date {
+          color: #fff;
+        }
+
+        .bill-to {
+          color: $blue-gray-light;
+
+          > .name {
+            color: #fff;
+          }
+        }
+
+        .sent-to {
+          .email {
+            color: #fff;
+          }
+        }
+      }
+    }
+
+    .resume-container {
+      .body {
+        background-color: $dark-blue;
+        .head {
+          color: $blue-gray-light;
+        }
+
+        .item {
+          .name {
+            color: #fff;
+          }
+
+          .qty {
+            color: #fff;
+          }
+
+          .price {
+            color: #fff;
+          }
+
+          .total {
+            color: #fff;
+          }
+        }
+      }
+
+      .footer {
+        background-color: $black-2;
+      }
+    }
+  }
+
+  .mobile-cta-container {
+    background-color: $black-1;
+    .cta {
+      .edit {
+        color: $blue-gray-light;
+        background-color: $dark-blue;
+        &:hover {
+          color: $blue-gray-light;
+          background-color: $blue-violet;
+        }
+      }
+      .delete {
+        color: #fff;
+        background-color: $red;
+        &:hover {
+          background-color: $red-blurred;
+        }
+      }
+      .mark-as-paid {
+        color: #fff;
+        background-color: $violet-1;
+        &:hover {
+          background-color: $violet-2;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (min-width: $tablet-min) {
   .root {
     padding: 2.666666rem 2.222222rem; // 48px 40px
@@ -419,7 +753,9 @@
       .cta {
         grid-area: cta;
         justify-self: flex-end;
+
         > button {
+          transition: all 550ms ease-in-out;
           border-radius: 1.333333rem;
           border: none;
           font-style: normal;
@@ -517,7 +853,6 @@
       .resume-container {
         padding: 0 1.333333rem 0 1.333333rem;
         .body {
-          background-color: $light-bg-2; // $light-bg-2
           padding: 1.777777rem;
 
           .head {
@@ -536,7 +871,6 @@
               font-size: 0.666666rem;
               line-height: 0.8333333rem;
               letter-spacing: -0.25px;
-              color: $blue-violet;
             }
 
             .head-name {
@@ -577,7 +911,6 @@
               font-size: 0.666666rem;
               line-height: 0.833333rem;
               letter-spacing: -0.25px;
-              color: $black-2;
               text-align: end;
             }
 
@@ -596,7 +929,6 @@
 
         .footer {
           padding: 1.333333rem;
-          background-color: $black-4;
           border-radius: 0 0 0.444444rem 0.444444rem;
           color: #fff;
           display: flex;
@@ -717,7 +1049,6 @@
       .resume-container {
         padding: 0;
         .body {
-          background-color: $light-bg-2; // $light-bg-2
           padding: 1.777777rem;
 
           .head {
@@ -778,9 +1109,7 @@
 
         .footer {
           padding: 1.333333rem;
-          background-color: $black-4;
           border-radius: 0 0 0.444444rem 0.444444rem;
-          color: #fff;
           display: flex;
           justify-content: space-between;
           align-items: center;
