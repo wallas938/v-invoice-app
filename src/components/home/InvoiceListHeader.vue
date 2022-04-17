@@ -168,15 +168,17 @@ function isChecked(filter: string): boolean {
   grid-template-columns: 1fr 1fr 5rem;
   grid-template-rows: 1fr;
   grid-template-areas: "info filter link";
-  transition: all 650ms ease-in-out;
+  transition: all 550ms ease-in-out;
   .info {
     grid-area: info;
+    transition: all 550ms ease-in-out;
     p {
       font-style: normal;
       font-weight: bold;
       font-size: 1.111111rem;
       line-height: 1.222222rem;
       letter-spacing: -0.625px;
+      transition: all 550ms ease-in-out;
     }
 
     small {
@@ -185,6 +187,7 @@ function isChecked(filter: string): boolean {
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
+      transition: all 550ms ease-in-out;
     }
   }
 
@@ -196,13 +199,14 @@ function isChecked(filter: string): boolean {
     justify-content: flex-end;
     align-items: center;
     position: relative;
-
+    transition: all 550ms ease-in-out;
     span {
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
+      transition: all 550ms ease-in-out;
     }
 
     > svg {
@@ -210,6 +214,7 @@ function isChecked(filter: string): boolean {
     }
 
     .dropdown {
+      transition: all 550ms ease-in-out;
       position: absolute;
       bottom: -135px; // a changer
       right: -2.222222rem;
@@ -221,6 +226,7 @@ function isChecked(filter: string): boolean {
       padding: 1.333333rem;
       z-index: 99;
       .check {
+        transition: all 550ms ease-in-out;
         display: flex;
         .square {
           width: 0.888888rem;

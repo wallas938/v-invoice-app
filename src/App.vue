@@ -25,7 +25,7 @@ const currentMode = computed(() => store.getters["layout/currentMode"]);
 @import "sass/colors";
 
 .root {
-  transition: all 650ms ease-in-out;
+  transition: all 550ms ease-in-out;
   min-height: 100%;
 }
 
