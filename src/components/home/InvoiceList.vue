@@ -27,9 +27,9 @@
         :key="invoice"
       >
         <div class="invoice-item">
-          <router-link :to="navigateToDetail(invoice.invoiceCode)" class="code">
+          <a @click="navigateToDetail(invoice.invoiceCode)" class="code">
             <span class="hash">#</span>{{ invoice.invoiceCode }}
-          </router-link>
+          </a>
           <p class="clientName">{{ invoice.clientName }}</p>
           <p class="due">{{ invoice.due }}</p>
           <VStatusIndicator :status="invoice.status" />
@@ -38,7 +38,7 @@
           </div> -->
           <p class="total">{{ invoice.totalAmount }}</p>
           <div class="arrow hide-for-mobile">
-            <router-link :to="navigateToDetail(invoice.invoiceCode)">
+            <a @click="navigateToDetail(invoice.invoiceCode)">
               <svg width="7" height="10" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M1 1l4 4-4 4"
@@ -48,7 +48,7 @@
                   fill-rule="evenodd"
                 />
               </svg>
-            </router-link>
+            </a>
           </div>
         </div>
       </v-container>
@@ -59,9 +59,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import illustrationEmptyImage from "../../assets/illustration-empty.svg";
 
 const store = useStore();
+const router = useRouter();
 
 // COMPUTED
 const invoices = computed(() => store.getters.invoices);
@@ -82,7 +84,8 @@ function getStatusColor(status) {
 }
 
 function navigateToDetail(invoiceCode) {
-  return `/invoices/${invoiceCode}`;
+  store.dispatch("setCurrentInvoice", { invoiceCode: invoiceCode });
+  router.push({ path: `/invoices/${invoiceCode}` });
 }
 
 // STORE ACTIONS

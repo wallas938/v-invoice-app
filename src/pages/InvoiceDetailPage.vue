@@ -13,10 +13,12 @@
       <v-container class="status-container">
         <div class="wrapper">
           <p>Status</p>
-          <VStatusIndicator class="statusInd" :status="'Paid'" />
+          <VStatusIndicator class="statusInd" :status="invoice.status" />
           <div class="cta hide-for-mobile">
             <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
+            <button class="delete" @click="removeInvoice(invoice.invoiceCode)">
+              Delete
+            </button>
             <button class="mark-as-paid">Mark as Paid</button>
           </div>
         </div>
@@ -27,36 +29,38 @@
       <div class="detail">
         <div class="top-from-container">
           <div class="top">
-            <p class="invoice-code"><span class="hash">#</span> XM9141</p>
-            <p class="description">Graphic Design</p>
+            <p class="invoice-code">
+              <span class="hash">#</span>{{ invoice.invoiceCode }}
+            </p>
+            <p class="description">{{ invoice.desc }}</p>
           </div>
           <div class="from">
-            <p class="street">19 Union Terrace</p>
-            <p class="city">London</p>
-            <p class="post-code">E1 3EZ</p>
-            <p class="country">United Kingdom</p>
+            <p class="street">{{ invoice.fromStreet }}</p>
+            <p class="city">{{ invoice.fromCity }}</p>
+            <p class="post-code">{{ invoice.fromPostCode }}</p>
+            <p class="country">{{ invoice.fromCountry }}</p>
           </div>
         </div>
         <div class="detail-grid-container">
           <div class="invoice-date">
             <p class="label">Invoice Date</p>
-            <p class="date">21 Aug 2021</p>
+            <p class="date">{{ invoice.invoiceDate }}</p>
           </div>
           <div class="bill-to">
             <p class="label">Bill To</p>
-            <p class="name">Alex Grim</p>
-            <p class="street">84 Church Way</p>
-            <p class="city">Bradford</p>
-            <p class="post-code">BD1 9PB</p>
-            <p class="country">United Kingdom</p>
+            <p class="name">{{ invoice.clientName }}</p>
+            <p class="street">{{ invoice.toStreet }}</p>
+            <p class="city">{{ invoice.toCity }}</p>
+            <p class="post-code">{{ invoice.toPostCode }}</p>
+            <p class="country">{{ invoice.toCountry }}</p>
           </div>
           <div class="due">
             <p class="label">Payment Due</p>
-            <p class="date">20 Sep 2021</p>
+            <p class="date">{{ invoice.due }}</p>
           </div>
           <div class="sent-to">
             <p class="label">Sent to</p>
-            <p class="email">alexgrim@mail.com</p>
+            <p class="email">{{ invoice.email }}</p>
           </div>
         </div>
 
@@ -104,7 +108,7 @@
     <v-container class="mobile-cta-container hide-for-tablet-and-desktop">
       <div class="cta">
         <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
+        <button class="delete" @click="removeInvoice">Delete</button>
         <button class="mark-as-paid">Mark as Paid</button>
       </div>
     </v-container>
@@ -113,11 +117,19 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
+const route = useRoute();
+const router = useRouter();
 
 // COMPUTED
 const currentMode = computed(() => store.getters["layout/currentMode"]);
+const invoice = computed(() => store.getters.invoice);
+if (!invoice.value) {
+  store.dispatch("setCurrentInvoice", { invoiceCode: route.params.id });
+  console.log(invoice.value);
+}
 
 // FUNCITONS
 function getStatusColor(status) {
@@ -129,6 +141,13 @@ function getStatusColor(status) {
     case "draft":
       return "status--draft";
   }
+}
+
+function removeInvoice(invoiceCode) {
+  store.dispatch("removeInvoice", { invoiceCode: invoiceCode });
+  router.push({
+    path: "/",
+  });
 }
 </script>
 
@@ -473,7 +492,6 @@ function getStatusColor(status) {
           color: #fff;
           background-color: $red;
           &:hover {
-            color: $blue-violet;
             background-color: $red-blurred;
           }
         }

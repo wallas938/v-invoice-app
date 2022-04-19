@@ -111,6 +111,7 @@ export default createStore({
                     totalAmount: '£ 3,102.04',
                 }
             ],
+            invoice: null,
             filters: []
         }
     },
