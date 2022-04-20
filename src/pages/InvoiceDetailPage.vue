@@ -19,7 +19,13 @@
             <button class="delete" @click="removeInvoice(invoice.invoiceCode)">
               Delete
             </button>
-            <button class="mark-as-paid">Mark as Paid</button>
+            <button
+              v-if="isPaid(invoice.status)"
+              class="mark-as-paid"
+              @click="markAsPaid(invoice.invoiceCode)"
+            >
+              Mark as Paid
+            </button>
           </div>
         </div>
       </v-container>
@@ -119,17 +125,17 @@
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
 // COMPUTED
-const currentMode = computed(() => store.getters["layout/currentMode"]);
 const invoice = computed(() => store.getters.invoice);
 if (!invoice.value) {
   store.dispatch("setCurrentInvoice", { invoiceCode: route.params.id });
-  console.log(invoice.value);
 }
+const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 // FUNCITONS
 function getStatusColor(status) {
@@ -145,9 +151,22 @@ function getStatusColor(status) {
 
 function removeInvoice(invoiceCode) {
   store.dispatch("removeInvoice", { invoiceCode: invoiceCode });
-  router.push({
-    path: "/",
-  });
+  router
+    .push({
+      path: "/",
+    })
+    .then(() => {
+      store.dispatch("setCurrentInvoice", { invoiceCode: null });
+      console.log(store.getters.invoice);
+    });
+}
+
+function isPaid(status) {
+  return status === "Paid" ? false : true;
+}
+
+function markAsPaid(invoiceCode) {
+  store.dispatch("markAsPaid", { invoiceCode: invoiceCode });
 }
 </script>
 
