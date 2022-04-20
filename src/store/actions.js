@@ -21,7 +21,23 @@ export default {
             .find(invoice => {
                 return invoice.invoiceCode === payload.invoiceCode;
             });
+        if (invoice) {
+            context.commit('SET_INVOICE', { invoice: invoice });
+            return;
+        }
+        context.commit('SET_INVOICE', { invoice: null });
+    },
+    markAsPaid(context, payload) {
+        const invoices = [...context.getters.invoices]
+            .map(invoice => {
+                if (invoice.invoiceCode === payload.invoiceCode) {
+                    invoice.status = 'Paid'
+                    return invoice
+                }
 
-        context.commit('SET_INVOICE_CODE', { invoice: invoice });
+                return invoice;
+            });
+
+        context.commit('MARK_AS_PAID', { invoices: invoices });
     }
 }

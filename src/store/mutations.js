@@ -5,7 +5,10 @@ export default {
     REMOVE_INVOICE(state, payload) {
         state.invoices = payload.invoices;
     },
-    SET_INVOICE_CODE(state, payload) {
+    SET_INVOICE(state, payload) {
         state.invoice = payload.invoice;
+    },
+    MARK_AS_PAID(state, payload) {
+        state.invoices = payload.invoices;
     }
 }

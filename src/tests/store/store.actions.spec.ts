@@ -99,7 +99,8 @@ beforeEach(() => {
         mutations: mutations,
         actions: actions
     });
-})
+});
+
 test('Invoice deletion', async () => {
 
     await store.dispatch('removeInvoice', { invoiceCode: 'RG0314' });
@@ -107,4 +108,26 @@ test('Invoice deletion', async () => {
     store.state.invoices.forEach((i: Invoice) => {
         expect(i.invoiceCode).not.toBe('RG0314')
     });
-})
+});
+
+test('Mark invoice as Paid', async () => {
+
+    await store.dispatch('markAsPaid', { invoiceCode: 'XM9141' });
+
+    store.state.invoices.forEach((i: Invoice) => {
+        if (i.invoiceCode === 'XM9141') {
+            expect(i.status).toBe('Paid');
+        }
+    });
+});
+
+test('Set the current invoice for detail', async () => {
+
+    const currentInvoiceCode = store.state.invoice.invoiceCode; // invoiceCode: #RG0314
+
+    await store.dispatch('setCurrentInvoice', { invoiceCode: 'XM9141' });
+
+    expect(store.state.invoice.invoiceCode).not.toBe(currentInvoiceCode); // invoiceCode !== RG0314
+
+    expect(store.state.invoice.invoiceCode).toBe('XM9141'); // invoiceCode === XM9141
+});
