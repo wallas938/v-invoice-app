@@ -1,10 +1,13 @@
 <script setup>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import VModals from "./components/shared/VModals.vue";
+import InvoiceForm from "./components/home/InvoiceForm.vue";
 
 const store = useStore();
 
 const currentMode = computed(() => store.getters["layout/currentMode"]);
+const showModals = computed(() => store.getters["layout/showModals"]);
 </script>
 
 <template>
@@ -16,6 +19,9 @@ const currentMode = computed(() => store.getters["layout/currentMode"]);
     }"
   >
     <TheHeader />
+    <teleport to="body">
+      <v-modals v-if="showModals"></v-modals>
+    </teleport>
     <router-view></router-view>
   </div>
 </template>

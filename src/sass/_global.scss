@@ -13,6 +13,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+    position: relative;
+}
+
 .container {
     max-width: 38.4rem; // 576px
     margin: 0 auto;

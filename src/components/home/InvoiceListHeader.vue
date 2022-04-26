@@ -105,7 +105,7 @@
           </div>
         </div>
       </div>
-      <div class="link-to-form">
+      <div class="link-to-form" @click="showForm">
         <div class="wrapper">
           <span class="circle">
             <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
@@ -127,7 +127,7 @@
 </template>
 
 <!-- LOGIC -->
-<script lang="ts" setup>
+<script setup>
 import { reactive, ref } from "@vue/reactivity";
 import { computed } from "vue";
 import { useStore } from "vuex";
@@ -140,7 +140,7 @@ function toggleFilter() {
   showFilter.value = !showFilter.value;
 }
 
-function onCheck(filter: string) {
+function onCheck(filter) {
   store.dispatch("handleFilters", { filter: filter });
 }
 
@@ -154,8 +154,13 @@ const filters = computed(() => store.getters["filters"]);
 
 // Functions
 
-function isChecked(filter: string): boolean {
+function isChecked(filter) {
   return filters.value.includes(filter);
+}
+
+function showForm() {
+  document.querySelector("body").setAttribute("class", "remove-scroll");
+  store.dispatch("layout/showModals", { currentView: "invoice-form" });
 }
 </script>
 
@@ -164,6 +169,7 @@ function isChecked(filter: string): boolean {
 @import "../../sass/variables";
 @import "../../sass/colors";
 .invoice-header {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 5rem;
   grid-template-rows: 1fr;
