@@ -79,7 +79,6 @@ function toggleMode() {
   grid-template-columns: 4.333333rem 1fr 4.444444rem;
   grid-template-rows: 4rem;
   grid-template-areas: "logo modeBtn picture";
-  transition: all 550ms ease-in-out;
   position: relative;
   z-index: 10;
   .logo {

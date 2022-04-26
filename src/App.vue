@@ -31,7 +31,6 @@ const showModals = computed(() => store.getters["layout/showModals"]);
 @import "sass/colors";
 
 .root {
-  transition: all 550ms ease-in-out;
   min-height: 100%;
 }
 

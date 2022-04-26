@@ -1,6 +1,10 @@
 @import "./variables";
 @import "./colors";
 
+* {
+    transition: all 300ms ease-in-out;
+}
+
 body,
 html,
 #app {
