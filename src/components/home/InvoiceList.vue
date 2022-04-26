@@ -100,8 +100,6 @@ function navigateToDetail(invoiceCode) {
     flex-direction: column;
     align-items: center;
     padding-top: 5.666666rem;
-    transition: all 550ms ease-in-out;
-
     @media (orientation: landscape) {
       padding-top: 0rem;
       padding-bottom: 2rem;
@@ -114,7 +112,6 @@ function navigateToDetail(invoiceCode) {
     }
 
     h2 {
-      transition: all 550ms ease-in-out;
       font-style: normal;
       font-weight: bold;
       font-size: 1.111111rem;
@@ -124,7 +121,6 @@ function navigateToDetail(invoiceCode) {
     }
 
     small {
-      transition: all 550ms ease-in-out;
       font-style: normal;
       font-weight: 500;
       font-size: 0.666666rem;
@@ -137,9 +133,7 @@ function navigateToDetail(invoiceCode) {
 
   .no-empty-list {
     padding-top: 1.777777rem;
-    transition: all 550ms ease-in-out;
     .item-container {
-      transition: all 550ms ease-in-out;
       border: 1px solid transparent;
       &:not(:last-child) {
         margin-bottom: 0.888888rem;
@@ -154,7 +148,6 @@ function navigateToDetail(invoiceCode) {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, auto);
-        transition: all 550ms ease-in-out;
         grid-template-areas:
           "code   clientName"
           "due    status"
@@ -162,7 +155,6 @@ function navigateToDetail(invoiceCode) {
 
         .code {
           cursor: pointer;
-          transition: all 550ms ease-in-out;
           grid-area: code;
           font-weight: bold;
           font-style: normal;
@@ -180,7 +172,6 @@ function navigateToDetail(invoiceCode) {
         }
 
         .clientName {
-          transition: all 550ms ease-in-out;
           grid-area: clientName;
           font-style: normal;
           font-weight: 500;
@@ -191,7 +182,6 @@ function navigateToDetail(invoiceCode) {
         }
 
         .due {
-          transition: all 550ms ease-in-out;
           grid-area: due;
           font-style: normal;
           font-weight: 500;
@@ -202,7 +192,6 @@ function navigateToDetail(invoiceCode) {
         }
 
         .total {
-          transition: all 550ms ease-in-out;
           grid-area: total;
           font-weight: 700;
           font-size: 0.888888rem;

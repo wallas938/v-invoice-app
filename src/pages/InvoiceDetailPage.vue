@@ -127,8 +127,8 @@ import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
-const route = useRoute();
 const router = useRouter();
+const route = useRoute();
 
 // COMPUTED
 const invoice = computed(() => store.getters.invoice);
@@ -181,9 +181,7 @@ function markAsPaid(invoiceCode) {
     margin-bottom: 1.777777rem;
     padding: 0 1.333333rem;
     position: relative;
-    transition: all 550ms ease-in-out;
     a {
-      transition: all 550ms ease-in-out;
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
@@ -202,14 +200,12 @@ function markAsPaid(invoiceCode) {
   .status-container {
     padding: 1.333333rem; // 24px
     margin: 0 1.333333rem 0.888888rem 1.333333rem;
-    transition: all 550ms ease-in-out;
     > .wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       p {
-        transition: all 550ms ease-in-out;
         font-style: normal;
         font-weight: 500;
         font-size: 0.666666rem;
@@ -222,7 +218,6 @@ function markAsPaid(invoiceCode) {
   .detail-container {
     padding: 1.333333rem 0; // 24px
     margin: 0 1.333333rem 3.111111rem 1.333333rem;
-    transition: all 550ms ease-in-out;
     .detail {
       .top {
         padding: 0 1.333333rem;
@@ -235,7 +230,6 @@ function markAsPaid(invoiceCode) {
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
         margin-bottom: 0.222222rem;
-        transition: all 550ms ease-in-out;
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
@@ -248,7 +242,6 @@ function markAsPaid(invoiceCode) {
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
         margin-bottom: 1.666666rem; // 30px
-        transition: all 550ms ease-in-out;
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
@@ -262,7 +255,6 @@ function markAsPaid(invoiceCode) {
         line-height: 1rem;
         letter-spacing: -0.23px;
         margin-bottom: 1.722222rem; // 31px
-        transition: all 550ms ease-in-out;
       }
 
       .detail-grid-container {
@@ -282,7 +274,6 @@ function markAsPaid(invoiceCode) {
           font-size: 0.666666rem; //12px
           line-height: 0.833333rem; // 15px
           letter-spacing: -0.25px;
-          transition: all 550ms ease-in-out;
         }
 
         .date {
@@ -291,7 +282,6 @@ function markAsPaid(invoiceCode) {
           font-size: 0.833333rem;
           line-height: 1.111111rem;
           letter-spacing: -0.3125px;
-          transition: all 550ms ease-in-out;
         }
 
         .invoice-date {
@@ -306,8 +296,6 @@ function markAsPaid(invoiceCode) {
           font-size: 0.611111rem; // 11px
           line-height: 1rem;
           letter-spacing: -0.229167px;
-          transition: all 550ms ease-in-out;
-
           > .label {
             margin-bottom: 0.666666rem;
           }
@@ -315,7 +303,6 @@ function markAsPaid(invoiceCode) {
           > .name {
             font-style: normal;
             font-weight: bold;
-            transition: all 550ms ease-in-out;
             font-size: 0.833333rem;
             line-height: 1.111111rem;
             letter-spacing: -0.3125px;
@@ -325,7 +312,6 @@ function markAsPaid(invoiceCode) {
         .due {
           grid-area: due;
           padding-top: 1.777777rem; // 32px
-          transition: all 550ms ease-in-out;
           > .label {
             margin-bottom: 0.666666rem;
           }
@@ -333,14 +319,12 @@ function markAsPaid(invoiceCode) {
         .sent-to {
           grid-area: sentTo;
           padding-top: 2rem;
-          transition: all 550ms ease-in-out;
           > .label {
             margin-bottom: 0.666666rem;
           }
 
           .email {
             font-style: normal;
-            transition: all 550ms ease-in-out;
             font-weight: bold;
             font-size: 0.833333rem;
             line-height: 1.111111rem;
@@ -351,18 +335,12 @@ function markAsPaid(invoiceCode) {
     }
 
     .resume-container {
-      transition: all 550ms ease-in-out;
-
       padding: 0 1.333333rem 0 1.333333rem;
       .body {
         border-radius: 0.444444rem 0.444444rem 0 0;
         overflow: hidden;
         padding: 1.333333rem;
-        transition: all 550ms ease-in-out;
-
         .item {
-          transition: all 550ms ease-in-out;
-
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           grid-template-rows: repeat(2, 1fr);
@@ -378,11 +356,9 @@ function markAsPaid(invoiceCode) {
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
             margin-bottom: 0.444444rem;
-            transition: all 550ms ease-in-out;
           }
 
           .price {
-            transition: all 550ms ease-in-out;
           }
 
           .qty {
@@ -392,7 +368,6 @@ function markAsPaid(invoiceCode) {
             font-size: 0.666666rem;
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
-            transition: all 550ms ease-in-out;
           }
 
           .total {
@@ -405,7 +380,6 @@ function markAsPaid(invoiceCode) {
             font-size: 0.666666rem;
             line-height: 0.833333rem;
             letter-spacing: -0.25px;
-            transition: all 550ms ease-in-out;
           }
         }
 
@@ -415,7 +389,6 @@ function markAsPaid(invoiceCode) {
       }
 
       .footer {
-        transition: all 550ms ease-in-out;
         padding: 1.333333rem;
         border-radius: 0 0 0.444444rem 0.444444rem;
         color: #fff;
@@ -442,7 +415,6 @@ function markAsPaid(invoiceCode) {
   }
 
   .mobile-cta-container {
-    transition: all 550ms ease-in-out;
     border-radius: unset;
     .cta {
       grid-area: cta;
@@ -450,9 +422,7 @@ function markAsPaid(invoiceCode) {
       padding: 1.166666rem 1.333333rem 1.222222rem 1.333333rem;
       display: flex;
       justify-content: space-evenly;
-      transition: all 550ms ease-in-out;
       > button {
-        transition: all 550ms ease-in-out;
         border-radius: 1.333333rem;
         border: none;
         font-style: normal;
@@ -792,7 +762,6 @@ function markAsPaid(invoiceCode) {
         justify-self: flex-end;
 
         > button {
-          transition: all 550ms ease-in-out;
           border-radius: 1.333333rem;
           border: none;
           font-style: normal;

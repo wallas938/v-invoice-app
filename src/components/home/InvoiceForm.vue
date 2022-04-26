@@ -1,5 +1,11 @@
 <template>
-  <div class="root">
+  <div
+    class="root"
+    :class="{
+      '--light-mode': currentMode === 'light',
+      '--dark-mode': currentMode === 'dark',
+    }"
+  >
     <div class="back hide-for-tablet-and-desktop">
       <router-link to="../">Go back</router-link>
     </div>
@@ -170,6 +176,10 @@
 </template>
 <script setup>
 import { ref, computed, watch, watchEffect, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
+const store = useStore();
+const router = useRouter();
 
 const invoiceDateInput = ref(null);
 const streetInput = ref(null);
@@ -178,6 +188,7 @@ const invoiceTermsValue = ref("Net 30 Days");
 const isTermsDisplayed = ref(false);
 
 // Computed
+const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 // Lifecycle Hooks
 
@@ -232,14 +243,12 @@ function formatDate(toFormat) {
 @import "../../sass/variables";
 @import "../../sass/colors";
 .root {
-  background-color: #fff;
   padding-top: 1.777777rem;
   .back {
     padding: 0 1.333333rem;
     position: relative;
     margin-bottom: 1.333333rem;
     a {
-      transition: all 550ms ease-in-out;
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
@@ -261,7 +270,6 @@ function formatDate(toFormat) {
     font-size: 1.333333rem;
     line-height: 1.777777rem;
     letter-spacing: -0.5px;
-    color: $black-2;
     padding-left: 1.333333rem;
     margin-bottom: 1.333333rem;
   }
@@ -275,7 +283,6 @@ function formatDate(toFormat) {
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $violet-1;
       margin-bottom: 1.333333rem;
     }
 
@@ -285,32 +292,20 @@ function formatDate(toFormat) {
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $blue-violet;
       margin-bottom: 0.555555rem;
     }
 
     input,
     .inv-date-wrapper,
     .select-wrapper {
-      border: 1px solid $blue-gray-light;
       padding: 0.944444rem 0 0.888888rem 1.111111rem;
       font-style: normal;
       font-weight: bold;
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $black-2;
       border-radius: 0.222222rem;
       width: 100%;
-    }
-
-    .inv-date-wrapper:hover,
-    .select-wrapper:hover {
-      border: 1px solid $violet-2;
-    }
-
-    input:focus {
-      border: 1px solid $violet-2;
     }
 
     .field {
@@ -443,18 +438,7 @@ function formatDate(toFormat) {
         font-size: 0.666666rem;
         line-height: 0.833333rem;
         letter-spacing: -0.25px;
-        color: $black-2;
         padding: 0.833333rem 0 0.888888rem 1.333333rem;
-      }
-
-      .select-wrapper > .options > .day:hover {
-        color: $violet-1;
-      }
-
-      //$violet-1
-
-      .select-wrapper > .options > .day:not(:last-child) {
-        border-bottom: 1px solid $blue-gray-light;
       }
     }
   }
@@ -466,7 +450,6 @@ function formatDate(toFormat) {
       font-size: 1rem;
       line-height: 1.777777rem;
       letter-spacing: -0.375px;
-      color: #777f98;
       margin-bottom: 1.333333rem;
     }
 
@@ -535,12 +518,6 @@ function formatDate(toFormat) {
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
-      color: $blue-violet;
-      background-color: $light-bg-2;
-    }
-
-    & > button:hover {
-      background-color: $blue-gray-light;
     }
   }
 
@@ -569,6 +546,101 @@ function formatDate(toFormat) {
 
       > button {
         padding: 0.944444rem 1rem 0.888888rem 0.944444rem;
+      }
+    }
+    .draft-cell {
+      grid-area: draft;
+      > button {
+        padding: 0.944444rem 0.882777rem 0.888888rem 0.895rem;
+      }
+    }
+    .save-cell {
+      grid-area: save;
+      > button {
+        padding: 0.944444rem 0.888888rem 0.888888rem 0.888888rem;
+      }
+    }
+  }
+}
+
+.--light-mode {
+  background-color: #fff;
+
+  h1 {
+    color: $black-2;
+  }
+
+  .group {
+    &__title {
+      color: $violet-1;
+    }
+
+    .label {
+      color: $blue-violet;
+    }
+
+    input,
+    .inv-date-wrapper,
+    .select-wrapper {
+      border: 1px solid $blue-gray-light;
+      color: $black-2;
+    }
+
+    .inv-date-wrapper:hover,
+    .select-wrapper:hover {
+      border: 1px solid $violet-2;
+    }
+
+    input:focus {
+      border: 1px solid $violet-2;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .invoice {
+    .terms {
+      .select-wrapper > .options {
+        background-color: #ffffff;
+      }
+
+      .select-wrapper > .options > .day {
+        color: $black-2;
+      }
+
+      .select-wrapper > .options > .day:hover {
+        color: $violet-1;
+      }
+      .select-wrapper > .options > .day:not(:last-child) {
+        border-bottom: 1px solid $blue-gray-light;
+      }
+    }
+  }
+
+  .item-list {
+    h2 {
+      color: #777f98;
+    }
+  }
+
+  .item-cta {
+    & > button {
+      color: $blue-violet;
+      background-color: $light-bg-2;
+    }
+
+    & > button:hover {
+      background-color: $blue-gray-light;
+    }
+  }
+
+  .from-cta {
+    .cancel-cell {
+      > button {
         background-color: $light-bg-2;
         color: $blue-violet;
       }
@@ -578,9 +650,7 @@ function formatDate(toFormat) {
       }
     }
     .draft-cell {
-      grid-area: draft;
       > button {
-        padding: 0.944444rem 0.882777rem 0.888888rem 0.895rem;
         background-color: $black-4;
         color: $violet-gray;
       }
@@ -589,9 +659,119 @@ function formatDate(toFormat) {
       }
     }
     .save-cell {
-      grid-area: save;
       > button {
-        padding: 0.944444rem 0.888888rem 0.888888rem 0.888888rem;
+        background-color: $violet-1;
+        color: #fff;
+      }
+      button:hover {
+        background-color: $violet-2;
+      }
+    }
+  }
+}
+
+.--dark-mode {
+  background-color: $black-3;
+  .back {
+    a {
+      color: #fff;
+    }
+  }
+
+  h1 {
+    color: #fff;
+  }
+
+  .group {
+    &__title {
+      color: $violet-1;
+    }
+
+    .label {
+      color: $violet-gray;
+    }
+
+    input,
+    .inv-date-wrapper,
+    .select-wrapper {
+      border: 1px solid $dark-blue;
+      color: #fff;
+      background-color: $black-1;
+    }
+
+    .inv-date-wrapper:hover,
+    .select-wrapper:hover {
+      border: 1px solid $violet-1;
+    }
+
+    input:focus {
+      border: 1px solid $violet-1;
+    }
+  }
+
+  .invoice {
+    .terms {
+      .select-wrapper > .options {
+        background-color: $dark-blue;
+      }
+
+      .select-wrapper > .options > .day {
+        color: $blue-gray-light;
+      }
+
+      .select-wrapper > .options > .day:hover {
+        color: $violet-2;
+      }
+
+      .select-wrapper > .options > .day:not(:last-child) {
+        border-bottom: 1px solid $black-1;
+      }
+    }
+  }
+
+  .item-list {
+    h2 {
+      color: #777f98;
+    }
+  }
+
+  .item-cta {
+    & > button {
+      color: $blue-gray-light;
+      background-color: $dark-blue;
+    }
+
+    & > button:hover {
+      background-color: $black-1;
+    }
+  }
+
+  .from-cta {
+    .cell {
+      > button {
+      }
+    }
+
+    .cancel-cell {
+      > button {
+        background-color: $dark-blue;
+        color: $blue-gray-light;
+      }
+      > button:hover {
+        background-color: #fff;
+      }
+    }
+    .draft-cell {
+      > button {
+        background-color: $black-4;
+        color: $blue-gray-light;
+      }
+      > button:hover {
+        background-color: $black-1;
+      }
+    }
+    .save-cell {
+      > button {
         background-color: $violet-1;
         color: #fff;
       }
