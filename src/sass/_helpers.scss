@@ -50,12 +50,9 @@
     display: none;
 }
 
-/** Aniamtion **/
-
-.slide-out {
-    right: -17rem;
-}
-
-.slide-in {
+.remove-scroll {
+    position: fixed;
+    top: 0;
+    left: 0;
     right: 0;
 }

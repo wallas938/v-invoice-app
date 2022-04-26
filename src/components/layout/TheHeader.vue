@@ -1,6 +1,7 @@
 <template>
   <aside
     class="root"
+    id="the-header"
     :class="{
       '--light-mode': currentMode === 'light',
       '--dark-mode': currentMode === 'dark',
@@ -79,7 +80,8 @@ function toggleMode() {
   grid-template-rows: 4rem;
   grid-template-areas: "logo modeBtn picture";
   transition: all 550ms ease-in-out;
-
+  position: relative;
+  z-index: 10;
   .logo {
     grid-area: logo;
     position: relative;
