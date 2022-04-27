@@ -5,9 +5,10 @@
       '--light-mode': currentMode === 'light',
       '--dark-mode': currentMode === 'dark',
     }"
+    ref="invoiceForm"
   >
     <div class="back hide-for-tablet-and-desktop">
-      <router-link to="../">Go back</router-link>
+      <a @click="closeForm">Go back</a>
     </div>
     <h1>New Invoice</h1>
     <form>
@@ -162,7 +163,7 @@
       </div>
       <div class="from-cta">
         <div class="cell cancel-cell">
-          <button class="cancel">Discard</button>
+          <button class="cancel" @click="closeForm">Discard</button>
         </div>
         <div class="cell draft-cell">
           <button class="draft">Save as Draft</button>
@@ -181,6 +182,7 @@ import { useStore } from "vuex";
 const store = useStore();
 const router = useRouter();
 
+const invoiceForm = ref(null);
 const invoiceDateInput = ref(null);
 const streetInput = ref(null);
 const invoiceDateValue = ref(formatDate(Date.now()));
@@ -194,6 +196,10 @@ const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 onMounted(() => {
   streetInput.value.focus();
+  const currentViewHeight = invoiceForm.value.offsetHeight + "px";
+  store.dispatch("layout/setCurrentViewHeight", {
+    currentViewHeight: currentViewHeight,
+  });
 }),
   // Function
   function setInvoiceDate() {
@@ -201,6 +207,11 @@ onMounted(() => {
       invoiceDateValue.value = formatDate(invoiceDateInput.value.value);
     }
   };
+
+function closeForm() {
+  document.querySelector("body").classList.remove("remove-scroll");
+  store.dispatch("layout/showModals", { currentView: "" });
+}
 
 function toggleTerms() {
   isTermsDisplayed.value = !isTermsDisplayed.value;
@@ -243,6 +254,8 @@ function formatDate(toFormat) {
 @import "../../sass/variables";
 @import "../../sass/colors";
 .root {
+  position: relative;
+  z-index: 2;
   padding-top: 1.777777rem;
   .back {
     padding: 0 1.333333rem;
@@ -732,6 +745,12 @@ function formatDate(toFormat) {
   .item-list {
     h2 {
       color: #777f98;
+    }
+
+    .item__fields {
+      .item__total > input {
+        background-color: transparent;
+      }
     }
   }
 
