@@ -3,7 +3,8 @@ export default {
     state: () => ({
         currentMode: 'light',
         showModals: false,
-        currentView: ''
+        currentView: '',
+        currentViewHeight: '100%'
     }),
     getters: {
         currentMode(state) {
@@ -15,6 +16,9 @@ export default {
         showModals(state) {
             return state.showModals;
         },
+        currentViewHeight(state) {
+            return state.currentViewHeight;
+        }
     },
     mutations: {
         SWITCH_MODE(state, payload) {
@@ -25,6 +29,9 @@ export default {
         },
         SET_CURRENT_VIEW(state, payload) {
             state.currentView = payload.currentView;
+        },
+        SET_FORM_HEIGHT(state, payload) {
+            state.currentViewHeight = payload.currentViewHeight;
         }
 
     },
@@ -36,6 +43,9 @@ export default {
             context.commit('DISPLAY_MODAL');
             context.commit('SET_CURRENT_VIEW', { currentView: payload.currentView });
 
+        },
+        setCurrentViewHeight(context, payload) {
+            context.commit('SET_FORM_HEIGHT', { currentViewHeight: payload.currentViewHeight })
         }
     },
 };
