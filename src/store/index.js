@@ -31,7 +31,20 @@ export default createStore({
                     status: 'Paid',
                     due: 'Due 20 Sep 2021',
                     desc: 'Graphic Design',
-                    items: [],
+                    items: [
+                        {
+                            itemName: 'Banner Design',
+                            quantity: '1',
+                            price: '156',
+                            total: '1'
+                        },
+                        {
+                            itemName: 'Email Design',
+                            quantity: '2',
+                            price: '200',
+                            total: '400'
+                        },
+                    ],
                     totalAmount: '£ 1,800.90',
                 },
                 {
