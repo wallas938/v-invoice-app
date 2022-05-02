@@ -1,5 +1,6 @@
 <template>
   <div
+    id="invoiceForm"
     class="root"
     :class="{
       '--light-mode': currentMode === 'light',
@@ -675,6 +676,49 @@ function formatDate(toFormat) {
     new Date(toFormat).getUTCFullYear()
   );
 }
+
+function submitForm() {
+  if (isFormItemPartIsInvalid.value || v$.value.$invalid) return;
+
+  const data = {
+    invoiceCode: generateInvoiceIndentifier(),
+    fromStreet: formData.from.street,
+    fromCity: formData.from.city,
+    fromPostCode: formData.from.postCode,
+    fromCountry: formData.from.country,
+    clientName: formData.to.clientName,
+    email: formData.to.clientEmail,
+    toStreet: formData.to.street,
+    toCity: formData.to.city,
+    toPostCode: formData.to.postCode,
+    toCountry: formData.to.country,
+    invoiceDate: formData.invoice.date,
+    status: "Pending",
+    due: "Due " + formatDate(Date.now() + 8.64e7 * formData.invoice.terms),
+    desc: formData.invoice.description,
+    items: itemFields.value.map((item) => {
+      return {
+        itemName: item.itemName.value,
+        quantity: item.quantity.value,
+        price: item.price.value,
+        total: item.price.value * item.quantity.value,
+      };
+    }),
+  };
+
+  store.dispatch("addInvoice", { invoice: data }).then(() => {
+    router.push("/invoices/" + data.invoiceCode);
+    store.dispatch("layout/showModals", { currentView: "" });
+  });
+}
+
+function generateInvoiceIndentifier() {
+  const letter1 = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  const letter2 = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  return `${letter1}${letter2}${Math.floor(Math.random() * 9)}${Math.floor(
+    Math.random() * 9
+  )}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`;
+}
 </script>
 <style lang="scss" scoped>
 @import "../../sass/variables";
@@ -1013,6 +1057,7 @@ function formatDate(toFormat) {
     flex-direction: column;
     justify-content: flex-start;
     margin-bottom: 1.333333rem;
+    padding: 0 1.333333rem;
     small {
       font-style: normal;
       font-weight: 600;
@@ -1447,6 +1492,10 @@ function formatDate(toFormat) {
       margin-bottom: 2.611111rem; // 47px
     }
 
+    .form-error-alert {
+      padding: 0 3.111111rem;
+    }
+
     .form-cta {
       display: grid;
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
@@ -1614,6 +1663,10 @@ function formatDate(toFormat) {
 
     .item-cta {
       margin-bottom: 2.611111rem; // 47px
+    }
+
+    .form-error-alert {
+      padding: 0 8.833333rem;
     }
 
     .form-cta {
