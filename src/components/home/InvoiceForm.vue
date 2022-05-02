@@ -16,20 +16,103 @@
         <p class="group__title">Bill From</p>
         <div class="from__fields">
           <div class="field from__street">
-            <label class="label" for="f-str">Street Address</label>
-            <input type="text" ref="streetInput" />
+            <label
+              class="label"
+              for="f-str"
+              :class="{
+                '--label-error':
+                  v$.from.street.$invalid && v$.from.street.$dirty,
+              }"
+              >Street Address</label
+            >
+            <input
+              type="text"
+              ref="streetInput"
+              @blur="v$.from.street.$touch"
+              :class="{
+                '--input-error':
+                  v$.from.street.$invalid && v$.from.street.$dirty,
+              }"
+              v-model.trim="formData.from.street"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.from.street.$invalid && v$.from.street.$dirty"
+              >Can't be empty</small
+            >
           </div>
           <div class="field from__city">
-            <label class="label" for="f-city">City</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="f-city"
+              :class="{
+                '--label-error': v$.from.city.$invalid && v$.from.city.$dirty,
+              }"
+              >City</label
+            >
+            <input
+              type="text"
+              @blur="v$.from.city.$touch"
+              :class="{
+                '--input-error': v$.from.city.$invalid && v$.from.city.$dirty,
+              }"
+              v-model.trim="formData.from.city"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.from.city.$invalid && v$.from.city.$dirty"
+              >Can't be empty</small
+            >
           </div>
           <div class="field from__psc">
-            <label class="label" for="f-psc">Post Code</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="f-psc"
+              :class="{
+                '--label-error':
+                  v$.from.postCode.$invalid && v$.from.postCode.$dirty,
+              }"
+              >Post Code</label
+            >
+            <input
+              type="text"
+              @blur="v$.from.postCode.$touch"
+              :class="{
+                '--input-error':
+                  v$.from.postCode.$invalid && v$.from.postCode.$dirty,
+              }"
+              v-model.trim="formData.from.postCode"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.from.postCode.$invalid && v$.from.postCode.$dirty"
+              >Can't be empty</small
+            >
           </div>
           <div class="field from__ctry">
-            <label class="label" for="f-ctry">Country</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="f-ctry"
+              :class="{
+                '--label-error':
+                  v$.from.country.$invalid && v$.from.country.$dirty,
+              }"
+              >Country</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.from.country"
+              @blur="v$.from.country.$touch"
+              :class="{
+                '--input-error':
+                  v$.from.country.$invalid && v$.from.country.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.from.country.$invalid && v$.from.country.$dirty"
+              >Can't be empty</small
+            >
           </div>
         </div>
       </div>
@@ -37,28 +120,148 @@
         <p class="group__title">Bill To</p>
         <div class="to__fields">
           <div class="field to__clt-name">
-            <label class="label" for="t-clt-name">Client’s Name</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-clt-name"
+              :class="{
+                '--label-error':
+                  v$.to.clientName.$invalid && v$.to.clientName.$dirty,
+              }"
+              >Client’s Name</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.clientName"
+              @blur="v$.to.clientName.$touch"
+              :class="{
+                '--input-error':
+                  v$.to.clientName.$invalid && v$.to.clientName.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.clientName.$invalid && v$.to.clientName.$dirty"
+              >Can't be empty</small
+            >
           </div>
           <div class="field to__email">
-            <label class="label" for="t-email">Client’s Email</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-email"
+              :class="{
+                '--label-error':
+                  v$.to.clientEmail.$invalid && v$.to.clientEmail.$dirty,
+              }"
+              >Client’s Email</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.clientEmail"
+              @blur="v$.to.clientEmail.$touch"
+              :class="{
+                '--input-error':
+                  v$.to.clientEmail.$invalid && v$.to.clientEmail.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.clientEmail.$invalid && v$.to.clientEmail.$dirty"
+              >Wrong Input</small
+            >
           </div>
           <div class="field to__str">
-            <label class="label" for="t-str">Street Address</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-str"
+              :class="{
+                '--label-error': v$.to.street.$invalid && v$.to.street.$dirty,
+              }"
+              >Street Address</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.street"
+              @blur="v$.to.street.$touch"
+              :class="{
+                '--input-error': v$.to.street.$invalid && v$.to.street.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.street.$invalid && v$.to.street.$dirty"
+              >Wrong Input</small
+            >
           </div>
           <div class="field to__city">
-            <label class="label" for="t-city">City</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-city"
+              :class="{
+                '--label-error': v$.to.city.$invalid && v$.to.city.$dirty,
+              }"
+              >City</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.city"
+              @blur="v$.to.city.$touch"
+              :class="{
+                '--input-error': v$.to.city.$invalid && v$.to.city.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.city.$invalid && v$.to.city.$dirty"
+              >Wrong Input</small
+            >
           </div>
           <div class="field to__psc">
-            <label class="label" for="t-psc">Post Code</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-psc"
+              :class="{
+                '--label-error':
+                  v$.to.postCode.$invalid && v$.to.postCode.$dirty,
+              }"
+              >Post Code</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.postCode"
+              @blur="v$.to.postCode.$touch"
+              :class="{
+                '--input-error':
+                  v$.to.postCode.$invalid && v$.to.postCode.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.postCode.$invalid && v$.to.postCode.$dirty"
+              >Wrong Input</small
+            >
           </div>
           <div class="field to__ctry">
-            <label class="label" for="t-ctry">Country</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="t-ctry"
+              :class="{
+                '--label-error': v$.to.country.$invalid && v$.to.country.$dirty,
+              }"
+              >Country</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.to.country"
+              @blur="v$.to.country.$touch"
+              :class="{
+                '--input-error': v$.to.country.$invalid && v$.to.country.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="v$.to.country.$invalid && v$.to.country.$dirty"
+              >Wrong Input</small
+            >
           </div>
         </div>
       </div>
@@ -78,7 +281,12 @@
           <div class="field terms">
             <label class="label" for="inv-term">Payment Terms</label>
             <div class="select-wrapper" @click="toggleTerms">
-              {{ invoiceTermsValue }}
+              Net
+              {{
+                formData.invoice.terms > 1
+                  ? formData.invoice.terms + " Days"
+                  : formData.invoice.terms + " Day"
+              }}
               <ul v-if="isTermsDisplayed" class="options">
                 <li class="day 1-day" @click="setInvoiceTerms('1-day')">
                   Net 1 Day
@@ -96,58 +304,98 @@
             </div>
           </div>
           <div class="field desc">
-            <label class="label" for="inv-desc">Project Description</label>
-            <input type="text" />
+            <label
+              class="label"
+              for="inv-desc"
+              :class="{
+                '--label-error':
+                  v$.invoice.description.$invalid &&
+                  v$.invoice.description.$dirty,
+              }"
+              >Project Description</label
+            >
+            <input
+              type="text"
+              v-model.trim="formData.invoice.description"
+              @blur="v$.invoice.description.$touch"
+              :class="{
+                '--input-error':
+                  v$.invoice.description.$invalid &&
+                  v$.invoice.description.$dirty,
+              }"
+            />
+            <small
+              class="error-msg"
+              v-if="
+                v$.invoice.description.$invalid && v$.invoice.description.$dirty
+              "
+              >Wrong Input</small
+            >
           </div>
         </div>
       </div>
       <div class="group item-list">
         <h2>Item List</h2>
-        <div class="item item__fields">
-          <div class="field item__name">
-            <label class="label" for="item-name">Item Name</label>
-            <input type="text" value="Banner Design" />
-          </div>
-          <div class="field item__qty">
-            <label class="label" for="item-qty">Qty.</label>
-            <input type="text" value="1" />
-          </div>
-          <div class="field item__price">
-            <label class="label" for="item-price">Price</label>
-            <input type="text" value="156.00" />
-          </div>
-          <div class="field item__total">
-            <label class="label" for="item-total">Total</label>
-            <input type="text" value="156.00" />
-          </div>
-          <div class="field item__remove">
-            <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11.583 3.556v10.666c0 .982-.795 1.778-1.777 1.778H2.694a1.777 1.777 0 01-1.777-1.778V3.556h10.666zM8.473 0l.888.889h3.111v1.778H.028V.889h3.11L4.029 0h4.444z"
-                fill="#888EB0"
-                fill-rule="nonzero"
-              />
-            </svg>
-          </div>
+        <div class="col-names hide-for-mobile">
+          <label class="col-name col-name">Item Name</label>
+          <label class="col-name col-qty">Qty.</label>
+          <label class="col-name col-price">Price</label>
+          <label class="col-name col-total">Total</label>
         </div>
-        <div class="item item__fields">
+        <div
+          v-for="(item, index) in itemFields"
+          :key="index"
+          class="item item__fields"
+        >
           <div class="field item__name">
-            <label class="label" for="item-name">Item Name</label>
-            <input type="text" value="Banner Design" />
+            <label class="label hide-for-tablet-and-desktop" for="item-name"
+              >Item Name</label
+            >
+            <input
+              type="text"
+              :class="{
+                '--input-error': item.itemName.status === 'invalid',
+              }"
+              :value="item.itemName.value"
+              @input="itemInputHandler($event, index, 'itemName')"
+            />
           </div>
           <div class="field item__qty">
-            <label class="label" for="item-qty">Qty.</label>
-            <input type="text" value="1" />
+            <label class="label hide-for-tablet-and-desktop" for="item-qty"
+              >Qty.</label
+            >
+            <input
+              type="text"
+              :value="item.quantity.value"
+              :class="{
+                '--input-error': item.quantity.status === 'invalid',
+              }"
+              @input="itemInputHandler($event, index, 'quantity')"
+            />
           </div>
           <div class="field item__price">
-            <label class="label" for="item-price">Price</label>
-            <input type="text" value="156.00" />
+            <label class="label hide-for-tablet-and-desktop" for="item-price"
+              >Price</label
+            >
+            <input
+              type="text"
+              :value="item.price.value"
+              :class="{
+                '--input-error': item.price.status === 'invalid',
+              }"
+              @input="itemInputHandler($event, index, 'price')"
+            />
           </div>
           <div class="field item__total">
-            <label class="label" for="item-total">Total</label>
-            <input type="text" value="156.00" />
+            <label class="label hide-for-tablet-and-desktop" for="item-total"
+              >Total</label
+            >
+            <input
+              type="text"
+              :value="computeTotal(item.price.value, item.quantity.value)"
+            />
           </div>
-          <div class="field item__remove">
+          <div class="field item__remove" @click="removeItem(index)">
             <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11.583 3.556v10.666c0 .982-.795 1.778-1.777 1.778H2.694a1.777 1.777 0 01-1.777-1.778V3.556h10.666zM8.473 0l.888.889h3.111v1.778H.028V.889h3.11L4.029 0h4.444z"
@@ -158,10 +406,14 @@
           </div>
         </div>
         <div class="item-cta">
-          <button type="button">+ Add New Item</button>
+          <button type="button" @click="addItem">+ Add New Item</button>
         </div>
       </div>
-      <div class="from-cta">
+      <div class="form-error-alert">
+        <small v-if="v$.$invalid">- All fields must be added</small>
+        <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
+      </div>
+      <div class="form-cta">
         <div class="cell cancel-cell">
           <button class="cancel" @click="closeForm">Discard</button>
         </div>
@@ -169,44 +421,214 @@
           <button class="draft">Save as Draft</button>
         </div>
         <div class="cell save-cell">
-          <button class="save">Save & Send</button>
+          <button
+            type="button"
+            class="save"
+            :disabled="!isFormIsValid"
+            @click="submitForm"
+          >
+            Save & Send
+          </button>
         </div>
       </div>
     </form>
   </div>
 </template>
 <script setup>
-import { ref, computed, watch, watchEffect, onMounted } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const router = useRouter();
 
+// Form Datas
+const formData = reactive({
+  from: {
+    street: "",
+    city: "",
+    postCode: "",
+    country: "",
+  },
+  to: {
+    clientName: "",
+    clientEmail: "",
+    street: "",
+    city: "",
+    postCode: "",
+    country: "",
+  },
+  invoice: {
+    date: formatDate(Date.now()),
+    terms: 30,
+    description: "",
+  },
+});
+
+const rules = {
+  from: {
+    street: { required },
+    city: { required },
+    postCode: { required },
+    country: { required },
+  },
+  to: {
+    clientName: { required },
+    clientEmail: { required, email },
+    street: { required },
+    city: { required },
+    postCode: { required },
+    country: { required },
+  },
+  invoice: {
+    date: { required },
+    terms: { required },
+    description: { required },
+  },
+};
+
+let itemFields = ref([
+  {
+    itemName: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+    quantity: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+    price: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+  },
+]);
+
+const v$ = useVuelidate(rules, formData);
+// Datas
 const invoiceForm = ref(null);
+
 const invoiceDateInput = ref(null);
 const streetInput = ref(null);
 const invoiceDateValue = ref(formatDate(Date.now()));
-const invoiceTermsValue = ref("Net 30 Days");
 const isTermsDisplayed = ref(false);
 
-// Computed
-const currentMode = computed(() => store.getters["layout/currentMode"]);
-
 // Lifecycle Hooks
-
 onMounted(() => {
   streetInput.value.focus();
   const currentViewHeight = invoiceForm.value.offsetHeight + "px";
   store.dispatch("layout/setCurrentViewHeight", {
     currentViewHeight: currentViewHeight,
   });
-}),
-  // Function
-  function setInvoiceDate() {
-    if (invoiceDateInput.value) {
-      invoiceDateValue.value = formatDate(invoiceDateInput.value.value);
+});
+
+// Computed
+const currentMode = computed(() => store.getters["layout/currentMode"]);
+
+const isFormItemPartIsInvalid = computed(() => {
+  return itemFields.value.some((field) => {
+    for (let prop in field) {
+      if (
+        field[prop].status === "invalid" ||
+        field[prop].status === "pending"
+      ) {
+        return true;
+      }
     }
-  };
+  });
+});
+
+const isFormIsValid = computed(() => {
+  if (isFormItemPartIsInvalid.value || v$.value.$invalid) return false;
+  return true;
+});
+
+// Functions
+
+// VERIFIE LA VALIDITE DES CHAMPS ITEMS
+function checkItemInput(value, index, fieldName) {
+  itemFields.value = itemFields.value.map((item, i) => {
+    if (i !== index) return item;
+
+    switch (fieldName) {
+      case "itemName":
+        value.trim() === ""
+          ? (item["itemName"].status = "invalid")
+          : (item["itemName"].status = "valid");
+
+        /* item["itemName"].dirty = true; */
+
+        return item;
+
+      default:
+        value.trim() === "" || isNaN(value) || value <= 0
+          ? (item[fieldName].status = "invalid")
+          : (item[fieldName].status = "valid");
+
+        /* item[fieldName].dirty = true; */
+        return item;
+    }
+  });
+}
+
+// GERER LES INPUTS
+function itemInputHandler(event, index, fieldName) {
+  checkItemInput(event.target.value, index, fieldName);
+
+  itemFields.value = itemFields.value.map((item, i) => {
+    if (i === index) {
+      item[fieldName].value = event.target.value;
+      return item;
+    }
+    return item;
+  });
+}
+
+// AJOUTER UN ITEM AU FORMULAIRE
+function addItem() {
+  itemFields.value.push({
+    itemName: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+    quantity: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+    price: {
+      value: "",
+      status: "pending",
+      dirty: false,
+    },
+  });
+}
+
+// RETIRER UN ITEM AU FORMULAIRE
+function removeItem(index) {
+  if (itemFields.value.length === 1) return; // Toujours laisser au moins un item
+  itemFields.value = itemFields.value.filter((item, i) => {
+    return i !== index;
+  });
+}
+
+function setInvoiceDate() {
+  if (invoiceDateInput.value) {
+    invoiceDateValue.value = formatDate(invoiceDateInput.value.value);
+    formData.invoice.date = formatDate(invoiceDateInput.value.value);
+  }
+}
+
+function computeTotal(price, quantity) {
+  if (!price || !quantity) return;
+
+  return isNaN(+price * +quantity) ? "0.00" : +price * +quantity;
+}
 
 function closeForm() {
   document.querySelector("body").classList.remove("remove-scroll");
@@ -220,30 +642,34 @@ function toggleTerms() {
 function setInvoiceTerms(terms) {
   switch (terms) {
     case "1-day":
-      invoiceTermsValue.value = "Net 1 Day";
+      formData.invoice.terms = 1;
       return;
     case "7-day":
-      invoiceTermsValue.value = "Net 7 Days";
+      formData.invoice.terms = 7;
       return;
     case "14-day":
-      invoiceTermsValue.value = "Net 14 Days";
+      formData.invoice.terms = 14;
       return;
     case "30-day":
-      invoiceTermsValue.value = "Net 30 Days";
+      formData.invoice.terms = 30;
       return;
 
     default:
-      invoiceTermsValue.value = "Net 30 Days";
+      formData.invoice.terms = 30;
       return;
   }
 }
 
 function formatDate(toFormat) {
+  const day =
+    new Date(toFormat).getDate().toString().length === 1
+      ? "0" + new Date(toFormat).getDate()
+      : new Date(toFormat).getDate();
   return (
-    new Date(toFormat).getUTCDate() +
+    day +
     " " +
     new Date(toFormat).toLocaleDateString("en-US", {
-      weekday: "short",
+      month: "short",
     }) +
     " " +
     new Date(toFormat).getUTCFullYear()
@@ -299,13 +725,17 @@ function formatDate(toFormat) {
       margin-bottom: 1.333333rem;
     }
 
-    .label {
+    label {
       font-style: normal;
       font-weight: 500;
       font-size: 0.666666rem;
       line-height: 0.833333rem;
       letter-spacing: -0.25px;
       margin-bottom: 0.555555rem;
+    }
+
+    .--label-error {
+      color: $red;
     }
 
     input,
@@ -321,10 +751,27 @@ function formatDate(toFormat) {
       width: 100%;
     }
 
+    .--input-error {
+      border: 1px solid $red !important;
+    }
+
     .field {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      position: relative;
+    }
+
+    .error-msg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: $red;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.555555rem;
+      line-height: 0.833333rem;
+      letter-spacing: -0.208333px;
     }
   }
 
@@ -443,6 +890,7 @@ function formatDate(toFormat) {
         box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
         border-radius: 0.444444rem;
         width: 100%;
+        z-index: 5;
       }
 
       .select-wrapper > .options > .day {
@@ -464,6 +912,32 @@ function formatDate(toFormat) {
       line-height: 1.777777rem;
       letter-spacing: -0.375px;
       margin-bottom: 1.333333rem;
+    }
+
+    .col-names {
+      display: grid;
+      margin-bottom: 0.888888rem;
+      grid-template-columns: 11.888888rem auto auto 1fr;
+      grid-template-rows: 1fr;
+      column-gap: 0.888888rem;
+      justify-content: flex-start;
+      grid-template-areas: "col-name  col-qty  col-price  col-total";
+
+      .col-name {
+        grid-area: col-name;
+      }
+      .col-qty {
+        grid-area: col-qty;
+        min-width: 64px;
+      }
+      .col-price {
+        grid-area: col-price;
+        min-width: 100px;
+      }
+      .col-total {
+        grid-area: col-total;
+        min-width: 56px;
+      }
     }
 
     .item__fields {
@@ -520,7 +994,7 @@ function formatDate(toFormat) {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-bottom: 4.888888rem; // 88px
+    margin-bottom: 1.333333rem;
     & > button {
       border: none;
       border-radius: 1.333333rem;
@@ -534,7 +1008,22 @@ function formatDate(toFormat) {
     }
   }
 
-  .from-cta {
+  .form-error-alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1.333333rem;
+    small {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.555555rem;
+      line-height: 0.833333rem;
+      letter-spacing: -0.208333px;
+      color: $red;
+    }
+  }
+
+  .form-cta {
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-template-rows: 1fr;
@@ -588,7 +1077,7 @@ function formatDate(toFormat) {
       color: $violet-1;
     }
 
-    .label {
+    label {
       color: $blue-violet;
     }
 
@@ -651,7 +1140,7 @@ function formatDate(toFormat) {
     }
   }
 
-  .from-cta {
+  .form-cta {
     .cancel-cell {
       > button {
         background-color: $light-bg-2;
@@ -700,9 +1189,17 @@ function formatDate(toFormat) {
       color: $violet-1;
     }
 
-    .label {
+    label {
       color: $violet-gray;
     }
+
+    /* .--label-error {
+      color: $red;
+    }
+
+    .--input-error {
+      border: 1px solid $red;
+    } */
 
     input,
     .inv-date-wrapper,
@@ -749,7 +1246,7 @@ function formatDate(toFormat) {
 
     .item__fields {
       .item__total > input {
-        background-color: transparent;
+        background-color: $black-3;
       }
     }
   }
@@ -765,7 +1262,7 @@ function formatDate(toFormat) {
     }
   }
 
-  .from-cta {
+  .form-cta {
     .cell {
       > button {
       }
@@ -942,7 +1439,6 @@ function formatDate(toFormat) {
         }
         .item__remove {
           grid-area: cta;
-          padding-top: 1.111111rem;
         }
       }
     }
@@ -951,7 +1447,7 @@ function formatDate(toFormat) {
       margin-bottom: 2.611111rem; // 47px
     }
 
-    .from-cta {
+    .form-cta {
       display: grid;
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
@@ -1120,7 +1616,7 @@ function formatDate(toFormat) {
       margin-bottom: 2.611111rem; // 47px
     }
 
-    .from-cta {
+    .form-cta {
       display: grid;
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
