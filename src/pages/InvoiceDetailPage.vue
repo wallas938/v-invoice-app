@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="invoice"
     class="root"
     :class="{
       '--light-mode': currentMode === 'light',
@@ -133,7 +134,13 @@ const route = useRoute();
 // COMPUTED
 const invoice = computed(() => store.getters.invoice);
 if (!invoice.value) {
-  store.dispatch("setCurrentInvoice", { invoiceCode: route.params.id });
+  router
+    .push({
+      path: "/",
+    })
+    .then(() => {
+      store.dispatch("setCurrentInvoice", { invoiceCode: null });
+    });
 }
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 

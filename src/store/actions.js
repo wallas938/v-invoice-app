@@ -39,5 +39,11 @@ export default {
             });
 
         context.commit('MARK_AS_PAID', { invoices: invoices });
+    },
+    addInvoice(context, payload) {
+        const invoices = [...context.getters.invoices, payload.invoice];
+
+        context.commit('ADD_NEW_INVOICE', { invoices: invoices });
+        context.commit('SET_INVOICE', { invoice: payload.invoice });
     }
 }

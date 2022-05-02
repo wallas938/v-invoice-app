@@ -10,5 +10,9 @@ export default {
     },
     MARK_AS_PAID(state, payload) {
         state.invoices = payload.invoices;
+    },
+    ADD_NEW_INVOICE(state, payload) {
+        state.invoices = payload.invoices;
+        console.log(state);
     }
 }
