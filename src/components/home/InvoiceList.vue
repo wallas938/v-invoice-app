@@ -31,11 +31,10 @@
             <span class="hash">#</span>{{ invoice.invoiceCode }}
           </a>
           <p class="clientName">{{ invoice.clientName }}</p>
-          <p class="due">{{ invoice.due }}</p>
+          <p class="due">
+            {{ "Due " + formatDate(Date.now() + 8.64e7 * invoice.due) }}
+          </p>
           <VStatusIndicator :status="invoice.status" />
-          <!-- <div class="status" :class="getStatusColor(invoice.status)">
-            <span>{{ invoice.status }}</span>
-          </div> -->
           <p class="total">{{ invoice.totalAmount }}</p>
           <div class="arrow hide-for-mobile">
             <a @click="navigateToDetail(invoice.invoiceCode)">
@@ -67,25 +66,30 @@ const router = useRouter();
 
 // COMPUTED
 const invoices = computed(() => store.getters.invoices);
-
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
-// FUNCITONS
-function getStatusColor(status) {
-  switch (status.toLowerCase()) {
-    case "paid":
-      return "status--paid";
-    case "pending":
-      return "status--pending";
-    case "draft":
-      return "status--draft";
-  }
-}
+// FUNCTIONS
 
 function navigateToDetail(invoiceCode) {
   store.dispatch("setCurrentInvoice", { invoiceCode: invoiceCode });
   router.push({ path: `/invoices/${invoiceCode}` });
+}
+
+function formatDate(toFormat) {
+  const day =
+    new Date(toFormat).getDate().toString().length === 1
+      ? "0" + new Date(toFormat).getDate()
+      : new Date(toFormat).getDate();
+  return (
+    day +
+    " " +
+    new Date(toFormat).toLocaleDateString("en-US", {
+      month: "short",
+    }) +
+    " " +
+    new Date(toFormat).getUTCFullYear()
+  );
 }
 
 // STORE ACTIONS

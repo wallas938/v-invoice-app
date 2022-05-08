@@ -1,34 +1,35 @@
 export default {
-    handleFilters(context, payload) {
+    handleFilters({ dispatch, commit, getters, rootGetters }, payload) {
         /* add a new filter or remove it if it was already added */
-        const filters = [...context.getters.filters].includes(payload.filter)
-            ? [...context.getters.filters].filter((f) => f !== payload.filter)
-            : [...context.getters.filters, payload.filter];
+        const filters = [...getters.filters].includes(payload.filter)
+            ? [...getters.filters].filter((f) => f !== payload.filter)
+            : [...getters.filters, payload.filter];
 
-        context.commit('UPDATE_FILTERS', { filters: filters });
+        commit('UPDATE_FILTERS', { filters: filters });
     },
-    removeInvoice(context, payload) {
+    removeInvoice({ dispatch, commit, getters, rootGetters }, payload) {
         /* add a new filter or remove it if it was already added */
-        const invoices = [...context.getters.invoices]
+        console.log(payload.invoiceCode);
+        const invoices = [...getters.invoices]
             .filter(invoice => {
                 return invoice.invoiceCode !== payload.invoiceCode;
             });
 
-        context.commit('REMOVE_INVOICE', { invoices: invoices });
+        commit('REMOVE_INVOICE', { invoices: invoices });
     },
-    setCurrentInvoice(context, payload) {
-        const invoice = [...context.getters.invoices]
+    setCurrentInvoice({ dispatch, commit, getters, rootGetters }, payload) {
+        const invoice = [...getters.invoices]
             .find(invoice => {
                 return invoice.invoiceCode === payload.invoiceCode;
             });
         if (invoice) {
-            context.commit('SET_INVOICE', { invoice: invoice });
+            commit('SET_INVOICE', { invoice: invoice });
             return;
         }
-        context.commit('SET_INVOICE', { invoice: null });
+        commit('SET_INVOICE', { invoice: null });
     },
-    markAsPaid(context, payload) {
-        const invoices = [...context.getters.invoices]
+    markAsPaid({ dispatch, commit, getters, rootGetters }, payload) {
+        const invoices = [...getters.invoices]
             .map(invoice => {
                 if (invoice.invoiceCode === payload.invoiceCode) {
                     invoice.status = 'Paid'
@@ -38,12 +39,16 @@ export default {
                 return invoice;
             });
 
-        context.commit('MARK_AS_PAID', { invoices: invoices });
+        commit('MARK_AS_PAID', { invoices: invoices });
     },
-    addInvoice(context, payload) {
-        const invoices = [...context.getters.invoices, payload.invoice];
+    addInvoice({ dispatch, commit, getters, rootGetters }, payload) {
+        let invoices = [...getters.invoices];
 
-        context.commit('ADD_NEW_INVOICE', { invoices: invoices });
-        context.commit('SET_INVOICE', { invoice: payload.invoice });
+        if (getters['layout/form_mode_is_edit']) {
+            invoices = [...getters.invoices].filter((invoice) => invoice.invoiceCode !== payload.invoice.invoiceCode);
+        }
+        invoices = [...invoices, payload.invoice];
+        commit('ADD_NEW_INVOICE', { invoices: invoices });
+        commit('SET_INVOICE', { invoice: payload.invoice });
     }
 }
