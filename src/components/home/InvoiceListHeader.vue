@@ -128,7 +128,7 @@
 
 <!-- LOGIC -->
 <script setup>
-import { reactive, ref } from "@vue/reactivity";
+import { ref } from "@vue/reactivity";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
@@ -160,6 +160,8 @@ function isChecked(filter) {
 
 function showForm() {
   document.querySelector("body").setAttribute("class", "remove-scroll");
+  store.dispatch("layout/setFormMode", { form_mode_is_edit: false });
+  store.dispatch("setCurrentInvoice", { invoiceCode: null });
   store.dispatch("layout/showModals", { currentView: "invoice-form" });
 }
 </script>

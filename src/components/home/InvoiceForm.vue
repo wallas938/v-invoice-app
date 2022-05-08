@@ -384,6 +384,7 @@
               :class="{
                 '--input-error': item.price.status === 'invalid',
               }"
+              @blur="formatNumber(item.price.value, index)"
               @input="itemInputHandler($event, index, 'price')"
             />
           </div>
@@ -416,19 +417,22 @@
       </div>
       <div class="form-cta">
         <div class="cell cancel-cell">
-          <button class="cancel" @click="closeForm">Discard</button>
+          <button class="cancel" @click="closeForm">
+            {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
+          </button>
         </div>
-        <div class="cell draft-cell">
+        <div v-if="!form_mode_is_edit" class="cell draft-cell">
           <button class="draft">Save as Draft</button>
         </div>
         <div class="cell save-cell">
+          <!-- :disabled="!isFormIsValid" -->
           <button
             type="button"
             class="save"
             :disabled="!isFormIsValid"
             @click="submitForm"
           >
-            Save & Send
+            {{ !form_mode_is_edit ? "Save & Send" : "Save Changes" }}
           </button>
         </div>
       </div>
@@ -438,14 +442,14 @@
 <script setup>
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { ref, reactive, computed, watch, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const router = useRouter();
 
 // Form Datas
-const formData = reactive({
+const formData = ref({
   from: {
     street: "",
     city: "",
@@ -502,30 +506,22 @@ let itemFields = ref([
       dirty: false,
     },
     price: {
-      value: "",
+      value: (0).toFixed(2),
       status: "pending",
       dirty: false,
     },
   },
 ]);
 
-const v$ = useVuelidate(rules, formData);
 // Datas
+
+const v$ = useVuelidate(rules, formData);
 const invoiceForm = ref(null);
 
 const invoiceDateInput = ref(null);
 const streetInput = ref(null);
 const invoiceDateValue = ref(formatDate(Date.now()));
 const isTermsDisplayed = ref(false);
-
-// Lifecycle Hooks
-onMounted(() => {
-  streetInput.value.focus();
-  const currentViewHeight = invoiceForm.value.offsetHeight + "px";
-  store.dispatch("layout/setCurrentViewHeight", {
-    currentViewHeight: currentViewHeight,
-  });
-});
 
 // Computed
 const currentMode = computed(() => store.getters["layout/currentMode"]);
@@ -548,9 +544,66 @@ const isFormIsValid = computed(() => {
   return true;
 });
 
+const currentInvoice = computed(() => store.getters.invoice);
+
+const form_mode_is_edit = computed(
+  () => store.getters["layout/form_mode_is_edit"]
+);
+
+// Lifecycle Hooks
+onMounted(() => {
+  streetInput.value.focus();
+  if (currentInvoice.value) {
+    initFormValue();
+  }
+});
+
 // Functions
 
-// VERIFIE LA VALIDITE DES CHAMPS ITEMS
+function initFormValue() {
+  formData.value = {
+    from: {
+      street: currentInvoice.value.fromStreet,
+      city: currentInvoice.value.fromCity,
+      postCode: currentInvoice.value.fromPostCode,
+      country: currentInvoice.value.fromCountry,
+    },
+    to: {
+      clientName: currentInvoice.value.clientName,
+      clientEmail: currentInvoice.value.email,
+      street: currentInvoice.value.toStreet,
+      city: currentInvoice.value.toCity,
+      postCode: currentInvoice.value.toPostCode,
+      country: currentInvoice.value.toCountry,
+    },
+    invoice: {
+      date: currentInvoice.value.invoiceDate,
+      terms: currentInvoice.value.due,
+      description: currentInvoice.value.desc,
+    },
+  };
+
+  itemFields.value = currentInvoice.value.items.map((item) => {
+    return {
+      itemName: {
+        value: item.itemName,
+        status: "valid",
+        dirty: false,
+      },
+      quantity: {
+        value: item.quantity,
+        status: "valid",
+        dirty: false,
+      },
+      price: {
+        value: item.price,
+        status: "valid",
+        dirty: false,
+      },
+    };
+  });
+}
+
 function checkItemInput(value, index, fieldName) {
   itemFields.value = itemFields.value.map((item, i) => {
     if (i !== index) return item;
@@ -573,6 +626,14 @@ function checkItemInput(value, index, fieldName) {
         /* item[fieldName].dirty = true; */
         return item;
     }
+  });
+}
+
+function formatNumber(value, index) {
+  itemFields.value = itemFields.value.map((item, i) => {
+    if (i !== index) return item;
+    item.price.value = isNaN(+value) || !value ? "0.00" : value;
+    return item;
   });
 }
 
@@ -621,14 +682,16 @@ function removeItem(index) {
 function setInvoiceDate() {
   if (invoiceDateInput.value) {
     invoiceDateValue.value = formatDate(invoiceDateInput.value.value);
-    formData.invoice.date = formatDate(invoiceDateInput.value.value);
+    formData.value.invoice.date = formatDate(invoiceDateInput.value.value);
   }
 }
 
 function computeTotal(price, quantity) {
-  if (!price || !quantity) return;
+  if (!price || !quantity) return (0).toFixed(2);
 
-  return isNaN(+price * +quantity) ? "0.00" : +price * +quantity;
+  return isNaN(+price * +quantity)
+    ? (0).toFixed(2)
+    : (+price * +quantity).toFixed(2);
 }
 
 function closeForm() {
@@ -643,20 +706,20 @@ function toggleTerms() {
 function setInvoiceTerms(terms) {
   switch (terms) {
     case "1-day":
-      formData.invoice.terms = 1;
+      formData.value.invoice.terms = 1;
       return;
     case "7-day":
-      formData.invoice.terms = 7;
+      formData.value.invoice.terms = 7;
       return;
     case "14-day":
-      formData.invoice.terms = 14;
+      formData.value.invoice.terms = 14;
       return;
     case "30-day":
-      formData.invoice.terms = 30;
+      formData.value.invoice.terms = 30;
       return;
 
     default:
-      formData.invoice.terms = 30;
+      formData.value.invoice.terms = 30;
       return;
   }
 }
@@ -681,32 +744,37 @@ function submitForm() {
   if (isFormItemPartIsInvalid.value || v$.value.$invalid) return;
 
   const data = {
-    invoiceCode: generateInvoiceIndentifier(),
-    fromStreet: formData.from.street,
-    fromCity: formData.from.city,
-    fromPostCode: formData.from.postCode,
-    fromCountry: formData.from.country,
-    clientName: formData.to.clientName,
-    email: formData.to.clientEmail,
-    toStreet: formData.to.street,
-    toCity: formData.to.city,
-    toPostCode: formData.to.postCode,
-    toCountry: formData.to.country,
-    invoiceDate: formData.invoice.date,
+    invoiceCode: form_mode_is_edit.value
+      ? currentInvoice.value.invoiceCode
+      : generateInvoiceIndentifier(),
+    fromStreet: formData.value.from.street,
+    fromCity: formData.value.from.city,
+    fromPostCode: formData.value.from.postCode,
+    fromCountry: formData.value.from.country,
+    clientName: formData.value.to.clientName,
+    email: formData.value.to.clientEmail,
+    toStreet: formData.value.to.street,
+    toCity: formData.value.to.city,
+    toPostCode: formData.value.to.postCode,
+    toCountry: formData.value.to.country,
+    invoiceDate: formData.value.invoice.date,
     status: "Pending",
-    due: "Due " + formatDate(Date.now() + 8.64e7 * formData.invoice.terms),
-    desc: formData.invoice.description,
+    due: formData.value.invoice.terms,
+    desc: formData.value.invoice.description,
     items: itemFields.value.map((item) => {
       return {
         itemName: item.itemName.value,
         quantity: item.quantity.value,
         price: item.price.value,
-        total: item.price.value * item.quantity.value,
+        total: +item.price.value * +item.quantity.value,
       };
     }),
+    totalAmount: computeBigTotal(itemFields.value),
   };
 
   store.dispatch("addInvoice", { invoice: data }).then(() => {
+    store.dispatch("setCurrentInvoice", { invoiceCode: data.invoiceCode });
+    document.querySelector("body").setAttribute("class", "");
     router.push("/invoices/" + data.invoiceCode);
     store.dispatch("layout/showModals", { currentView: "" });
   });
@@ -718,6 +786,15 @@ function generateInvoiceIndentifier() {
   return `${letter1}${letter2}${Math.floor(Math.random() * 9)}${Math.floor(
     Math.random() * 9
   )}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`;
+}
+
+function computeBigTotal(items) {
+  let bigToal = 0;
+  items.forEach((item) => {
+    bigToal += +item.price.value * +item.quantity.value;
+  });
+
+  return bigToal;
 }
 </script>
 <style lang="scss" scoped>

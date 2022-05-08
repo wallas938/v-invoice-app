@@ -29,20 +29,20 @@ export default createStore({
                     toCountry: 'United Kingdom',
                     invoiceDate: '21 Aug 2021',
                     status: 'Paid',
-                    due: 'Due 20 Sep 2021',
+                    due: 30,
                     desc: 'Graphic Design',
                     items: [
                         {
                             itemName: 'Banner Design',
-                            quantity: '1',
-                            price: '156',
-                            total: '1'
+                            quantity: 1,
+                            price: 156,
+                            total: 1
                         },
                         {
                             itemName: 'Email Design',
-                            quantity: '2',
-                            price: '200',
-                            total: '400'
+                            quantity: 2,
+                            price: 200,
+                            total: 400
                         },
                     ],
                     totalAmount: '£ 1,800.90',
@@ -61,7 +61,7 @@ export default createStore({
                     toCountry: 'United Kingdom',
                     invoiceDate: '21 Aug 2021',
                     status: 'Pending',
-                    due: 'Due 20 Sep 2021',
+                    due: 1,
                     desc: 'Graphic Design',
                     items: [],
                     totalAmount: '£ 556.00',
@@ -80,7 +80,7 @@ export default createStore({
                     toCountry: 'United Kingdom',
                     invoiceDate: '21 Aug 2021',
                     status: 'Paid',
-                    due: 'Due 01 Oct 2021',
+                    due: 30,
                     desc: 'Graphic Design',
                     items: [],
                     totalAmount: '£ 14,002.33',
@@ -99,7 +99,7 @@ export default createStore({
                     toCountry: 'United Kingdom',
                     invoiceDate: '21 Aug 2021',
                     status: 'Pending',
-                    due: 'Due 12 Oct 2021',
+                    due: 14,
                     desc: 'Graphic Design',
                     items: [],
                     totalAmount: '£ 102.04',
@@ -118,7 +118,7 @@ export default createStore({
                     toCountry: 'United Kingdom',
                     invoiceDate: '21 Aug 2021',
                     status: 'Draft',
-                    due: 'Due 12 Nov 2021',
+                    due: 30,
                     desc: 'Graphic Design',
                     items: [],
                     totalAmount: '£ 3,102.04',

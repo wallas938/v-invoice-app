@@ -16,14 +16,12 @@
           <p>Status</p>
           <VStatusIndicator class="statusInd" :status="invoice.status" />
           <div class="cta hide-for-mobile">
-            <button class="edit">Edit</button>
-            <button class="delete" @click="removeInvoice(invoice.invoiceCode)">
-              Delete
-            </button>
+            <button class="edit" @click="editInvoice">Edit</button>
+            <button class="delete" @click="removeInvoice()">Delete</button>
             <button
-              v-if="isPaid(invoice.status)"
+              v-if="!invoiceIsPaid"
               class="mark-as-paid"
-              @click="markAsPaid(invoice.invoiceCode)"
+              @click="markAsPaid"
             >
               Mark as Paid
             </button>
@@ -63,7 +61,9 @@
           </div>
           <div class="due">
             <p class="label">Payment Due</p>
-            <p class="date">{{ invoice.due }}</p>
+            <p class="date">
+              {{ "Due " + formatDate(Date.now() + 8.64e7 * invoice.due) }}
+            </p>
           </div>
           <div class="sent-to">
             <p class="label">Sent to</p>
@@ -80,32 +80,28 @@
                 <small class="head-price">Price</small>
                 <small class="head-total">Total</small>
               </div>
-              <div class="item">
-                <p class="name">Banner Design</p>
+              <div
+                class="item"
+                v-for="(item, index) in invoice.items"
+                :key="index"
+              >
+                <p class="name">{{ item.itemName }}</p>
                 <p class="qty">
-                  1<span class="hide-for-tablet-and-desktop">x</span>
+                  {{ item.quantity
+                  }}<span class="hide-for-tablet-and-desktop">x</span>
                   <span class="price hide-for-tablet-and-desktop"
-                    >£ 156.00</span
+                    >£ {{ item.price }}</span
                   >
                 </p>
-                <p class="price hide-for-mobile">£ 156.00</p>
-                <p class="total">£ 156.00</p>
-              </div>
-              <div class="item">
-                <p class="name">Email Design</p>
-                <p class="qty">
-                  2<span class="hide-for-tablet-and-desktop">x</span>
-                  <span class="price hide-for-tablet-and-desktop"
-                    >£ 200.00</span
-                  >
+                <p class="price hide-for-mobile">£ {{ item.price }}</p>
+                <p class="total">
+                  £ {{ (item.quantity * item.price).toFixed(2) }}
                 </p>
-                <p class="price hide-for-mobile">£ 200.00</p>
-                <p class="total">£ 400.00</p>
               </div>
             </div>
             <div class="footer">
               <p class="amount-due">Amount Due</p>
-              <p class="big-total">£ 556.00</p>
+              <p class="big-total">£ {{ getBigTotal }}</p>
             </div>
           </div>
         </div>
@@ -114,9 +110,11 @@
 
     <v-container class="mobile-cta-container hide-for-tablet-and-desktop">
       <div class="cta">
-        <button class="edit">Edit</button>
+        <button class="edit" @click="editInvoice">Edit</button>
         <button class="delete" @click="removeInvoice">Delete</button>
-        <button class="mark-as-paid">Mark as Paid</button>
+        <button v-if="!invoiceIsPaid" class="mark-as-paid" @click="markAsPaid">
+          Mark as Paid
+        </button>
       </div>
     </v-container>
   </div>
@@ -133,6 +131,7 @@ const route = useRoute();
 
 // COMPUTED
 const invoice = computed(() => store.getters.invoice);
+
 if (!invoice.value) {
   router
     .push({
@@ -142,7 +141,20 @@ if (!invoice.value) {
       store.dispatch("setCurrentInvoice", { invoiceCode: null });
     });
 }
+
+const invoiceIsPaid = computed(() =>
+  invoice.value.status === "Paid" ? true : false
+);
+
 const currentMode = computed(() => store.getters["layout/currentMode"]);
+
+const getBigTotal = computed(() => {
+  let total = 0;
+  invoice.value.items.forEach((item) => {
+    total += item.quantity * item.price;
+  });
+  return total.toFixed(2);
+});
 
 // FUNCITONS
 function getStatusColor(status) {
@@ -156,24 +168,45 @@ function getStatusColor(status) {
   }
 }
 
-function removeInvoice(invoiceCode) {
-  store.dispatch("removeInvoice", { invoiceCode: invoiceCode });
+function removeInvoice() {
+  console.log(invoice.value.invoiceCode);
+  store.dispatch("removeInvoice", { invoiceCode: invoice.value.invoiceCode });
   router
     .push({
       path: "/",
     })
     .then(() => {
       store.dispatch("setCurrentInvoice", { invoiceCode: null });
-      console.log(store.getters.invoice);
     });
 }
 
-function isPaid(status) {
-  return status === "Paid" ? false : true;
+function markAsPaid() {
+  store.dispatch("markAsPaid", { invoiceCode: invoice.value.invoiceCode });
 }
 
-function markAsPaid(invoiceCode) {
-  store.dispatch("markAsPaid", { invoiceCode: invoiceCode });
+function editInvoice() {
+  document.querySelector("body").setAttribute("class", "remove-scroll");
+  store.dispatch("layout/setFormMode", { form_mode_is_edit: true });
+  store.dispatch("setCurrentInvoice", {
+    invoiceCode: invoice.value.invoiceCode,
+  });
+  store.dispatch("layout/showModals", { currentView: "invoice-form" });
+}
+
+function formatDate(toFormat) {
+  const day =
+    new Date(toFormat).getDate().toString().length === 1
+      ? "0" + new Date(toFormat).getDate()
+      : new Date(toFormat).getDate();
+  return (
+    day +
+    " " +
+    new Date(toFormat).toLocaleDateString("en-US", {
+      month: "short",
+    }) +
+    " " +
+    new Date(toFormat).getUTCFullYear()
+  );
 }
 </script>
 

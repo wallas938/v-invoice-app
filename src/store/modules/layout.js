@@ -4,7 +4,8 @@ export default {
         currentMode: 'light',
         showModals: false,
         currentView: '',
-        currentViewHeight: '100%'
+        currentViewHeight: '100%',
+        form_mode_is_edit: false
     }),
     getters: {
         currentMode(state) {
@@ -18,6 +19,9 @@ export default {
         },
         currentViewHeight(state) {
             return state.currentViewHeight;
+        },
+        form_mode_is_edit(state) {
+            return state.form_mode_is_edit;
         }
     },
     mutations: {
@@ -32,7 +36,10 @@ export default {
         },
         SET_FORM_HEIGHT(state, payload) {
             state.currentViewHeight = payload.currentViewHeight;
-        }
+        },
+        SET_FORM_MODE(state, payload) {
+            state.form_mode_is_edit = payload.form_mode_is_edit;
+        },
 
     },
     actions: {
@@ -46,6 +53,10 @@ export default {
         },
         setCurrentViewHeight(context, payload) {
             context.commit('SET_FORM_HEIGHT', { currentViewHeight: payload.currentViewHeight })
-        }
+        },
+        setFormMode(context, payload) {
+            context.commit('SET_FORM_MODE', { form_mode_is_edit: payload.form_mode_is_edit })
+        },
+
     },
 };

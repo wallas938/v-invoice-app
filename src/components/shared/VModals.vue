@@ -3,11 +3,7 @@
     class="modals-container"
     :class="{ '--bg-position': getCurrentView === 'invoice-form' }"
   >
-    <div
-      class="backdrop"
-      @click="closeForm"
-      :style="{ height: getCurrentViewHeight }"
-    ></div>
+    <div class="backdrop" @click="closeForm"></div>
     <component :is="setView"></component>
     <!-- <invoice-form></invoice-form> -->
   </div>
@@ -28,9 +24,9 @@ const setView = computed(() => {
 
 const getCurrentView = computed(() => store.getters["layout/currentView"]);
 
-const getCurrentViewHeight = computed(
+/* const getCurrentViewHeight = computed(
   () => store.getters["layout/currentViewHeight"]
-);
+); */
 
 // FUNCTIONS
 function closeForm() {
@@ -50,12 +46,7 @@ function closeForm() {
   background-color: rgba(#000, 0.25);
   overflow-y: scroll;
   .backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
+    background-color: red;
   }
 
   &.--bg-position {

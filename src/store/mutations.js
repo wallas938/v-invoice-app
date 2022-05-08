@@ -13,6 +13,5 @@ export default {
     },
     ADD_NEW_INVOICE(state, payload) {
         state.invoices = payload.invoices;
-        console.log(state);
     }
 }
