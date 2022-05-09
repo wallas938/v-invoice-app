@@ -8,8 +8,6 @@ export default {
         commit('UPDATE_FILTERS', { filters: filters });
     },
     removeInvoice({ dispatch, commit, getters, rootGetters }, payload) {
-        /* add a new filter or remove it if it was already added */
-        console.log(payload.invoiceCode);
         const invoices = [...getters.invoices]
             .filter(invoice => {
                 return invoice.invoiceCode !== payload.invoiceCode;

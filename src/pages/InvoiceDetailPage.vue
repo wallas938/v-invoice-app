@@ -101,7 +101,7 @@
             </div>
             <div class="footer">
               <p class="amount-due">Amount Due</p>
-              <p class="big-total">£ {{ getBigTotal }}</p>
+              <p class="big-total">{{ invoice.totalAmount }}</p>
             </div>
           </div>
         </div>
@@ -130,9 +130,8 @@ const router = useRouter();
 const route = useRoute();
 
 // COMPUTED
-const invoice = computed(() => store.getters.invoice);
 
-if (!invoice.value) {
+if (!store.getters.invoice) {
   router
     .push({
       path: "/",
@@ -142,34 +141,17 @@ if (!invoice.value) {
     });
 }
 
+const invoice = computed(() => store.getters.invoice);
+
 const invoiceIsPaid = computed(() =>
   invoice.value.status === "Paid" ? true : false
 );
 
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
-const getBigTotal = computed(() => {
-  let total = 0;
-  invoice.value.items.forEach((item) => {
-    total += item.quantity * item.price;
-  });
-  return total.toFixed(2);
-});
-
 // FUNCITONS
-function getStatusColor(status) {
-  switch (status.toLowerCase()) {
-    case "paid":
-      return "status--paid";
-    case "pending":
-      return "status--pending";
-    case "draft":
-      return "status--draft";
-  }
-}
 
 function removeInvoice() {
-  console.log(invoice.value.invoiceCode);
   store.dispatch("removeInvoice", { invoiceCode: invoice.value.invoiceCode });
   router
     .push({
