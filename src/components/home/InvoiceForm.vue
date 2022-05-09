@@ -378,13 +378,13 @@
             <label class="label hide-for-tablet-and-desktop" for="item-price"
               >Price</label
             >
+            <!-- @blur="formatNumber(item.price.value, index)" -->
             <input
               type="text"
               :value="item.price.value"
               :class="{
                 '--input-error': item.price.status === 'invalid',
               }"
-              @blur="formatNumber(item.price.value, index)"
               @input="itemInputHandler($event, index, 'price')"
             />
           </div>
@@ -445,6 +445,7 @@ import { required, email } from "@vuelidate/validators";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { toNumber } from "@vue/shared";
 const store = useStore();
 const router = useRouter();
 
@@ -629,13 +630,13 @@ function checkItemInput(value, index, fieldName) {
   });
 }
 
-function formatNumber(value, index) {
+/* function formatNumber(value, index) {
   itemFields.value = itemFields.value.map((item, i) => {
     if (i !== index) return item;
-    item.price.value = isNaN(+value) || !value ? "0.00" : value;
+    item.price.value = isNaN(+value) || !value ? "0.00" : +value.toFixed(2);
     return item;
   });
-}
+} */
 
 // GERER LES INPUTS
 function itemInputHandler(event, index, fieldName) {
@@ -765,11 +766,11 @@ function submitForm() {
       return {
         itemName: item.itemName.value,
         quantity: item.quantity.value,
-        price: item.price.value,
+        price: toNumber(item.price.value).toFixed(2),
         total: +item.price.value * +item.quantity.value,
       };
     }),
-    totalAmount: computeBigTotal(itemFields.value),
+    totalAmount: `£ ${toDollarsCurrency(computeBigTotal(itemFields.value))}`,
   };
 
   store.dispatch("addInvoice", { invoice: data }).then(() => {
@@ -795,6 +796,33 @@ function computeBigTotal(items) {
   });
 
   return bigToal;
+}
+
+function toDollarsCurrency(value) {
+  if (isNaN(+value)) return;
+  const num = value.toFixed(2);
+  if (num.includes(".")) {
+    let dotIndex = num.indexOf(".");
+    const entiers = num.substring(0, dotIndex);
+    let arr = entiers.split("");
+    if (entiers.length >= 10) {
+      arr.splice(-3, 0, ",");
+      arr.splice(-7, 0, ",");
+      arr.splice(-10, 0, ",");
+      return arr.join("") + num.substring(dotIndex);
+    } else if (entiers.length >= 7) {
+      arr.splice(-3, 0, ",");
+      arr.splice(-7, 0, ",");
+      return arr.join("") + num.substring(dotIndex);
+    } else if (entiers.length >= 4) {
+      arr.splice(-3, 0, ",");
+      return arr.join("") + num.substring(dotIndex);
+    } else {
+      return arr.join("") + num.substring(dotIndex);
+    }
+  }
+
+  return num;
 }
 </script>
 <style lang="scss" scoped>
