@@ -1,9 +1,12 @@
 <template>
   <div
     class="modals-container"
-    :class="{ '--bg-position': getCurrentView === 'invoice-form' }"
+    :class="{
+      '--bg-position': getCurrentView === 'invoice-form',
+      '--bg-prompt': getCurrentView === 'deletion-prompt',
+    }"
   >
-    <div class="backdrop" @click="closeForm"></div>
+    <!-- <div class="backdrop" @click="closeForm"></div> -->
     <component :is="setView"></component>
     <!-- <invoice-form></invoice-form> -->
   </div>
@@ -12,6 +15,7 @@
 import { computed, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import InvoiceForm from "../home/InvoiceForm.vue";
+import DeletionPrompt from "../invoice-detail/DeletionPrompt.vue";
 
 const store = useStore();
 
@@ -19,6 +23,8 @@ const store = useStore();
 const setView = computed(() => {
   if (getCurrentView.value === "invoice-form") {
     return InvoiceForm;
+  } else if (getCurrentView.value === "deletion-prompt") {
+    return DeletionPrompt;
   }
 });
 
@@ -45,10 +51,10 @@ function closeForm() {
   /* min-height: 100%; */
   background-color: rgba(#000, 0.25);
   overflow-y: scroll;
-  .backdrop {
-    background-color: red;
-  }
 
+  &.--bg-prompt {
+    z-index: 10;
+  }
   &.--bg-position {
     top: 4rem;
 

@@ -17,7 +17,7 @@
           <VStatusIndicator class="statusInd" :status="invoice.status" />
           <div class="cta hide-for-mobile">
             <button class="edit" @click="editInvoice">Edit</button>
-            <button class="delete" @click="removeInvoice()">Delete</button>
+            <button class="delete" @click="promptBeforeRemoval">Delete</button>
             <button
               v-if="!invoiceIsPaid"
               class="mark-as-paid"
@@ -29,7 +29,6 @@
         </div>
       </v-container>
     </div>
-
     <v-container class="detail-container">
       <div class="detail">
         <div class="top-from-container">
@@ -111,7 +110,7 @@
     <v-container class="mobile-cta-container hide-for-tablet-and-desktop">
       <div class="cta">
         <button class="edit" @click="editInvoice">Edit</button>
-        <button class="delete" @click="removeInvoice">Delete</button>
+        <button class="delete" @click="promptBeforeRemoval">Delete</button>
         <button v-if="!invoiceIsPaid" class="mark-as-paid" @click="markAsPaid">
           Mark as Paid
         </button>
@@ -121,13 +120,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
 const router = useRouter();
-const route = useRoute();
 
 // COMPUTED
 
@@ -146,20 +144,14 @@ const invoice = computed(() => store.getters.invoice);
 const invoiceIsPaid = computed(() =>
   invoice.value.status === "Paid" ? true : false
 );
-
+const getCurrentView = computed(() => store.getters["layout/currentView"]);
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 // FUNCITONS
 
-function removeInvoice() {
-  store.dispatch("removeInvoice", { invoiceCode: invoice.value.invoiceCode });
-  router
-    .push({
-      path: "/",
-    })
-    .then(() => {
-      store.dispatch("setCurrentInvoice", { invoiceCode: null });
-    });
+function promptBeforeRemoval() {
+  document.querySelector("body").setAttribute("class", "remove-scroll");
+  store.dispatch("layout/showModals", { currentView: "deletion-prompt" });
 }
 
 function markAsPaid() {
