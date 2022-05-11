@@ -630,14 +630,6 @@ function checkItemInput(value, index, fieldName) {
   });
 }
 
-/* function formatNumber(value, index) {
-  itemFields.value = itemFields.value.map((item, i) => {
-    if (i !== index) return item;
-    item.price.value = isNaN(+value) || !value ? "0.00" : +value.toFixed(2);
-    return item;
-  });
-} */
-
 // GERER LES INPUTS
 function itemInputHandler(event, index, fieldName) {
   checkItemInput(event.target.value, index, fieldName);
