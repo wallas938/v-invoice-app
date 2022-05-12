@@ -22,7 +22,11 @@ const showModals = computed(() => store.getters["layout/showModals"]);
     <teleport to="body">
       <v-modals v-if="showModals"></v-modals>
     </teleport>
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <transition name="page-animation" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -40,6 +44,16 @@ const showModals = computed(() => store.getters["layout/showModals"]);
 
 .--dark-mode {
   background-color: $black-3;
+}
+
+.page-animation-enter-from,
+.page-animation-leave-to {
+  opacity: 0;
+}
+
+.page-animation-enter-active,
+.page-animation-leave-active {
+  transition: all 0.25s ease;
 }
 
 @media screen and (min-width: $desktop-min) {

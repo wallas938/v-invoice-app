@@ -6,13 +6,26 @@
       '--bg-prompt': getCurrentView === 'deletion-prompt',
     }"
   >
-    <!-- <div class="backdrop" @click="closeForm"></div> -->
-    <component :is="setView"></component>
-    <!-- <invoice-form></invoice-form> -->
+    <transition
+      enter-active-class="animate__animated animate__fadeInLeft animate__faster"
+      leave-active-class="animate__animated animate__fadeOutLeft animate__faster"
+      appear
+    >
+      <invoice-form v-if="getCurrentView === 'invoice-form'"></invoice-form>
+    </transition>
+    <transition
+      enter-active-class="animate__animated animate__fadeIn animate__faster"
+      leave-active-class="animate__animated animate__fadeOut animate__faster"
+      appear
+    >
+      <deletion-prompt
+        v-if="getCurrentView === 'deletion-prompt'"
+      ></deletion-prompt>
+    </transition>
   </div>
 </template>
 <script setup>
-import { computed, reactive, onMounted } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import InvoiceForm from "../home/InvoiceForm.vue";
 import DeletionPrompt from "../invoice-detail/DeletionPrompt.vue";
@@ -20,25 +33,8 @@ import DeletionPrompt from "../invoice-detail/DeletionPrompt.vue";
 const store = useStore();
 
 // COMPUTED
-const setView = computed(() => {
-  if (getCurrentView.value === "invoice-form") {
-    return InvoiceForm;
-  } else if (getCurrentView.value === "deletion-prompt") {
-    return DeletionPrompt;
-  }
-});
 
 const getCurrentView = computed(() => store.getters["layout/currentView"]);
-
-/* const getCurrentViewHeight = computed(
-  () => store.getters["layout/currentViewHeight"]
-); */
-
-// FUNCTIONS
-function closeForm() {
-  document.querySelector("body").classList.remove("remove-scroll");
-  store.dispatch("layout/showModals", { currentView: "" });
-}
 </script>
 <style lang="scss" scoped>
 @import "../../sass/variables";
