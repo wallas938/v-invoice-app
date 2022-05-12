@@ -20,7 +20,13 @@
       >
     </div>
 
-    <div class="no-empty-list" data-test="no-empty-list" v-else>
+    <TransitionGroup
+      tag="div"
+      name="list"
+      class="no-empty-list"
+      data-test="no-empty-list"
+      v-else
+    >
       <v-container
         class="item-container"
         v-for="invoice in invoices"
@@ -51,7 +57,7 @@
           </div>
         </div>
       </v-container>
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -286,6 +292,16 @@ function formatDate(toFormat) {
       }
     }
   }
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px) scale(0.7);
 }
 
 @media screen and (min-width: $tablet-min) {

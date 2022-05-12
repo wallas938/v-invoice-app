@@ -417,12 +417,12 @@
       </div>
       <div class="form-cta">
         <div class="cell cancel-cell">
-          <button class="cancel" @click="closeForm">
+          <button type="button" class="cancel" @click="closeForm">
             {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
           </button>
         </div>
         <div v-if="!form_mode_is_edit" class="cell draft-cell">
-          <button class="draft">Save as Draft</button>
+          <button type="button" class="draft">Save as Draft</button>
         </div>
         <div class="cell save-cell">
           <!-- :disabled="!isFormIsValid" -->

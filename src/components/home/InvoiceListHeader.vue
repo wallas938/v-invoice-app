@@ -36,74 +36,80 @@
             fill-rule="evenodd"
           />
         </svg>
-        <div data-test="filter-dropdown" v-if="showFilter" class="dropdown">
-          <div class="check draft" @click="onCheck('draft')">
-            <span
-              class="square draft-checkbox"
-              :class="{ '--checked': isChecked('draft') }"
-            >
-              <svg
-                v-if="isChecked('draft')"
-                width="10"
-                height="8"
-                xmlns="http://www.w3.org/2000/svg"
+        <transition
+          enter-active-class="animate__animated animate__fadeInDown animate__faster"
+          leave-active-class="animate__animated animate__fadeOutUp animate__faster"
+          appear
+        >
+          <div data-test="filter-dropdown" v-if="showFilter" class="dropdown">
+            <div class="check draft" @click="onCheck('draft')">
+              <span
+                class="square draft-checkbox"
+                :class="{ '--checked': isChecked('draft') }"
               >
-                <path
-                  d="M1.5 4.5l2.124 2.124L8.97 1.28"
-                  stroke="#FFF"
-                  stroke-width="2"
-                  fill="none"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </span>
-            <span class="value">Draft</span>
-          </div>
-          <div class="check pending" @click="onCheck('pending')">
-            <span
-              class="square pending-checkbox"
-              :class="{ '--checked': isChecked('pending') }"
-            >
-              <svg
-                v-if="isChecked('pending')"
-                width="10"
-                height="8"
-                xmlns="http://www.w3.org/2000/svg"
+                <svg
+                  v-if="isChecked('draft')"
+                  width="10"
+                  height="8"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.5 4.5l2.124 2.124L8.97 1.28"
+                    stroke="#FFF"
+                    stroke-width="2"
+                    fill="none"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span class="value">Draft</span>
+            </div>
+            <div class="check pending" @click="onCheck('pending')">
+              <span
+                class="square pending-checkbox"
+                :class="{ '--checked': isChecked('pending') }"
               >
-                <path
-                  d="M1.5 4.5l2.124 2.124L8.97 1.28"
-                  stroke="#FFF"
-                  stroke-width="2"
-                  fill="none"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </span>
-            <span class="value">Pending</span>
-          </div>
-          <div class="check paid" @click="onCheck('paid')">
-            <span
-              class="square paid-checkbox"
-              :class="{ '--checked': isChecked('paid') }"
-            >
-              <svg
-                v-if="isChecked('paid')"
-                width="10"
-                height="8"
-                xmlns="http://www.w3.org/2000/svg"
+                <svg
+                  v-if="isChecked('pending')"
+                  width="10"
+                  height="8"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.5 4.5l2.124 2.124L8.97 1.28"
+                    stroke="#FFF"
+                    stroke-width="2"
+                    fill="none"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span class="value">Pending</span>
+            </div>
+            <div class="check paid" @click="onCheck('paid')">
+              <span
+                class="square paid-checkbox"
+                :class="{ '--checked': isChecked('paid') }"
               >
-                <path
-                  d="M1.5 4.5l2.124 2.124L8.97 1.28"
-                  stroke="#FFF"
-                  stroke-width="2"
-                  fill="none"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </span>
-            <span class="value">Paid</span>
+                <svg
+                  v-if="isChecked('paid')"
+                  width="10"
+                  height="8"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.5 4.5l2.124 2.124L8.97 1.28"
+                    stroke="#FFF"
+                    stroke-width="2"
+                    fill="none"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span class="value">Paid</span>
+            </div>
           </div>
-        </div>
+        </transition>
       </div>
       <div class="link-to-form" @click="showForm">
         <div class="wrapper">
