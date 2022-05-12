@@ -343,97 +343,99 @@
           <label class="col-name col-price">Price</label>
           <label class="col-name col-total">Total</label>
         </div>
-        <div
-          v-for="(item, index) in itemFields"
-          :key="index"
-          class="item item__fields"
-        >
-          <div class="field item__name">
-            <label class="label hide-for-tablet-and-desktop" for="item-name"
-              >Item Name</label
-            >
-            <input
-              type="text"
-              :class="{
-                '--input-error': item.itemName.status === 'invalid',
-              }"
-              :value="item.itemName.value"
-              @input="itemInputHandler($event, index, 'itemName')"
-            />
-          </div>
-          <div class="field item__qty">
-            <label class="label hide-for-tablet-and-desktop" for="item-qty"
-              >Qty.</label
-            >
-            <input
-              type="text"
-              :value="item.quantity.value"
-              :class="{
-                '--input-error': item.quantity.status === 'invalid',
-              }"
-              @input="itemInputHandler($event, index, 'quantity')"
-            />
-          </div>
-          <div class="field item__price">
-            <label class="label hide-for-tablet-and-desktop" for="item-price"
-              >Price</label
-            >
-            <!-- @blur="formatNumber(item.price.value, index)" -->
-            <input
-              type="text"
-              :value="item.price.value"
-              :class="{
-                '--input-error': item.price.status === 'invalid',
-              }"
-              @input="itemInputHandler($event, index, 'price')"
-            />
-          </div>
-          <div class="field item__total">
-            <label class="label hide-for-tablet-and-desktop" for="item-total"
-              >Total</label
-            >
-            <input
-              type="text"
-              :value="computeTotal(item.price.value, item.quantity.value)"
-            />
-          </div>
-          <div class="field item__remove" @click="removeItem(index)">
-            <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11.583 3.556v10.666c0 .982-.795 1.778-1.777 1.778H2.694a1.777 1.777 0 01-1.777-1.778V3.556h10.666zM8.473 0l.888.889h3.111v1.778H.028V.889h3.11L4.029 0h4.444z"
-                fill="#888EB0"
-                fill-rule="nonzero"
+        <transition-group name="item">
+          <div
+            v-for="(item, index) in itemFields"
+            :key="index"
+            class="item item__fields"
+          >
+            <div class="field item__name">
+              <label class="label hide-for-tablet-and-desktop" for="item-name"
+                >Item Name</label
+              >
+              <input
+                type="text"
+                :class="{
+                  '--input-error': item.itemName.status === 'invalid',
+                }"
+                :value="item.itemName.value"
+                @input="itemInputHandler($event, index, 'itemName')"
               />
-            </svg>
+            </div>
+            <div class="field item__qty">
+              <label class="label hide-for-tablet-and-desktop" for="item-qty"
+                >Qty.</label
+              >
+              <input
+                type="text"
+                :value="item.quantity.value"
+                :class="{
+                  '--input-error': item.quantity.status === 'invalid',
+                }"
+                @input="itemInputHandler($event, index, 'quantity')"
+              />
+            </div>
+            <div class="field item__price">
+              <label class="label hide-for-tablet-and-desktop" for="item-price"
+                >Price</label
+              >
+              <!-- @blur="formatNumber(item.price.value, index)" -->
+              <input
+                type="text"
+                :value="item.price.value"
+                :class="{
+                  '--input-error': item.price.status === 'invalid',
+                }"
+                @input="itemInputHandler($event, index, 'price')"
+              />
+            </div>
+            <div class="field item__total">
+              <label class="label hide-for-tablet-and-desktop" for="item-total"
+                >Total</label
+              >
+              <input
+                type="text"
+                :value="computeTotal(item.price.value, item.quantity.value)"
+              />
+            </div>
+            <div class="field item__remove" @click="removeItem(index)">
+              <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M11.583 3.556v10.666c0 .982-.795 1.778-1.777 1.778H2.694a1.777 1.777 0 01-1.777-1.778V3.556h10.666zM8.473 0l.888.889h3.111v1.778H.028V.889h3.11L4.029 0h4.444z"
+                  fill="#888EB0"
+                  fill-rule="nonzero"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
+        </transition-group>
         <div class="item-cta">
           <button type="button" @click="addItem">+ Add New Item</button>
         </div>
-      </div>
-      <div class="form-error-alert">
-        <small v-if="v$.$invalid">- All fields must be added</small>
-        <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
-      </div>
-      <div class="form-cta">
-        <div class="cell cancel-cell">
-          <button type="button" class="cancel" @click="closeForm">
-            {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
-          </button>
+        <div class="form-error-alert">
+          <small v-if="v$.$invalid">- All fields must be added</small>
+          <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
         </div>
-        <div v-if="!form_mode_is_edit" class="cell draft-cell">
-          <button type="button" class="draft">Save as Draft</button>
-        </div>
-        <div class="cell save-cell">
-          <!-- :disabled="!isFormIsValid" -->
-          <button
-            type="button"
-            class="save"
-            :disabled="!isFormIsValid"
-            @click="submitForm"
-          >
-            {{ !form_mode_is_edit ? "Save & Send" : "Save Changes" }}
-          </button>
+        <div class="form-cta">
+          <div class="cell cancel-cell">
+            <button type="button" class="cancel" @click="closeForm">
+              {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
+            </button>
+          </div>
+          <div v-if="!form_mode_is_edit" class="cell draft-cell">
+            <button type="button" class="draft">Save as Draft</button>
+          </div>
+          <div class="cell save-cell">
+            <!-- :disabled="!isFormIsValid" -->
+            <button
+              type="button"
+              class="save"
+              :disabled="!isFormIsValid"
+              @click="submitForm"
+            >
+              {{ !form_mode_is_edit ? "Save & Send" : "Save Changes" }}
+            </button>
+          </div>
         </div>
       </div>
     </form>
@@ -918,10 +920,7 @@ function toDollarsCurrency(value) {
 
   .from,
   .to,
-  .invoice,
-  .item-list {
-    margin-bottom: 2.222222rem;
-
+  .invoice {
     .field:not(:last-child) {
       margin-bottom: 1.333333rem;
     }
@@ -1023,6 +1022,12 @@ function toDollarsCurrency(value) {
         cursor: pointer;
       }
 
+      .select-wrapper::after {
+        content: url("../../assets/icon-arrow-down.svg");
+        position: absolute;
+        right: 0.863333rem; // 15.64px
+      }
+
       .select-wrapper > .options {
         position: absolute;
         top: 2.666666rem + 0.444444rem;
@@ -1093,6 +1098,7 @@ function toDollarsCurrency(value) {
 
       .item__name {
         grid-area: name;
+        margin-bottom: 1.333333rem;
       }
       .item__qty {
         grid-area: qty;
@@ -1115,8 +1121,8 @@ function toDollarsCurrency(value) {
         grid-area: cta;
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: flex-end;
+        padding-top: 2.166666rem; // 39px
       }
 
       .item__remove > svg {
@@ -1154,7 +1160,6 @@ function toDollarsCurrency(value) {
     flex-direction: column;
     justify-content: flex-start;
     margin-bottom: 1.333333rem;
-    padding: 0 1.333333rem;
     small {
       font-style: normal;
       font-weight: 600;
@@ -1170,7 +1175,7 @@ function toDollarsCurrency(value) {
     grid-template-columns: repeat(3, auto);
     grid-template-rows: 1fr;
     grid-template-areas: "cancel draft save";
-    padding: 1.166666rem 1.333333rem 1.222222rem 1.333333rem;
+    padding: 1.166666rem 0 1.222222rem 0;
     column-gap: 0.388888rem;
     justify-content: flex-end;
     .cell {
@@ -1440,6 +1445,16 @@ function toDollarsCurrency(value) {
   }
 }
 
+.item-enter-active,
+.item-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+.item-enter-from,
+.item-leave-to {
+  opacity: 0;
+  transform: translateX(-30px) scale(0.9);
+}
+
 @media screen and (min-width: $tablet-min) {
   .root {
     padding-top: 3.111111rem; // 56 px
@@ -1549,8 +1564,6 @@ function toDollarsCurrency(value) {
     }
 
     .item-list {
-      margin-bottom: 2.611111rem;
-
       .item__fields {
         display: grid;
         margin-bottom: 1rem;
@@ -1581,6 +1594,8 @@ function toDollarsCurrency(value) {
         }
         .item__remove {
           grid-area: cta;
+          align-items: center;
+          padding-top: 0;
         }
       }
     }
@@ -1590,7 +1605,7 @@ function toDollarsCurrency(value) {
     }
 
     .form-error-alert {
-      padding: 0 3.111111rem;
+      padding: 0 0;
     }
 
     .form-cta {
@@ -1598,7 +1613,7 @@ function toDollarsCurrency(value) {
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      padding: 0 3.111111rem 1.777777rem 3.111111rem;
+      padding: 0 0 1.777777rem 0;
       column-gap: 0.444444rem;
       justify-content: flex-end;
 
@@ -1722,7 +1737,7 @@ function toDollarsCurrency(value) {
     }
 
     .item-list {
-      margin-bottom: 2.611111rem;
+      margin-bottom: 0;
 
       .item__fields {
         display: grid;
@@ -1763,7 +1778,7 @@ function toDollarsCurrency(value) {
     }
 
     .form-error-alert {
-      padding: 0 8.833333rem;
+      padding: 0;
     }
 
     .form-cta {
@@ -1771,7 +1786,7 @@ function toDollarsCurrency(value) {
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      padding: 0 3.111111rem 1.777777rem 8.833333rem;
+      padding: 0 0 1.777777rem 0;
       column-gap: 0.444444rem;
       justify-content: flex-end;
 
