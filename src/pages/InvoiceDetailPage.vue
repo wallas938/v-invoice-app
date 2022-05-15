@@ -86,10 +86,13 @@
               >
                 <p class="name">{{ item.itemName }}</p>
                 <p class="qty">
-                  {{ item.quantity
-                  }}<span class="hide-for-tablet-and-desktop">x</span>
-                  <span class="price hide-for-tablet-and-desktop"
-                    >£ {{ item.price }}</span
+                  {{ item.quantity }}
+                  <span class="hide-for-tablet-and-desktop">x</span>
+                  <span class="price hide-for-tablet-and-desktop">
+                    £
+                    {{
+                      item.price ? item.price.toFixed(2) : (0).toFixed(2)
+                    }}</span
                   >
                 </p>
                 <p class="price hide-for-mobile">£ {{ item.price }}</p>
@@ -125,7 +128,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -148,7 +151,6 @@ const invoice = computed(() => store.getters.invoice);
 const invoiceIsPending = computed(() =>
   invoice.value.status === "Pending" ? true : false
 );
-const getCurrentView = computed(() => store.getters["layout/currentView"]);
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 // FUNCITONS
@@ -216,7 +218,7 @@ function formatDate(toFormat) {
   }
 
   .status-container {
-    padding: 1.333333rem; // 24px
+    padding: 1.333333rem 1.333333rem 1.5rem 1.333333rem; // 24px 24px 27px 24px
     margin: 0 1.333333rem 0.888888rem 1.333333rem;
     > .wrapper {
       display: flex;
@@ -570,7 +572,7 @@ function formatDate(toFormat) {
           }
 
           .price {
-            color: $black-2;
+            color: $light-violet;
           }
         }
       }
@@ -712,11 +714,11 @@ function formatDate(toFormat) {
           }
 
           .qty {
-            color: #fff;
+            color: $violet-gray;
           }
 
           .price {
-            color: #fff;
+            color: $violet-gray;
           }
 
           .total {
