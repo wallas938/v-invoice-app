@@ -19,7 +19,7 @@
             <button class="edit" @click="editInvoice">Edit</button>
             <button class="delete" @click="promptBeforeRemoval">Delete</button>
             <button
-              v-if="!invoiceIsPaid"
+              v-if="invoiceIsPending"
               class="mark-as-paid"
               @click="markAsPaid"
             >
@@ -111,7 +111,11 @@
       <div class="cta">
         <button class="edit" @click="editInvoice">Edit</button>
         <button class="delete" @click="promptBeforeRemoval">Delete</button>
-        <button v-if="!invoiceIsPaid" class="mark-as-paid" @click="markAsPaid">
+        <button
+          v-if="invoiceIsPending"
+          class="mark-as-paid"
+          @click="markAsPaid"
+        >
           Mark as Paid
         </button>
       </div>
@@ -141,8 +145,8 @@ if (!store.getters.invoice) {
 
 const invoice = computed(() => store.getters.invoice);
 
-const invoiceIsPaid = computed(() =>
-  invoice.value.status === "Paid" ? true : false
+const invoiceIsPending = computed(() =>
+  invoice.value.status === "Pending" ? true : false
 );
 const getCurrentView = computed(() => store.getters["layout/currentView"]);
 const currentMode = computed(() => store.getters["layout/currentMode"]);

@@ -412,30 +412,32 @@
         <div class="item-cta">
           <button type="button" @click="addItem">+ Add New Item</button>
         </div>
-        <div class="form-error-alert">
-          <small v-if="v$.$invalid">- All fields must be added</small>
-          <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
+      </div>
+      <div class="form-error-alert">
+        <small v-if="v$.$invalid">- All fields must be added</small>
+        <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
+      </div>
+      <div class="form-cta">
+        <div class="cell cancel-cell">
+          <button type="button" class="cancel" @click="closeForm">
+            {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
+          </button>
         </div>
-        <div class="form-cta">
-          <div class="cell cancel-cell">
-            <button type="button" class="cancel" @click="closeForm">
-              {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
-            </button>
-          </div>
-          <div v-if="!form_mode_is_edit" class="cell draft-cell">
-            <button type="button" class="draft">Save as Draft</button>
-          </div>
-          <div class="cell save-cell">
-            <!-- :disabled="!isFormIsValid" -->
-            <button
-              type="button"
-              class="save"
-              :disabled="!isFormIsValid"
-              @click="submitForm"
-            >
-              {{ !form_mode_is_edit ? "Save & Send" : "Save Changes" }}
-            </button>
-          </div>
+        <div v-if="!form_mode_is_edit" class="cell draft-cell">
+          <button type="button" class="draft" @click="saveAsDraft">
+            Save as Draft
+          </button>
+        </div>
+        <div class="cell save-cell">
+          <!-- :disabled="!isFormIsValid" -->
+          <button
+            type="button"
+            class="save"
+            :disabled="!isFormIsValid"
+            @click="submitForm"
+          >
+            {{ !form_mode_is_edit ? "Save & Send" : "Save Changes" }}
+          </button>
         </div>
       </div>
     </form>
@@ -562,6 +564,112 @@ onMounted(() => {
 });
 
 // Functions
+
+function saveAsDraft() {
+  const data = {
+    invoiceCode: form_mode_is_edit.value
+      ? currentInvoice.value.invoiceCode
+      : generateInvoiceIndentifier(),
+    fromStreet: v$.value.from.street.$invalid
+      ? "---"
+      : formData.value.from.street,
+    fromCity: v$.value.from.city.$invalid ? "---" : formData.value.from.city,
+    fromPostCode: v$.value.from.postCode.$invalid
+      ? "---"
+      : formData.value.from.postCode,
+    fromCountry: v$.value.from.country.$invalid
+      ? "---"
+      : formData.value.from.country,
+    clientName: v$.value.to.clientName.$invalid
+      ? "---"
+      : formData.value.to.clientName,
+    email: v$.value.to.clientEmail.$invalid
+      ? "---"
+      : formData.value.to.clientEmail,
+    toStreet: v$.value.to.street.$invalid ? "---" : formData.value.to.street,
+    toCity: v$.value.to.city.$invalid ? "---" : formData.value.to.city,
+    toPostCode: v$.value.to.postCode.$invalid
+      ? "---"
+      : formData.value.to.postCode,
+    toCountry: v$.value.from.street.$invalid
+      ? "---"
+      : formData.value.to.country,
+    invoiceDate: formData.value.invoice.date,
+    status: "Draft",
+    due: formData.value.invoice.terms,
+    desc: v$.value.invoice.description.$invalid
+      ? ""
+      : formData.value.invoice.description,
+    items: itemFields.value.map((item, index) => {
+      return {
+        itemName:
+          itemFields.value[index].itemName.status === "pending" ||
+          itemFields.value[index].itemName.status === "invalid"
+            ? "A name is missing"
+            : item.itemName.value,
+        quantity:
+          itemFields.value[index].quantity.status === "pending" ||
+          itemFields.value[index].quantity.status === "invalid"
+            ? 0
+            : item.quantity.value,
+        price:
+          itemFields.value[index].price.status === "pending" ||
+          itemFields.value[index].price.status === "invalid"
+            ? (0).toFixed(2)
+            : toNumber(item.price.value).toFixed(2),
+        total: +item.price.value * +item.quantity.value,
+      };
+    }),
+    totalAmount: `£ ${toDollarsCurrency(computeBigTotal(itemFields.value))}`,
+  };
+
+  store.dispatch("addInvoice", { invoice: data }).then(() => {
+    store.dispatch("setCurrentInvoice", { invoiceCode: data.invoiceCode });
+    document.querySelector("body").setAttribute("class", "");
+    router.push("/invoices/" + data.invoiceCode);
+    store.dispatch("layout/showModals", { currentView: "" });
+  });
+}
+
+function submitForm() {
+  if (isFormItemPartIsInvalid.value || v$.value.$invalid) return;
+
+  const data = {
+    invoiceCode: form_mode_is_edit.value
+      ? currentInvoice.value.invoiceCode
+      : generateInvoiceIndentifier(),
+    fromStreet: formData.value.from.street,
+    fromCity: formData.value.from.city,
+    fromPostCode: formData.value.from.postCode,
+    fromCountry: formData.value.from.country,
+    clientName: formData.value.to.clientName,
+    email: formData.value.to.clientEmail,
+    toStreet: formData.value.to.street,
+    toCity: formData.value.to.city,
+    toPostCode: formData.value.to.postCode,
+    toCountry: formData.value.to.country,
+    invoiceDate: formData.value.invoice.date,
+    status: "Pending",
+    due: formData.value.invoice.terms,
+    desc: formData.value.invoice.description,
+    items: itemFields.value.map((item) => {
+      return {
+        itemName: item.itemName.value,
+        quantity: item.quantity.value,
+        price: toNumber(item.price.value).toFixed(2),
+        total: +item.price.value * +item.quantity.value,
+      };
+    }),
+    totalAmount: `£ ${toDollarsCurrency(computeBigTotal(itemFields.value))}`,
+  };
+
+  store.dispatch("addInvoice", { invoice: data }).then(() => {
+    store.dispatch("setCurrentInvoice", { invoiceCode: data.invoiceCode });
+    document.querySelector("body").setAttribute("class", "");
+    router.push("/invoices/" + data.invoiceCode);
+    store.dispatch("layout/showModals", { currentView: "" });
+  });
+}
 
 function initFormValue() {
   formData.value = {
@@ -735,46 +843,6 @@ function formatDate(toFormat) {
   );
 }
 
-function submitForm() {
-  if (isFormItemPartIsInvalid.value || v$.value.$invalid) return;
-
-  const data = {
-    invoiceCode: form_mode_is_edit.value
-      ? currentInvoice.value.invoiceCode
-      : generateInvoiceIndentifier(),
-    fromStreet: formData.value.from.street,
-    fromCity: formData.value.from.city,
-    fromPostCode: formData.value.from.postCode,
-    fromCountry: formData.value.from.country,
-    clientName: formData.value.to.clientName,
-    email: formData.value.to.clientEmail,
-    toStreet: formData.value.to.street,
-    toCity: formData.value.to.city,
-    toPostCode: formData.value.to.postCode,
-    toCountry: formData.value.to.country,
-    invoiceDate: formData.value.invoice.date,
-    status: "Pending",
-    due: formData.value.invoice.terms,
-    desc: formData.value.invoice.description,
-    items: itemFields.value.map((item) => {
-      return {
-        itemName: item.itemName.value,
-        quantity: item.quantity.value,
-        price: toNumber(item.price.value).toFixed(2),
-        total: +item.price.value * +item.quantity.value,
-      };
-    }),
-    totalAmount: `£ ${toDollarsCurrency(computeBigTotal(itemFields.value))}`,
-  };
-
-  store.dispatch("addInvoice", { invoice: data }).then(() => {
-    store.dispatch("setCurrentInvoice", { invoiceCode: data.invoiceCode });
-    document.querySelector("body").setAttribute("class", "");
-    router.push("/invoices/" + data.invoiceCode);
-    store.dispatch("layout/showModals", { currentView: "" });
-  });
-}
-
 function generateInvoiceIndentifier() {
   const letter1 = String.fromCharCode(65 + Math.floor(Math.random() * 26));
   const letter2 = String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -784,12 +852,12 @@ function generateInvoiceIndentifier() {
 }
 
 function computeBigTotal(items) {
-  let bigToal = 0;
+  let bigTotal = 0;
   items.forEach((item) => {
-    bigToal += +item.price.value * +item.quantity.value;
+    bigTotal += +item.price.value * +item.quantity.value;
   });
 
-  return bigToal;
+  return isNaN(bigTotal) ? 0 : bigTotal;
 }
 
 function toDollarsCurrency(value) {
@@ -1160,6 +1228,7 @@ function toDollarsCurrency(value) {
     flex-direction: column;
     justify-content: flex-start;
     margin-bottom: 1.333333rem;
+    padding: 0 1.333333rem;
     small {
       font-style: normal;
       font-weight: 600;
@@ -1175,7 +1244,7 @@ function toDollarsCurrency(value) {
     grid-template-columns: repeat(3, auto);
     grid-template-rows: 1fr;
     grid-template-areas: "cancel draft save";
-    padding: 1.166666rem 0 1.222222rem 0;
+    padding: 1.166666rem 1.333333rem 1.222222rem 0;
     column-gap: 0.388888rem;
     justify-content: flex-end;
     .cell {
@@ -1605,7 +1674,7 @@ function toDollarsCurrency(value) {
     }
 
     .form-error-alert {
-      padding: 0 0;
+      padding: 0 3.111111rem;
     }
 
     .form-cta {
@@ -1613,7 +1682,7 @@ function toDollarsCurrency(value) {
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      padding: 0 0 1.777777rem 0;
+      padding: 0 0 1.777777rem 3.111111rem;
       column-gap: 0.444444rem;
       justify-content: flex-end;
 
@@ -1778,7 +1847,7 @@ function toDollarsCurrency(value) {
     }
 
     .form-error-alert {
-      padding: 0;
+      padding: 0 0 0 8.833333rem;
     }
 
     .form-cta {
@@ -1786,7 +1855,7 @@ function toDollarsCurrency(value) {
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      padding: 0 0 1.777777rem 0;
+      padding: 0 1.777777rem 1.777777rem 0;
       column-gap: 0.444444rem;
       justify-content: flex-end;
 
