@@ -40,7 +40,9 @@
           <p class="due">
             {{ "Due " + formatDate(Date.now() + 8.64e7 * invoice.due) }}
           </p>
-          <VStatusIndicator :status="invoice.status" />
+          <div class="status">
+            <VStatusIndicator :status="invoice.status" />
+          </div>
           <p class="total">{{ invoice.totalAmount }}</p>
           <div class="arrow hide-for-mobile">
             <a @click="navigateToDetail(invoice.invoiceCode)">
@@ -143,6 +145,7 @@ function formatDate(toFormat) {
 
   .no-empty-list {
     padding-top: 1.777777rem;
+    padding-bottom: 5.833333rem;
     .item-container {
       border: 1px solid transparent;
       &:not(:last-child) {
@@ -157,7 +160,7 @@ function formatDate(toFormat) {
         padding: 1.333333rem; // 24px
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, auto);
+        grid-template-rows: auto 0.833333rem auto;
         grid-template-areas:
           "code   clientName"
           "due    status"
@@ -198,7 +201,12 @@ function formatDate(toFormat) {
           font-size: 0.666666rem;
           line-height: 0.833333rem;
           letter-spacing: -0.25px;
-          margin-bottom: 0.444444rem;
+        }
+
+        .status {
+          grid-area: status;
+          justify-self: flex-end;
+          padding-top: 0.222222rem;
         }
 
         .total {
@@ -207,6 +215,7 @@ function formatDate(toFormat) {
           font-size: 0.888888rem;
           line-height: 1.333333rem;
           letter-spacing: -0.8px;
+          padding-top: 0.444444rem;
         }
       }
     }
@@ -351,6 +360,11 @@ function formatDate(toFormat) {
           .due {
             grid-area: due;
             margin-bottom: unset;
+          }
+
+          .status {
+            grid-area: status;
+            padding-top: 0;
           }
 
           .total {

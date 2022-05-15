@@ -24,6 +24,7 @@
         </span>
         <svg
           @click="toggleFilter"
+          ref="filterArrow"
           width="11"
           height="7"
           xmlns="http://www.w3.org/2000/svg"
@@ -141,9 +142,11 @@ import { useStore } from "vuex";
 const store = useStore();
 
 const showFilter = ref(false);
+const filterArrow = ref(null);
 
 function toggleFilter() {
   showFilter.value = !showFilter.value;
+  rotateFilterArrow();
 }
 
 function onCheck(filter) {
@@ -159,6 +162,14 @@ const currentMode = computed(() => store.getters["layout/currentMode"]);
 const filters = computed(() => store.getters["filters"]);
 
 // Functions
+
+function rotateFilterArrow() {
+  if (!showFilter.value) {
+    filterArrow.value.setAttribute("class", "rotate180deg");
+    return;
+  }
+  filterArrow.value.setAttribute("class", "rotate0deg");
+}
 
 function isChecked(filter) {
   return filters.value.includes(filter);
@@ -367,6 +378,30 @@ function showForm() {
         }
       }
     }
+  }
+}
+.rotate0deg {
+  animation: rotate0deg 0.25s ease-in-out forwards;
+}
+.rotate180deg {
+  animation: rotate180deg 0.25s ease-in-out forwards;
+}
+
+@keyframes rotate0deg {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(180deg);
+  }
+}
+
+@keyframes rotate180deg {
+  from {
+    transform: rotateZ(180deg);
+  }
+  to {
+    transform: rotateZ(0deg);
   }
 }
 

@@ -10,8 +10,9 @@
     <div class="logo">
       <img :src="logo" alt="invoice app logo" />
     </div>
-    <div class="modeBtn" @click="toggleMode">
+    <div class="modeBtn">
       <svg
+        @click="toggleMode"
         v-if="currentMode === 'light'"
         data-test="dark-icon"
         class="dark-icon"
@@ -26,6 +27,7 @@
         />
       </svg>
       <svg
+        @click="toggleMode"
         v-else
         data-test="light-icon"
         class="light-icon"
@@ -130,7 +132,10 @@ function toggleMode() {
     justify-content: flex-end;
     align-items: center;
     padding-right: 1.333333rem;
-    cursor: pointer;
+
+    & > svg {
+      cursor: pointer;
+    }
 
     svg.dark-icon:hover {
       & > path {

@@ -11,7 +11,15 @@
     <div class="back hide-for-tablet-and-desktop">
       <a @click="closeForm">Go back</a>
     </div>
-    <h1>New Invoice</h1>
+    <h1 v-if="currentInvoice">
+      Edit<span
+        :style="{
+          color: '#888eb0',
+        }"
+        >#</span
+      >{{ currentInvoice.invoiceCode }}
+    </h1>
+    <h1 v-else>New Invoice</h1>
     <form>
       <div class="group from">
         <p class="group__title">Bill From</p>
@@ -338,10 +346,10 @@
       <div class="group item-list">
         <h2>Item List</h2>
         <div class="col-names hide-for-mobile">
-          <label class="col-name col-name">Item Name</label>
-          <label class="col-name col-qty">Qty.</label>
-          <label class="col-name col-price">Price</label>
-          <label class="col-name col-total">Total</label>
+          <label class="col-name">Item Name</label>
+          <label class="col-qty">Qty.</label>
+          <label class="col-price">Price</label>
+          <label class="col-total">Total</label>
         </div>
         <transition-group name="item">
           <div
@@ -395,6 +403,7 @@
               >
               <input
                 type="text"
+                tabindex="-1"
                 :value="computeTotal(item.price.value, item.quantity.value)"
               />
             </div>
@@ -529,6 +538,7 @@ const invoiceDateValue = ref(formatDate(Date.now()));
 const isTermsDisplayed = ref(false);
 
 // Computed
+
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
 const isFormItemPartIsInvalid = computed(() => {
@@ -615,7 +625,7 @@ function saveAsDraft() {
         price:
           itemFields.value[index].price.status === "pending" ||
           itemFields.value[index].price.status === "invalid"
-            ? (0).toFixed(2)
+            ? 0
             : toNumber(item.price.value).toFixed(2),
         total: +item.price.value * +item.quantity.value,
       };
@@ -995,10 +1005,11 @@ function toDollarsCurrency(value) {
   }
 
   .from {
+    margin-bottom: 2.222222rem;
     .from__fields {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-rows: repeat(3, auto);
       column-gap: 1.277777rem;
       grid-template-areas:
         "f-str f-str"
@@ -1024,10 +1035,11 @@ function toDollarsCurrency(value) {
   }
 
   .to {
+    margin-bottom: 2.222222rem;
     .to__fields {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(5, 1fr);
+      grid-template-rows: repeat(5, auto);
       column-gap: 1.277777rem;
       grid-template-areas:
         "t-clt-name t-clt-name"
@@ -1128,36 +1140,10 @@ function toDollarsCurrency(value) {
       margin-bottom: 1.333333rem;
     }
 
-    .col-names {
-      display: grid;
-      margin-bottom: 0.888888rem;
-      grid-template-columns: 11.888888rem auto auto 1fr;
-      grid-template-rows: 1fr;
-      column-gap: 0.888888rem;
-      justify-content: flex-start;
-      grid-template-areas: "col-name  col-qty  col-price  col-total";
-
-      .col-name {
-        grid-area: col-name;
-      }
-      .col-qty {
-        grid-area: col-qty;
-        min-width: 64px;
-      }
-      .col-price {
-        grid-area: col-price;
-        min-width: 100px;
-      }
-      .col-total {
-        grid-area: col-total;
-        min-width: 56px;
-      }
-    }
-
     .item__fields {
       display: grid;
       margin-bottom: 2.666666rem;
-      grid-template-columns: auto auto auto 1fr;
+      grid-template-columns: 3.555555rem auto auto 1fr;
       grid-template-rows: repeat(2, auto);
       column-gap: 1.277777rem;
       grid-template-areas:
@@ -1168,13 +1154,16 @@ function toDollarsCurrency(value) {
         grid-area: name;
         margin-bottom: 1.333333rem;
       }
+
+      .item__name > label {
+        margin-bottom: 0.888888rem;
+      }
       .item__qty {
         grid-area: qty;
-        min-width: 64px;
       }
       .item__price {
         grid-area: price;
-        min-width: 100px;
+        min-width: 5.555555rem; //100px
       }
       .item__total {
         grid-area: total;
@@ -1244,6 +1233,7 @@ function toDollarsCurrency(value) {
     grid-template-columns: repeat(3, auto);
     grid-template-rows: 1fr;
     grid-template-areas: "cancel draft save";
+    /* padding: 1.166666rem 1.333333rem 1.222222rem 0; */
     padding: 1.166666rem 1.333333rem 1.222222rem 0;
     column-gap: 0.388888rem;
     justify-content: flex-end;
@@ -1342,6 +1332,12 @@ function toDollarsCurrency(value) {
   .item-list {
     h2 {
       color: #777f98;
+    }
+
+    .item__fields {
+      .item__total > input {
+        color: $violet-gray;
+      }
     }
   }
 
@@ -1547,7 +1543,7 @@ function toDollarsCurrency(value) {
       .from__fields {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
         column-gap: 1.333333rem;
         grid-template-areas:
           "f-str f-str f-str"
@@ -1559,10 +1555,12 @@ function toDollarsCurrency(value) {
 
         .from__city {
           grid-area: f-city;
+          margin-bottom: 0;
         }
 
         .from__psc {
           grid-area: f-psc;
+          margin-bottom: 0;
         }
 
         .from__ctry {
@@ -1575,7 +1573,7 @@ function toDollarsCurrency(value) {
       .to__fields {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-rows: repeat(4, auto);
         column-gap: 1.333333rem;
         grid-template-areas:
           "t-clt-name t-clt-name  t-clt-name"
@@ -1595,10 +1593,12 @@ function toDollarsCurrency(value) {
 
         .to__city {
           grid-area: t-city;
+          margin-bottom: 0;
         }
 
         .to__psc {
           grid-area: t-psc;
+          margin-bottom: 0;
         }
 
         .to__ctry {
@@ -1612,7 +1612,7 @@ function toDollarsCurrency(value) {
       > .invoice__fields {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
         column-gap: 1.333333rem;
         grid-template-areas:
           "inv-date inv-terms"
@@ -1633,6 +1633,35 @@ function toDollarsCurrency(value) {
     }
 
     .item-list {
+      .col-names {
+        display: grid;
+        margin-bottom: 0.888888rem;
+        grid-template-columns: 11.888888rem auto auto 1fr;
+        grid-template-rows: 1fr;
+        column-gap: 0.888888rem;
+        justify-content: flex-start;
+        grid-template-areas: "col-name  col-qty  col-price  col-total";
+
+        .col-name {
+          grid-area: col-name;
+        }
+        .col-qty {
+          grid-area: col-qty;
+          min-width: 64px;
+        }
+        .col-price {
+          grid-area: col-price;
+          min-width: 100px;
+        }
+        .col-total {
+          grid-area: col-total;
+          min-width: 56px;
+        }
+      }
+
+      .col-names > label {
+        margin-bottom: 0;
+      }
       .item__fields {
         display: grid;
         margin-bottom: 1rem;
@@ -1855,7 +1884,7 @@ function toDollarsCurrency(value) {
       grid-template-columns: 1fr 7.388888rem 7.111111rem;
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      padding: 0 1.777777rem 1.777777rem 0;
+      padding: 0 1.777777rem 1.777777rem 8.833333rem;
       column-gap: 0.444444rem;
       justify-content: flex-end;
 
