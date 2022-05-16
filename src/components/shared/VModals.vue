@@ -56,6 +56,7 @@ const getCurrentView = computed(() => store.getters["layout/currentView"]);
 
     @media screen and (min-width: $tablet-min) {
       top: 4.444444rem;
+      overflow-y: unset;
     }
 
     @media screen and (min-width: $desktop-min) {
