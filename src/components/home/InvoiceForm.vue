@@ -426,18 +426,43 @@
         <small v-if="v$.$invalid">- All fields must be added</small>
         <small v-if="isFormItemPartIsInvalid">- An item must be added</small>
       </div>
-      <div class="form-cta">
-        <div class="cell cancel-cell">
+      <div
+        class="form-cta"
+        :class="{
+          'form-cta--new': !form_mode_is_edit,
+          'form-cta--edit': form_mode_is_edit,
+        }"
+      >
+        <div
+          class="cell"
+          :class="{
+            'cancel-cell--edit': form_mode_is_edit,
+            'cancel-cell': !form_mode_is_edit,
+          }"
+        >
           <button type="button" class="cancel" @click="closeForm">
             {{ !form_mode_is_edit ? "Discard" : "Cancel" }}
           </button>
         </div>
-        <div v-if="!form_mode_is_edit" class="cell draft-cell">
+        <div
+          v-if="!form_mode_is_edit"
+          class="cell"
+          :class="{
+            'draft-cell--edit': form_mode_is_edit,
+            'draft-cell': !form_mode_is_edit,
+          }"
+        >
           <button type="button" class="draft" @click="saveAsDraft">
             Save as Draft
           </button>
         </div>
-        <div class="cell save-cell">
+        <div
+          class="cell"
+          :class="{
+            'save-cell--edit': form_mode_is_edit,
+            'save-cell': !form_mode_is_edit,
+          }"
+        >
           <!-- :disabled="!isFormIsValid" -->
           <button
             type="button"
@@ -564,6 +589,8 @@ const currentInvoice = computed(() => store.getters.invoice);
 const form_mode_is_edit = computed(
   () => store.getters["layout/form_mode_is_edit"]
 );
+
+console.log(form_mode_is_edit.value);
 
 // Lifecycle Hooks
 onMounted(() => {
@@ -904,6 +931,7 @@ function toDollarsCurrency(value) {
   position: relative;
   z-index: 2;
   padding-top: 1.777777rem;
+
   .back {
     padding: 0 1.333333rem;
     position: relative;
@@ -1229,14 +1257,8 @@ function toDollarsCurrency(value) {
   }
 
   .form-cta {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: 1fr;
-    grid-template-areas: "cancel draft save";
-    /* padding: 1.166666rem 1.333333rem 1.222222rem 0; */
+    bottom: 0;
     padding: 1.166666rem 1.333333rem 1.222222rem 0;
-    column-gap: 0.388888rem;
-    justify-content: flex-end;
     .cell {
       > button {
         border-radius: 1.333333rem;
@@ -1253,7 +1275,7 @@ function toDollarsCurrency(value) {
       grid-area: cancel;
 
       > button {
-        padding: 0.944444rem 1rem 0.888888rem 0.944444rem;
+        padding: 0.944444rem 1.472222rem 0.888888rem 1.416666rem;
       }
     }
     .draft-cell {
@@ -1268,11 +1290,53 @@ function toDollarsCurrency(value) {
         padding: 0.944444rem 0.888888rem 0.888888rem 0.888888rem;
       }
     }
+
+    .cancel-cell--edit {
+      grid-area: cancel;
+
+      > button {
+        padding: 0.944444rem 1.472222rem 0.888888rem 1.416666rem;
+      }
+    }
+    .draft-cell--edit {
+      grid-area: draft;
+      > button {
+        padding: 0.944444rem 0.882777rem 0.888888rem 0.895rem;
+      }
+    }
+    .save-cell--edit {
+      grid-area: save;
+      > button {
+        padding: 0.944444rem 1.333333rem 0.888888rem 1.333333rem;
+      }
+    }
+  }
+  .form-cta--new {
+    display: grid;
+    column-gap: 0.388888rem;
+    grid-template-rows: 1fr;
+    justify-content: flex-end;
+    grid-template-columns: repeat(3, auto);
+    grid-template-areas: "cancel draft save";
+  }
+
+  .form-cta--edit {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .cancel-cell--edit {
+      padding-right: 0.444444rem;
+    }
   }
 }
 
 .--light-mode {
-  background-color: #fff;
+  background-image: linear-gradient(
+    180deg,
+    rgba(#fff, 1) 75%,
+    rgba(#ccc, 1) 100%
+  );
 
   h1 {
     color: $black-2;
@@ -1353,7 +1417,10 @@ function toDollarsCurrency(value) {
   }
 
   .form-cta {
-    .cancel-cell {
+    background-color: #fff;
+
+    .cancel-cell,
+    .cancel-cell--edit {
       > button {
         background-color: $light-bg-2;
         color: $blue-violet;
@@ -1363,7 +1430,8 @@ function toDollarsCurrency(value) {
         color: $blue-violet;
       }
     }
-    .draft-cell {
+    .draft-cell,
+    .draft-cell--edit {
       > button {
         background-color: $black-4;
         color: $violet-gray;
@@ -1372,7 +1440,8 @@ function toDollarsCurrency(value) {
         background-color: $black-2;
       }
     }
-    .save-cell {
+    .save-cell,
+    .save-cell--edit {
       > button {
         background-color: $violet-1;
         color: #fff;
@@ -1385,7 +1454,14 @@ function toDollarsCurrency(value) {
 }
 
 .--dark-mode {
-  background-color: $black-3;
+  background-image: linear-gradient(
+    180deg,
+    rgba($black-3, 1) 80%,
+    rgba(0, 0, 0, 1) 100%
+  );
+
+  /*   background-image: linear-gradient(180deg, $black-3 75%, rgba(#000, 1) 100%);
+ */
   .back {
     a {
       color: #fff;
@@ -1404,14 +1480,6 @@ function toDollarsCurrency(value) {
     label {
       color: $violet-gray;
     }
-
-    /* .--label-error {
-      color: $red;
-    }
-
-    .--input-error {
-      border: 1px solid $red;
-    } */
 
     input,
     .inv-date-wrapper,
@@ -1475,12 +1543,9 @@ function toDollarsCurrency(value) {
   }
 
   .form-cta {
-    .cell {
-      > button {
-      }
-    }
-
-    .cancel-cell {
+    background-color: $black-3;
+    .cancel-cell,
+    .cancel-cell--edit {
       > button {
         background-color: $dark-blue;
         color: $blue-gray-light;
@@ -1489,7 +1554,8 @@ function toDollarsCurrency(value) {
         background-color: #fff;
       }
     }
-    .draft-cell {
+    .draft-cell,
+    .draft-cell--edit {
       > button {
         background-color: $black-4;
         color: $blue-gray-light;
@@ -1498,7 +1564,8 @@ function toDollarsCurrency(value) {
         background-color: $black-1;
       }
     }
-    .save-cell {
+    .save-cell,
+    .save-cell--edit {
       > button {
         background-color: $violet-1;
         color: #fff;
@@ -1525,6 +1592,12 @@ function toDollarsCurrency(value) {
     padding-top: 3.111111rem; // 56 px
     width: 34.222222rem; // 616px
     border-radius: 0 1.111111rem 1.111111rem 0;
+
+    form {
+      position: relative;
+      overflow-y: auto;
+      height: 80vh;
+    }
     h1 {
       padding-left: 3.111111rem;
       margin-bottom: 2.666666rem;
@@ -1704,16 +1777,15 @@ function toDollarsCurrency(value) {
 
     .form-error-alert {
       padding: 0 3.111111rem;
+      margin-bottom: calc(6.888888rem + 1.333333rem); // 124px + 24px
     }
 
     .form-cta {
-      display: grid;
-      grid-template-columns: 1fr 7.388888rem 7.111111rem;
-      grid-template-rows: 1fr;
-      grid-template-areas: "cancel draft save";
-      padding: 0 0 1.777777rem 3.111111rem;
-      column-gap: 0.444444rem;
-      justify-content: flex-end;
+      position: fixed;
+      width: 34.222222rem;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      padding: 1.777777rem 3.111111rem 1.777777rem 3.111111rem;
 
       .cancel-cell {
         grid-area: cancel;
@@ -1724,6 +1796,14 @@ function toDollarsCurrency(value) {
       .save-cell {
         grid-area: save;
       }
+    }
+
+    .form-cta--new {
+      display: grid;
+      column-gap: 0.444444rem;
+      grid-template-rows: 1fr;
+      grid-template-areas: "cancel draft save";
+      grid-template-columns: 1fr 7.388888rem 7.111111rem;
     }
   }
 }
@@ -1880,13 +1960,9 @@ function toDollarsCurrency(value) {
     }
 
     .form-cta {
-      display: grid;
-      grid-template-columns: 1fr 7.388888rem 7.111111rem;
-      grid-template-rows: 1fr;
-      grid-template-areas: "cancel draft save";
-      padding: 0 1.777777rem 1.777777rem 8.833333rem;
-      column-gap: 0.444444rem;
-      justify-content: flex-end;
+      width: 39.944444rem; // 719px
+
+      padding-left: 8.833333rem;
 
       .cancel-cell {
         grid-area: cancel;
@@ -1897,6 +1973,15 @@ function toDollarsCurrency(value) {
       .save-cell {
         grid-area: save;
       }
+    }
+
+    .form-cta--new {
+      display: grid;
+      grid-template-columns: 1fr 7.388888rem 7.111111rem;
+      grid-template-rows: 1fr;
+      grid-template-areas: "cancel draft save";
+      column-gap: 0.444444rem;
+      justify-content: flex-end;
     }
   }
 }
