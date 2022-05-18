@@ -90,15 +90,11 @@
                   <span class="hide-for-tablet-and-desktop">x</span>
                   <span class="price hide-for-tablet-and-desktop">
                     £
-                    {{
-                      item.price ? item.price.toFixed(2) : (0).toFixed(2)
-                    }}</span
+                    {{ item.price ? item.price : (0).toFixed(2) }}</span
                   >
                 </p>
                 <p class="price hide-for-mobile">£ {{ item.price }}</p>
-                <p class="total">
-                  £ {{ (item.quantity * item.price).toFixed(2) }}
-                </p>
+                <p class="total">£ {{ item.total }}</p>
               </div>
             </div>
             <div class="footer">
