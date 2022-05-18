@@ -11,22 +11,37 @@ import InvoiceList from "../components/home/InvoiceList.vue";
 </script>
 
 <style lang="scss" scoped>
-@import "../sass/variables";
+@import "../sass/breakpoints";
 @import "../sass/colors";
+@import "../sass/mixins";
+@import "../sass/functions";
 main {
-  padding: 1.777777rem 1.333333rem 0 1.333333rem;
+  padding: toRem(32, 18) toRem(24, 18) 0 toRem(24, 18);
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   main {
-    padding: 3.111111rem 2.666666rem 0 2.666666rem;
+    padding: toRem(56, 18) toRem(48, 18) 0 toRem(48, 18);
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
+  main {
+    flex: 1;
+    padding: toRem(72, 18) 0 0 0;
+  }
+}
+
+/* @media screen and (min-width: $tablet-min) {
+  main {
+    padding: toRem(56, 18) toRem(48, 18) 0 toRem(48, 18);
+  }
+} */
+
+/* @media screen and (min-width: $desktop-min) {
   main {
     flex: 1;
     padding: 4rem 0 0 0;
   }
-}
+} */
 </style>

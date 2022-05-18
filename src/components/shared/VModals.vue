@@ -37,8 +37,10 @@ const store = useStore();
 const getCurrentView = computed(() => store.getters["layout/currentView"]);
 </script>
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 .modals-container {
   position: absolute;
   left: 0;
@@ -54,12 +56,12 @@ const getCurrentView = computed(() => store.getters["layout/currentView"]);
   &.--bg-position {
     top: 4rem;
 
-    @media screen and (min-width: $tablet-min) {
-      top: 4.444444rem;
+    @include breakpoint-up(medium) {
+      top: toRem(80, 18);
       overflow-y: unset;
     }
 
-    @media screen and (min-width: $desktop-min) {
+    @include breakpoint-up(large) {
       top: 0;
     }
   }

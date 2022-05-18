@@ -19,7 +19,7 @@
             <button class="edit" @click="editInvoice">Edit</button>
             <button class="delete" @click="promptBeforeRemoval">Delete</button>
             <button
-              v-if="invoiceIsPending"
+              v-if="!invoiceIsPaid"
               class="mark-as-paid"
               @click="markAsPaid"
             >
@@ -111,14 +111,13 @@
     </v-container>
 
     <v-container class="mobile-cta-container hide-for-tablet-and-desktop">
-      <div class="cta">
+      <div
+        class="cta"
+        :class="{ 'cta--paid': invoiceIsPaid, 'cta--not-paid': !invoiceIsPaid }"
+      >
         <button class="edit" @click="editInvoice">Edit</button>
         <button class="delete" @click="promptBeforeRemoval">Delete</button>
-        <button
-          v-if="invoiceIsPending"
-          class="mark-as-paid"
-          @click="markAsPaid"
-        >
+        <button v-if="!invoiceIsPaid" class="mark-as-paid" @click="markAsPaid">
           Mark as Paid
         </button>
       </div>
@@ -148,8 +147,8 @@ if (!store.getters.invoice) {
 
 const invoice = computed(() => store.getters.invoice);
 
-const invoiceIsPending = computed(() =>
-  invoice.value.status === "Pending" ? true : false
+const invoiceIsPaid = computed(() =>
+  invoice.value.status === "Paid" ? true : false
 );
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 
@@ -191,35 +190,37 @@ function formatDate(toFormat) {
 </script>
 
 <style lang="scss" scoped>
-@import "../sass/variables";
+@import "../sass/breakpoints";
 @import "../sass/colors";
+@import "../sass/mixins";
+@import "../sass/functions";
 
 .root {
-  padding-top: 1.777777rem;
+  padding-top: toRem(32, 18);
 
   .link {
-    margin-bottom: 1.777777rem;
-    padding: 0 1.333333rem;
+    margin-bottom: toRem(32, 18);
+    padding: 0 toRem(24, 18);
     position: relative;
     a {
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
-      margin-left: 1.314444rem;
+      margin-left: toRem(23.66, 18);
     }
 
     &::before {
       content: url("../assets/icon-arrow-left.svg");
       position: absolute;
-      left: 1.333333rem;
+      left: toRem(24, 18);
     }
   }
 
   .status-container {
-    padding: 1.333333rem 1.333333rem 1.5rem 1.333333rem; // 24px 24px 27px 24px
-    margin: 0 1.333333rem 0.888888rem 1.333333rem;
+    padding: toRem(24, 18) toRem(24, 18) toRem(27, 18) toRem(24, 18); // 24px 24px 27px 24px
+    margin: 0 toRem(24, 18) toRem(16, 18) toRem(24, 18);
     > .wrapper {
       display: flex;
       justify-content: space-between;
@@ -228,28 +229,28 @@ function formatDate(toFormat) {
       p {
         font-style: normal;
         font-weight: 500;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
       }
     }
   }
 
   .detail-container {
-    padding: 1.333333rem 0; // 24px
-    margin: 0 1.333333rem 3.111111rem 1.333333rem;
+    padding: toRem(24, 18) 0; // 24px
+    margin: 0 toRem(24, 18) toRem(56, 18) toRem(24, 18);
     .detail {
       .top {
-        padding: 0 1.333333rem;
+        padding: 0 toRem(24, 18);
       }
 
       .top .invoice-code {
         font-weight: bold;
         font-style: normal;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
-        margin-bottom: 0.222222rem;
+        margin-bottom: toRem(4, 18);
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
@@ -258,31 +259,31 @@ function formatDate(toFormat) {
       .top .description {
         font-weight: 500;
         font-style: normal;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
-        margin-bottom: 1.666666rem; // 30px
+        margin-bottom: toRem(30, 18); // 30px
         .hash {
           color: $blue-violet; // used for dark and light mode !!!
         }
       }
 
       .from {
-        padding: 0 1.333333rem;
+        padding: 0 toRem(24, 18);
         font-weight: 500;
         font-style: normal;
-        font-size: 0.611111rem;
+        font-size: toRem(11, 18);
         line-height: 1rem;
         letter-spacing: -0.23px;
-        margin-bottom: 1.722222rem; // 31px
+        margin-bottom: toRem(31, 18); // 31px
       }
 
       .detail-grid-container {
-        padding: 0 1.333333rem;
-        margin-bottom: 2.222222rem;
+        padding: 0 toRem(24, 18);
+        margin-bottom: toRem(40, 18);
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 2.611111rem 4.166666rem auto;
+        grid-template-rows: toRem(47, 18) toRem(75, 18) auto;
         grid-template-areas:
           "invoiceDate  billTo"
           "due          billTo"
@@ -291,63 +292,63 @@ function formatDate(toFormat) {
         .label {
           font-style: normal;
           font-weight: 500;
-          font-size: 0.666666rem; //12px
-          line-height: 0.833333rem; // 15px
+          font-size: toRem(12, 18); //12px
+          line-height: toRem(15, 18); // 15px
           letter-spacing: -0.25px;
         }
 
         .date {
           font-style: normal;
           font-weight: bold;
-          font-size: 0.833333rem;
-          line-height: 1.111111rem;
+          font-size: toRem(15, 18);
+          line-height: toRem(20, 18);
           letter-spacing: -0.3125px;
         }
 
         .invoice-date {
           grid-area: invoiceDate;
           > .label {
-            margin-bottom: 0.666666rem;
+            margin-bottom: toRem(12, 18);
           }
         }
         .bill-to {
           font-style: normal;
           font-weight: 500;
-          font-size: 0.611111rem; // 11px
+          font-size: toRem(11, 18); // 11px
           line-height: 1rem;
           letter-spacing: -0.229167px;
           > .label {
-            margin-bottom: 0.666666rem;
+            margin-bottom: toRem(12, 18);
           }
 
           > .name {
             font-style: normal;
             font-weight: bold;
-            font-size: 0.833333rem;
-            line-height: 1.111111rem;
+            font-size: toRem(15, 18);
+            line-height: toRem(20, 18);
             letter-spacing: -0.3125px;
-            margin-bottom: 0.444444rem;
+            margin-bottom: toRem(8, 18);
           }
         }
         .due {
           grid-area: due;
-          padding-top: 1.777777rem; // 32px
+          padding-top: toRem(32, 18); // 32px
           > .label {
-            margin-bottom: 0.666666rem;
+            margin-bottom: toRem(12, 18);
           }
         }
         .sent-to {
           grid-area: sentTo;
           padding-top: 2rem;
           > .label {
-            margin-bottom: 0.666666rem;
+            margin-bottom: toRem(12, 18);
           }
 
           .email {
             font-style: normal;
             font-weight: bold;
-            font-size: 0.833333rem;
-            line-height: 1.111111rem;
+            font-size: toRem(15, 18);
+            line-height: toRem(20, 18);
             letter-spacing: -0.3125px;
           }
         }
@@ -355,11 +356,11 @@ function formatDate(toFormat) {
     }
 
     .resume-container {
-      padding: 0 1.333333rem 0 1.333333rem;
+      padding: 0 toRem(24, 18) 0 toRem(24, 18);
       .body {
-        border-radius: 0.444444rem 0.444444rem 0 0;
+        border-radius: toRem(8, 18) toRem(8, 18) 0 0;
         overflow: hidden;
-        padding: 1.333333rem;
+        padding: toRem(24, 18);
         .item {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -372,10 +373,10 @@ function formatDate(toFormat) {
             grid-area: name;
             font-style: normal;
             font-weight: bold;
-            font-size: 0.666666rem;
-            line-height: 0.833333rem;
+            font-size: toRem(12, 18);
+            line-height: toRem(15, 18);
             letter-spacing: -0.25px;
-            margin-bottom: 0.444444rem;
+            margin-bottom: toRem(8, 18);
           }
 
           .price {
@@ -385,32 +386,32 @@ function formatDate(toFormat) {
             grid-area: qty;
             font-style: normal;
             font-weight: bold;
-            font-size: 0.666666rem;
-            line-height: 0.833333rem;
+            font-size: toRem(12, 18);
+            line-height: toRem(15, 18);
             letter-spacing: -0.25px;
           }
 
           .total {
             grid-area: total;
             display: flex;
-            padding-top: 0.666666rem;
+            padding-top: toRem(12, 18);
             justify-content: flex-end;
             font-style: normal;
             font-weight: bold;
-            font-size: 0.666666rem;
-            line-height: 0.833333rem;
+            font-size: toRem(12, 18);
+            line-height: toRem(15, 18);
             letter-spacing: -0.25px;
           }
         }
 
         .item:not(:last-child) {
-          margin-bottom: 1.333333rem;
+          margin-bottom: toRem(24, 18);
         }
       }
 
       .footer {
-        padding: 1.333333rem;
-        border-radius: 0 0 0.444444rem 0.444444rem;
+        padding: toRem(24, 18);
+        border-radius: 0 0 toRem(8, 18) toRem(8, 18);
         color: #fff;
         display: flex;
         justify-content: space-between;
@@ -418,7 +419,7 @@ function formatDate(toFormat) {
         .amount-due {
           font-style: normal;
           font-weight: 500;
-          font-size: 0.611111rem; // 11px
+          font-size: toRem(11, 18); // 11px
           line-height: 1rem;
           letter-spacing: -0.229167px;
         }
@@ -426,8 +427,8 @@ function formatDate(toFormat) {
         .big-total {
           font-style: normal;
           font-weight: 700;
-          font-size: 1.111111rem;
-          line-height: 1.777777rem;
+          font-size: toRem(20, 18);
+          line-height: toRem(32, 18);
           letter-spacing: -0.416667px;
         }
       }
@@ -437,33 +438,44 @@ function formatDate(toFormat) {
   .mobile-cta-container {
     border-radius: unset;
     .cta {
-      grid-area: cta;
       justify-self: flex-end;
-      padding: 1.166666rem 1.333333rem 1.222222rem 1.333333rem;
+      padding: toRem(21, 18) toRem(24, 18) toRem(22, 18) toRem(24, 18);
       display: flex;
       justify-content: space-evenly;
       > button {
-        border-radius: 1.333333rem;
+        border-radius: toRem(24, 18);
         border: none;
         font-style: normal;
         font-weight: bold;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
       }
 
       > button:not(:last-child) {
-        margin-right: 0.444444rem;
+        margin-right: toRem(8, 18);
       }
       .edit {
-        padding: 0.944444rem 1.277777rem 0.888888rem 1.333333rem;
+        padding: toRem(17, 18) toRem(23, 18) toRem(16, 18) toRem(24, 18);
       }
       .delete {
-        padding: 0.944444rem 1.333333rem 0.888888rem 1.333333rem;
+        padding: toRem(17, 18) toRem(24, 18) toRem(16, 18) toRem(24, 18);
       }
       .mark-as-paid {
-        padding: 0.944444rem 1.555555rem 0.888888rem 1.5rem;
+        padding: toRem(17, 18) toRem(28, 18) toRem(16, 18) toRem(27, 18);
       }
+    }
+
+    .cta--paid {
+      padding: toRem(21, 18) toRem(24, 18) toRem(22, 18) toRem(24, 18);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .cta--not-paid {
+      padding: toRem(21, 18) toRem(24, 18) toRem(22, 18) toRem(24, 18);
+      display: flex;
+      justify-content: space-evenly;
     }
   }
 }
@@ -762,16 +774,16 @@ function formatDate(toFormat) {
   }
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .root {
-    padding: 2.666666rem 2.222222rem; // 48px 40px
+    padding: toRem(48, 18) toRem(40, 18); // 48px 40px
 
     .status-container {
-      padding: 1.111111rem 1.777777rem 1.111111rem 1.777777rem;
-      margin: 0 0 1.333333rem 0;
+      padding: toRem(20, 18) toRem(32, 18) toRem(20, 18) toRem(32, 18);
+      margin: 0 0 toRem(24, 18) 0;
       > .wrapper {
         display: grid;
-        grid-template-columns: 3.0555555rem 5.833333rem 1fr;
+        grid-template-columns: toRem(55, 18) toRem(105, 18) 1fr;
         grid-template-rows: 1fr;
         grid-template-areas: "label statusInd cta";
         justify-content: unset;
@@ -782,27 +794,27 @@ function formatDate(toFormat) {
         justify-self: flex-end;
 
         > button {
-          border-radius: 1.333333rem;
+          border-radius: toRem(24, 18);
           border: none;
           font-style: normal;
           font-weight: bold;
-          font-size: 0.666666rem;
-          line-height: 0.833333rem;
+          font-size: toRem(12, 18);
+          line-height: toRem(15, 18);
           letter-spacing: -0.25px;
         }
 
         > button:not(:last-child) {
-          margin-right: 0.444444rem;
+          margin-right: toRem(8, 18);
         }
 
         .edit {
-          padding: 0.944444rem 1.277777rem 0.888888rem 1.333333rem;
+          padding: toRem(17, 18) toRem(23, 18) toRem(16, 18) toRem(24, 18);
         }
         .delete {
-          padding: 0.944444rem 1.333333rem 0.888888rem 1.333333rem;
+          padding: toRem(17, 18) toRem(24, 18) toRem(16, 18) toRem(24, 18);
         }
         .mark-as-paid {
-          padding: 0.944444rem 1.555555rem 0.888888rem 1.5rem;
+          padding: toRem(17, 18) toRem(28, 18) toRem(16, 18) toRem(27, 18);
         }
       }
 
@@ -817,14 +829,14 @@ function formatDate(toFormat) {
     }
 
     .detail-container {
-      padding: 1.777777rem 0; // 32px
+      padding: toRem(32, 18) 0; // 32px
       margin: unset;
       .detail {
         .top-from-container {
           display: flex;
           justify-content: space-between;
-          padding: 0 1.777777rem;
-          margin-bottom: 1.166666rem;
+          padding: 0 toRem(32, 18);
+          margin-bottom: toRem(21, 18);
 
           .top {
             padding: unset;
@@ -835,10 +847,10 @@ function formatDate(toFormat) {
           }
 
           .top .invoice-code {
-            font-size: 0.888888rem;
+            font-size: toRem(16, 18);
             line-height: 1rem;
             letter-spacing: -0.8px;
-            margin-bottom: 0.444444rem;
+            margin-bottom: toRem(8, 18);
           }
 
           .from {
@@ -849,11 +861,11 @@ function formatDate(toFormat) {
         }
 
         .detail-grid-container {
-          padding: 0 1.777777rem;
-          margin-bottom: 2.666666rem; // 48px
+          padding: 0 toRem(32, 18);
+          margin-bottom: toRem(48, 18); // 48px
           display: grid;
-          grid-template-columns: 10.888888rem 11.277777rem 1fr;
-          grid-template-rows: 2.611111rem auto;
+          grid-template-columns: toRem(196, 18) toRem(203, 18) 1fr;
+          grid-template-rows: toRem(47, 18) auto;
           grid-template-areas:
             "invoiceDate  billTo  sentTo"
             "due          billTo  sentTo";
@@ -877,16 +889,16 @@ function formatDate(toFormat) {
       }
 
       .resume-container {
-        padding: 0 1.333333rem 0 1.333333rem;
+        padding: 0 toRem(24, 18) 0 toRem(24, 18);
         .body {
-          padding: 1.777777rem;
+          padding: toRem(32, 18);
 
           .head {
             display: grid;
-            grid-template-columns: 15.333333rem 1.611111rem 8.166666rem 1fr;
+            grid-template-columns: toRem(276, 18) toRem(29, 18) toRem(147, 18) 1fr;
             grid-template-rows: 1fr;
             grid-template-areas: "head-name head-qty head-price head-total";
-            margin-bottom: 1.777777rem;
+            margin-bottom: toRem(32, 18);
 
             .head-name,
             .head-price,
@@ -894,8 +906,8 @@ function formatDate(toFormat) {
             .head-total {
               font-style: normal;
               font-weight: 500;
-              font-size: 0.666666rem;
-              line-height: 0.8333333rem;
+              font-size: toRem(12, 18);
+              line-height: toRem(15, 18);
               letter-spacing: -0.25px;
             }
 
@@ -917,7 +929,7 @@ function formatDate(toFormat) {
 
           .item {
             display: grid;
-            grid-template-columns: 15.333333rem 1.611111rem 8.166666rem 1fr;
+            grid-template-columns: toRem(276, 18) toRem(29, 18) toRem(147, 18) 1fr;
             grid-template-rows: auto;
             grid-template-areas: "name qty price total";
 
@@ -934,8 +946,8 @@ function formatDate(toFormat) {
             .price {
               font-style: normal;
               font-weight: bold;
-              font-size: 0.666666rem;
-              line-height: 0.833333rem;
+              font-size: toRem(12, 18);
+              line-height: toRem(15, 18);
               letter-spacing: -0.25px;
               text-align: end;
             }
@@ -949,13 +961,13 @@ function formatDate(toFormat) {
           }
 
           .item:not(:last-child) {
-            margin-bottom: 1.333333rem;
+            margin-bottom: toRem(24, 18);
           }
         }
 
         .footer {
-          padding: 1.333333rem;
-          border-radius: 0 0 0.444444rem 0.444444rem;
+          padding: toRem(24, 18);
+          border-radius: 0 0 toRem(8, 18) toRem(8, 18);
           color: #fff;
           display: flex;
           justify-content: space-between;
@@ -963,7 +975,7 @@ function formatDate(toFormat) {
           .amount-due {
             font-style: normal;
             font-weight: 500;
-            font-size: 0.611111rem; // 11px
+            font-size: toRem(11, 18); // 11px
             line-height: 1rem;
             letter-spacing: -0.229167px;
           }
@@ -971,8 +983,8 @@ function formatDate(toFormat) {
           .big-total {
             font-style: normal;
             font-weight: 700;
-            font-size: 1.111111rem;
-            line-height: 1.777777rem;
+            font-size: toRem(20, 18);
+            line-height: toRem(32, 18);
             letter-spacing: -0.416667px;
           }
         }
@@ -981,18 +993,18 @@ function formatDate(toFormat) {
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .root {
-    padding: 3.555555rem 0 3rem 0; // 64px
+    padding: toRem(64, 18) 0 3rem 0; // 64px
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    max-width: 40.555555rem;
+    max-width: toRem(730, 18);
     margin: 0 auto;
     .status-container {
       > .wrapper {
         display: grid;
-        grid-template-columns: 3.0555555rem 5.833333rem 1fr;
+        grid-template-columns: toRem(55, 18) toRem(105, 18) 1fr;
         grid-template-rows: 1fr;
         grid-template-areas: "label statusInd cta";
         justify-content: unset;
@@ -1013,14 +1025,14 @@ function formatDate(toFormat) {
     }
 
     .detail-container {
-      padding: 2.666666rem; // 48px
+      padding: toRem(48, 18); // 48px
 
       .detail {
         .top-from-container {
           display: flex;
           justify-content: space-between;
           padding: 0;
-          margin-bottom: 1.166666rem;
+          margin-bottom: toRem(21, 18);
 
           .top {
             padding: unset;
@@ -1031,10 +1043,10 @@ function formatDate(toFormat) {
           }
 
           .top .invoice-code {
-            font-size: 0.888888rem;
+            font-size: toRem(16, 18);
             line-height: 1rem;
             letter-spacing: -0.8px;
-            margin-bottom: 0.444444rem;
+            margin-bottom: toRem(8, 18);
           }
 
           .from {
@@ -1046,10 +1058,10 @@ function formatDate(toFormat) {
 
         .detail-grid-container {
           padding: 0;
-          margin-bottom: 2.666666rem; // 48px
+          margin-bottom: toRem(48, 18); // 48px
           display: grid;
-          grid-template-columns: 10.888888rem 11.277777rem 1fr;
-          grid-template-rows: 2.611111rem auto;
+          grid-template-columns: toRem(196, 18) toRem(203, 18) 1fr;
+          grid-template-rows: toRem(47, 18) auto;
           grid-template-areas:
             "invoiceDate  billTo  sentTo"
             "due          billTo  sentTo";
@@ -1075,14 +1087,14 @@ function formatDate(toFormat) {
       .resume-container {
         padding: 0;
         .body {
-          padding: 1.777777rem;
+          padding: toRem(32, 18);
 
           .head {
             display: grid;
-            grid-template-columns: 15.888888rem 1.611111rem 6.555555rem 1fr;
+            grid-template-columns: toRem(286, 18) toRem(29, 18) toRem(118, 18) 1fr;
             grid-template-rows: 1fr;
             grid-template-areas: "head-name head-qty head-price head-total";
-            margin-bottom: 1.777777rem;
+            margin-bottom: toRem(32, 18);
 
             .head-name {
               grid-area: head-name;
@@ -1102,7 +1114,7 @@ function formatDate(toFormat) {
 
           .item {
             display: grid;
-            grid-template-columns: 15.888888rem 1.611111rem 6.555555rem 1fr;
+            grid-template-columns: toRem(286, 18) toRem(29, 18) toRem(118, 18) 1fr;
             grid-template-rows: auto;
             grid-template-areas: "name qty price total";
 
@@ -1129,20 +1141,20 @@ function formatDate(toFormat) {
           }
 
           .item:not(:last-child) {
-            margin-bottom: 1.333333rem;
+            margin-bottom: toRem(24, 18);
           }
         }
 
         .footer {
-          padding: 1.333333rem;
-          border-radius: 0 0 0.444444rem 0.444444rem;
+          padding: toRem(24, 18);
+          border-radius: 0 0 toRem(8, 18) toRem(8, 18);
           display: flex;
           justify-content: space-between;
           align-items: center;
           .amount-due {
             font-style: normal;
             font-weight: 500;
-            font-size: 0.611111rem; // 11px
+            font-size: toRem(11, 18); // 11px
             line-height: 1rem;
             letter-spacing: -0.229167px;
           }
@@ -1150,8 +1162,8 @@ function formatDate(toFormat) {
           .big-total {
             font-style: normal;
             font-weight: 700;
-            font-size: 1.111111rem;
-            line-height: 1.777777rem;
+            font-size: toRem(20, 18);
+            line-height: toRem(32, 18);
             letter-spacing: -0.416667px;
           }
         }

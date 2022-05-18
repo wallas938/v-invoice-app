@@ -31,8 +31,9 @@ const showModals = computed(() => store.getters["layout/showModals"]);
 </template>
 
 <style lang="scss" scoped>
-@import "sass/variables";
+@import "sass/_breakpoints";
 @import "sass/colors";
+@import "sass/mixins";
 
 .root {
   min-height: 100%;
@@ -56,7 +57,7 @@ const showModals = computed(() => store.getters["layout/showModals"]);
   transition: all 0.25s ease;
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .root {
     display: flex;
   }

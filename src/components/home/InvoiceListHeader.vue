@@ -185,8 +185,10 @@ function showForm() {
 
 <!-- STYLES -->
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 .invoice-header {
   position: relative;
   display: grid;
@@ -198,16 +200,16 @@ function showForm() {
     p {
       font-style: normal;
       font-weight: bold;
-      font-size: 1.111111rem;
-      line-height: 1.222222rem;
+      font-size: toRem(20, 18);
+      line-height: toRem(22, 18);
       letter-spacing: -0.625px;
     }
 
     small {
       font-style: normal;
       font-weight: 500;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
     }
   }
@@ -223,31 +225,31 @@ function showForm() {
     span {
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
     }
 
     > svg {
-      margin-left: 0.666666rem;
+      margin-left: toRem(12, 18);
     }
 
     .dropdown {
       position: absolute;
       bottom: -135px; // a changer
-      right: -2.222222rem;
+      right: -(toRem(40, 18));
       background-color: #fff;
       box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
       border-radius: 8px;
-      width: 10.666666rem;
-      height: 7.111111rem;
-      padding: 1.333333rem;
+      width: toRem(192, 18);
+      height: toRem(128, 18);
+      padding: toRem(24, 18);
       z-index: 99;
       .check {
         display: flex;
         .square {
-          width: 0.888888rem;
-          height: 0.888888rem;
+          width: toRem(16, 18);
+          height: toRem(16, 18);
           border-radius: 2px;
           display: flex;
           justify-content: center;
@@ -255,7 +257,7 @@ function showForm() {
         }
 
         .value {
-          margin-left: 0.722222rem;
+          margin-left: toRem(13, 18);
         }
 
         .--checked {
@@ -264,7 +266,7 @@ function showForm() {
       }
 
       .check:not(:last-child) {
-        margin-bottom: 0.888888rem;
+        margin-bottom: toRem(16, 18);
       }
     }
   }
@@ -274,16 +276,16 @@ function showForm() {
     cursor: pointer;
     .wrapper {
       background-color: $violet-1;
-      border-radius: 1.333333rem;
-      padding: 0.333333rem;
+      border-radius: toRem(24, 18);
+      padding: toRem(6, 18);
       display: flex;
       align-items: center;
       &:hover {
         background-color: $violet-2;
       }
       .circle {
-        width: 1.777777rem;
-        height: 1.777777rem;
+        width: toRem(32, 18);
+        height: toRem(32, 18);
         border-radius: 100%;
         background-color: #fff;
         display: flex;
@@ -294,10 +296,10 @@ function showForm() {
       .new {
         color: #fff;
         font-weight: bold;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
-        margin-left: 0.444444rem;
+        margin-left: toRem(8, 18);
       }
     }
   }
@@ -405,28 +407,28 @@ function showForm() {
   }
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .invoice-header {
     display: grid;
-    grid-template-columns: 1fr 1fr 8.333333rem; // ici
+    grid-template-columns: 1fr 1fr toRem(150, 18); // ici
     grid-template-rows: 1fr;
     grid-template-areas: "info filter link";
 
     .info {
       grid-area: info;
       p {
-        font-size: 1.777777rem;
-        line-height: 1.944444rem;
+        font-size: toRem(32, 18);
+        line-height: toRem(35, 18);
         letter-spacing: -1px;
       }
     }
 
     .filter {
       grid-area: filter;
-      padding-right: 2.222222rem;
+      padding-right: toRem(40, 18);
 
       > svg {
-        margin-left: 0.888888rem;
+        margin-left: toRem(16, 18);
       }
 
       .dropdown {
@@ -438,22 +440,22 @@ function showForm() {
       grid-area: link;
 
       .wrapper {
-        padding: 0.444444rem;
+        padding: toRem(8, 18);
 
         .new {
-          margin-left: 0.888888rem;
+          margin-left: toRem(16, 18);
         }
       }
     }
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .invoice-header {
-    width: 40.555555rem; // 730px
+    width: toRem(730, 18); // 730px
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 8.333333rem; // ici
+    grid-template-columns: 1fr 1fr toRem(150, 18); // ici
     grid-template-rows: 1fr;
     grid-template-areas: "info filter link";
 
@@ -463,10 +465,10 @@ function showForm() {
 
     .filter {
       grid-area: filter;
-      padding-right: 2.252222rem;
+      padding-right: toRem(40.54, 18);
 
       .dropdown {
-        bottom: -7.5rem;
+        bottom: -(toRem(135, 18));
         right: 0;
       }
     }

@@ -103,53 +103,55 @@ function formatDate(toFormat) {
 // STORE ACTIONS
 </script>
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 
 .invoice-list {
   .empty-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5.666666rem;
+    padding-top: toRem(102, 18);
     @media (orientation: landscape) {
       padding-top: 0rem;
       padding-bottom: 2rem;
     }
 
     img {
-      width: 10.722222rem;
-      height: 8.888888rem;
-      margin-bottom: 2.222222rem;
+      width: toRem(193, 18);
+      height: toRem(160, 18);
+      margin-bottom: toRem(40, 18);
     }
 
     h2 {
       font-style: normal;
       font-weight: bold;
-      font-size: 1.111111rem;
-      line-height: 1.244444rem;
+      font-size: toRem(20, 18);
+      line-height: toRem(22.4, 18);
       letter-spacing: -0.625px;
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
     }
 
     small {
       font-style: normal;
       font-weight: 500;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
       text-align: center;
-      width: 11.166666rem;
+      width: toRem(21, 18);
     }
   }
 
   .no-empty-list {
-    padding-top: 1.777777rem;
-    padding-bottom: 5.833333rem;
+    padding-top: toRem(32, 18);
+    padding-bottom: toRem(105, 18);
     .item-container {
       border: 1px solid transparent;
       &:not(:last-child) {
-        margin-bottom: 0.888888rem;
+        margin-bottom: toRem(16, 18);
       }
 
       &:hover {
@@ -157,10 +159,10 @@ function formatDate(toFormat) {
       }
 
       .invoice-item {
-        padding: 1.333333rem; // 24px
+        padding: toRem(24, 18); // 24px
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: auto 0.833333rem auto;
+        grid-template-rows: auto toRem(15, 18) auto;
         grid-template-areas:
           "code   clientName"
           "due    status"
@@ -171,10 +173,10 @@ function formatDate(toFormat) {
           grid-area: code;
           font-weight: bold;
           font-style: normal;
-          font-size: 0.666666rem;
-          line-height: 0.833333rem;
+          font-size: toRem(12, 18);
+          line-height: toRem(15, 18);
           letter-spacing: -0.25px;
-          margin-bottom: 1.333333rem;
+          margin-bottom: toRem(24, 18);
           .hash {
             color: $blue-violet; // used for dark and light mode !!!
           }
@@ -188,8 +190,8 @@ function formatDate(toFormat) {
           grid-area: clientName;
           font-style: normal;
           font-weight: 500;
-          font-size: 0.666666rem;
-          line-height: 0.833333rem;
+          font-size: toRem(12, 18);
+          line-height: toRem(15, 18);
           letter-spacing: -0.25px;
           text-align: end;
         }
@@ -198,24 +200,24 @@ function formatDate(toFormat) {
           grid-area: due;
           font-style: normal;
           font-weight: 500;
-          font-size: 0.666666rem;
-          line-height: 0.833333rem;
+          font-size: toRem(12, 18);
+          line-height: toRem(15, 18);
           letter-spacing: -0.25px;
         }
 
         .status {
           grid-area: status;
           justify-self: flex-end;
-          padding-top: 0.222222rem;
+          padding-top: toRem(4, 18);
         }
 
         .total {
           grid-area: total;
           font-weight: 700;
-          font-size: 0.888888rem;
-          line-height: 1.333333rem;
+          font-size: toRem(16, 18);
+          line-height: toRem(24, 18);
           letter-spacing: -0.8px;
-          padding-top: 0.444444rem;
+          padding-top: toRem(8, 18);
         }
       }
     }
@@ -313,10 +315,10 @@ function formatDate(toFormat) {
   transform: translateY(30px) scale(0.7);
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .invoice-list {
     .empty-list {
-      padding-top: 11.666666rem; // 210px
+      padding-top: toRem(210, 18); // 210px
 
       @media (orientation: landscape) {
         padding-top: 5rem;
@@ -324,25 +326,28 @@ function formatDate(toFormat) {
       }
 
       img {
-        width: 13.38888rem; // 241px
-        height: 11.111111rem; // 200px
-        margin-bottom: 3.555555rem; // 64px
+        width: toRem(241, 18); // 241px
+        height: toRem(200, 18); // 200px
+        margin-bottom: toRem(64, 18); // 64px
       }
 
       small {
-        width: 12.666666rem;
+        width: toRem(230, 18);
       }
     }
 
     .no-empty-list {
-      max-width: 53.333333rem; // 960px
+      max-width: toRem(960, 18); // 960px
       margin: 0 auto;
-      padding-top: 3.111111rem;
+      padding-top: toRem(56, 18);
       .item-container {
         .invoice-item {
-          padding: 0.888888rem 1.333333rem;
+          padding: toRem(16, 18) toRem(24, 18);
           display: grid;
-          grid-template-columns: 4.277777rem 7.944444rem 1fr 1fr 8rem 1.333333rem;
+          grid-template-columns: toRem(77, 18) toRem(143, 18) 1fr 1fr 8rem toRem(
+              24,
+              18
+            );
           grid-template-rows: 1fr;
           grid-template-areas: "code due clientName total status arrow";
           align-items: center;
@@ -383,10 +388,10 @@ function formatDate(toFormat) {
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .invoice-list {
     .empty-list {
-      padding-top: 7.833333rem; // 141px
+      padding-top: toRem(141, 18); // 141px
 
       @media (orientation: portrait) {
         padding-top: unset;
@@ -394,22 +399,25 @@ function formatDate(toFormat) {
       }
 
       img {
-        width: 13.407777rem; // 241px
+        width: toRem(241, 18); // 241px
       }
 
       small {
-        width: 12.277777rem;
+        width: toRem(221, 18);
       }
     }
 
     .no-empty-list {
-      width: 40.555555rem;
-      padding-top: 3.611111rem;
+      width: toRem(730, 18);
+      padding-top: toRem(65, 18);
       .item-container {
         .invoice-item {
-          padding: 0.888888rem 1.777777rem 0.888888rem 1.333333rem;
+          padding: toRem(16, 18) toRem(32, 18) toRem(16, 18) toRem(24, 18);
           display: grid;
-          grid-template-columns: 4.277777rem 7.944444rem 1fr 1fr 8rem 1.333333rem;
+          grid-template-columns: toRem(77, 18) toRem(143, 18) 1fr 1fr 8rem toRem(
+              24,
+              18
+            );
           grid-template-rows: 1fr;
           grid-template-areas: "code due clientName total status arrow";
           align-items: center;

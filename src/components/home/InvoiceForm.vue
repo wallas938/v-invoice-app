@@ -925,62 +925,64 @@ function toDollarsCurrency(value) {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 .root {
   position: relative;
   z-index: 2;
-  padding-top: 1.777777rem;
+  padding-top: toRem(32, 18);
 
   .back {
-    padding: 0 1.333333rem;
+    padding: 0 toRem(24, 18);
     position: relative;
-    margin-bottom: 1.333333rem;
+    margin-bottom: toRem(24, 18);
     a {
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
-      margin-left: 1.314444rem;
+      margin-left: toRem(23.66, 18);
     }
 
     &::before {
       content: url("../../assets/icon-arrow-left.svg");
       position: absolute;
-      left: 1.333333rem;
+      left: toRem(24, 18);
     }
   }
 
   h1 {
     font-style: normal;
     font-weight: bold;
-    font-size: 1.333333rem;
-    line-height: 1.777777rem;
+    font-size: toRem(24, 18);
+    line-height: toRem(32, 18);
     letter-spacing: -0.5px;
-    padding-left: 1.333333rem;
-    margin-bottom: 1.333333rem;
+    padding-left: toRem(24, 18);
+    margin-bottom: toRem(24, 18);
   }
 
   .group {
-    padding: 0 1.333333rem;
+    padding: 0 toRem(24, 18);
 
     &__title {
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
     }
 
     label {
       font-style: normal;
       font-weight: 500;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
-      margin-bottom: 0.555555rem;
+      margin-bottom: toRem(10, 18);
     }
 
     .--label-error {
@@ -990,13 +992,13 @@ function toDollarsCurrency(value) {
     input,
     .inv-date-wrapper,
     .select-wrapper {
-      padding: 0.944444rem 0 0.888888rem 1.111111rem;
+      padding: toRem(17, 18) 0 toRem(16, 18) toRem(20, 18);
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
-      border-radius: 0.222222rem;
+      border-radius: toRem(4, 18);
       width: 100%;
     }
 
@@ -1018,8 +1020,8 @@ function toDollarsCurrency(value) {
       color: $red;
       font-style: normal;
       font-weight: 600;
-      font-size: 0.555555rem;
-      line-height: 0.833333rem;
+      font-size: toRem(10, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.208333px;
     }
   }
@@ -1028,17 +1030,17 @@ function toDollarsCurrency(value) {
   .to,
   .invoice {
     .field:not(:last-child) {
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
     }
   }
 
   .from {
-    margin-bottom: 2.222222rem;
+    margin-bottom: toRem(40, 18);
     .from__fields {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(3, auto);
-      column-gap: 1.277777rem;
+      column-gap: toRem(23, 18);
       grid-template-areas:
         "f-str f-str"
         "f-city f-psc"
@@ -1063,12 +1065,12 @@ function toDollarsCurrency(value) {
   }
 
   .to {
-    margin-bottom: 2.222222rem;
+    margin-bottom: toRem(40, 18);
     .to__fields {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(5, auto);
-      column-gap: 1.277777rem;
+      column-gap: toRem(23, 18);
       grid-template-areas:
         "t-clt-name t-clt-name"
         "t-email t-email"
@@ -1101,10 +1103,10 @@ function toDollarsCurrency(value) {
   }
 
   .invoice {
-    margin-bottom: 3.666666rem;
+    margin-bottom: toRem(66, 18);
     .date {
       .inv-date-wrapper {
-        height: 2.666666rem;
+        height: toRem(48, 18);
         position: relative;
       }
 
@@ -1119,13 +1121,13 @@ function toDollarsCurrency(value) {
       .inv-date-wrapper:after {
         content: url("../../assets/icon-calendar.svg");
         position: absolute;
-        right: 0.888888rem;
+        right: toRem(16, 18);
       }
     }
 
     .terms {
       .select-wrapper {
-        height: 2.666666rem;
+        height: toRem(48, 18);
         position: relative;
         cursor: pointer;
       }
@@ -1133,16 +1135,16 @@ function toDollarsCurrency(value) {
       .select-wrapper::after {
         content: url("../../assets/icon-arrow-down.svg");
         position: absolute;
-        right: 0.863333rem; // 15.64px
+        right: toRem(15.64, 18); // 15.64px
       }
 
       .select-wrapper > .options {
         position: absolute;
-        top: 2.666666rem + 0.444444rem;
+        top: toRem(48, 18) + toRem(8, 18);
         left: 0;
         background: #ffffff;
         box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
-        border-radius: 0.444444rem;
+        border-radius: toRem(8, 18);
         width: 100%;
         z-index: 5;
       }
@@ -1150,10 +1152,10 @@ function toDollarsCurrency(value) {
       .select-wrapper > .options > .day {
         font-style: normal;
         font-weight: bold;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
-        padding: 0.833333rem 0 0.888888rem 1.333333rem;
+        padding: toRem(15, 18) 0 toRem(16, 18) toRem(24, 18);
       }
     }
   }
@@ -1163,35 +1165,35 @@ function toDollarsCurrency(value) {
       font-style: normal;
       font-weight: bold;
       font-size: 1rem;
-      line-height: 1.777777rem;
+      line-height: toRem(32, 18);
       letter-spacing: -0.375px;
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
     }
 
     .item__fields {
       display: grid;
-      margin-bottom: 2.666666rem;
-      grid-template-columns: 3.555555rem auto auto 1fr;
+      margin-bottom: toRem(48, 18);
+      grid-template-columns: toRem(64, 18) auto auto 1fr;
       grid-template-rows: repeat(2, auto);
-      column-gap: 1.277777rem;
+      column-gap: toRem(23, 18);
       grid-template-areas:
         "name  name  name  name"
         "qty   price total cta";
 
       .item__name {
         grid-area: name;
-        margin-bottom: 1.333333rem;
+        margin-bottom: toRem(24, 18);
       }
 
       .item__name > label {
-        margin-bottom: 0.888888rem;
+        margin-bottom: toRem(16, 18);
       }
       .item__qty {
         grid-area: qty;
       }
       .item__price {
         grid-area: price;
-        min-width: 5.555555rem; //100px
+        min-width: toRem(100, 18); //100px
       }
       .item__total {
         grid-area: total;
@@ -1200,6 +1202,7 @@ function toDollarsCurrency(value) {
           border: none;
           padding-left: 0;
           pointer-events: none;
+          background-color: transparent;
         }
       }
       .item__remove {
@@ -1207,7 +1210,7 @@ function toDollarsCurrency(value) {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        padding-top: 2.166666rem; // 39px
+        padding-top: toRem(39, 18); // 39px
       }
 
       .item__remove > svg {
@@ -1226,16 +1229,16 @@ function toDollarsCurrency(value) {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-bottom: 1.333333rem;
+    margin-bottom: toRem(24, 18);
     & > button {
       border: none;
-      border-radius: 1.333333rem;
+      border-radius: toRem(24, 18);
       width: 100%;
-      padding: 0.944444rem 0 0.888888rem 0;
+      padding: toRem(17, 18) 0 toRem(16, 18) 0;
       font-style: normal;
       font-weight: bold;
-      font-size: 0.666666rem;
-      line-height: 0.833333rem;
+      font-size: toRem(12, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.25px;
     }
   }
@@ -1244,13 +1247,13 @@ function toDollarsCurrency(value) {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-bottom: 1.333333rem;
-    padding: 0 1.333333rem;
+    margin-bottom: toRem(24, 18);
+    padding: 0 toRem(24, 18);
     small {
       font-style: normal;
       font-weight: 600;
-      font-size: 0.555555rem;
-      line-height: 0.833333rem;
+      font-size: toRem(10, 18);
+      line-height: toRem(15, 18);
       letter-spacing: -0.208333px;
       color: $red;
     }
@@ -1258,14 +1261,14 @@ function toDollarsCurrency(value) {
 
   .form-cta {
     bottom: 0;
-    padding: 1.166666rem 1.333333rem 1.222222rem 0;
+    padding: toRem(21, 18) toRem(24, 18) toRem(22, 18) 0;
     .cell {
       > button {
-        border-radius: 1.333333rem;
+        border-radius: toRem(24, 18);
         font-style: normal;
         font-weight: bold;
-        font-size: 0.666666rem;
-        line-height: 0.833333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
         border: none;
       }
@@ -1275,19 +1278,19 @@ function toDollarsCurrency(value) {
       grid-area: cancel;
 
       > button {
-        padding: 0.944444rem 1.472222rem 0.888888rem 1.416666rem;
+        padding: toRem(17, 18) toRem(26.5, 18) toRem(16, 18) toRem(25.5, 18);
       }
     }
     .draft-cell {
       grid-area: draft;
       > button {
-        padding: 0.944444rem 0.882777rem 0.888888rem 0.895rem;
+        padding: toRem(17, 18) toRem(15.9, 18) toRem(16, 18) toRem(16.11, 18);
       }
     }
     .save-cell {
       grid-area: save;
       > button {
-        padding: 0.944444rem 0.888888rem 0.888888rem 0.888888rem;
+        padding: toRem(17, 18) toRem(16, 18) toRem(16, 18) toRem(16, 18);
       }
     }
 
@@ -1295,25 +1298,25 @@ function toDollarsCurrency(value) {
       grid-area: cancel;
 
       > button {
-        padding: 0.944444rem 1.472222rem 0.888888rem 1.416666rem;
+        padding: toRem(17, 18) toRem(26.5, 18) toRem(16, 18) toRem(25.5, 18);
       }
     }
     .draft-cell--edit {
       grid-area: draft;
       > button {
-        padding: 0.944444rem 0.882777rem 0.888888rem 0.895rem;
+        padding: toRem(17, 18) toRem(15.9, 18) toRem(16, 18) toRem(16.11, 18);
       }
     }
     .save-cell--edit {
       grid-area: save;
       > button {
-        padding: 0.944444rem 1.333333rem 0.888888rem 1.333333rem;
+        padding: toRem(17, 18) toRem(24, 18) toRem(16, 18) toRem(24, 18);
       }
     }
   }
   .form-cta--new {
     display: grid;
-    column-gap: 0.388888rem;
+    column-gap: toRem(7, 18);
     grid-template-rows: 1fr;
     justify-content: flex-end;
     grid-template-columns: repeat(3, auto);
@@ -1326,7 +1329,7 @@ function toDollarsCurrency(value) {
     align-items: center;
 
     .cancel-cell--edit {
-      padding-right: 0.444444rem;
+      padding-right: toRem(8, 18);
     }
   }
 }
@@ -1587,11 +1590,11 @@ function toDollarsCurrency(value) {
   transform: translateX(-30px) scale(0.9);
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .root {
-    padding-top: 3.111111rem; // 56 px
-    width: 34.222222rem; // 616px
-    border-radius: 0 1.111111rem 1.111111rem 0;
+    padding-top: toRem(56, 18); // 56 px
+    width: toRem(616, 18); // 616px
+    border-radius: 0 toRem(20, 18) toRem(20, 18) 0;
 
     form {
       position: relative;
@@ -1599,17 +1602,17 @@ function toDollarsCurrency(value) {
       height: 80vh;
     }
     h1 {
-      padding-left: 3.111111rem;
-      margin-bottom: 2.666666rem;
+      padding-left: toRem(56, 18);
+      margin-bottom: toRem(48, 18);
     }
 
     .group {
-      padding: 0 3.111111rem;
+      padding: 0 toRem(56, 18);
     }
 
     .from,
     .to {
-      margin-bottom: 2.666666rem;
+      margin-bottom: toRem(48, 18);
     }
 
     .from {
@@ -1617,7 +1620,7 @@ function toDollarsCurrency(value) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(2, auto);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "f-str f-str f-str"
           "f-city f-psc f-ctry";
@@ -1647,7 +1650,7 @@ function toDollarsCurrency(value) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(4, auto);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "t-clt-name t-clt-name  t-clt-name"
           "t-email    t-email     t-email"
@@ -1681,12 +1684,12 @@ function toDollarsCurrency(value) {
     }
 
     .invoice {
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
       > .invoice__fields {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, auto);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "inv-date inv-terms"
           "desc     desc";
@@ -1708,10 +1711,10 @@ function toDollarsCurrency(value) {
     .item-list {
       .col-names {
         display: grid;
-        margin-bottom: 0.888888rem;
-        grid-template-columns: 11.888888rem auto auto 1fr;
+        margin-bottom: toRem(16, 18);
+        grid-template-columns: toRem(214, 18) auto auto 1fr;
         grid-template-rows: 1fr;
-        column-gap: 0.888888rem;
+        column-gap: toRem(16, 18);
         justify-content: flex-start;
         grid-template-areas: "col-name  col-qty  col-price  col-total";
 
@@ -1740,7 +1743,7 @@ function toDollarsCurrency(value) {
         margin-bottom: 1rem;
         grid-template-columns: auto auto auto auto 1fr;
         grid-template-rows: 1fr;
-        column-gap: 0.888888rem;
+        column-gap: toRem(16, 18);
         grid-template-areas: "name  qty  price  total cta";
 
         .field {
@@ -1749,15 +1752,15 @@ function toDollarsCurrency(value) {
 
         .item__name {
           grid-area: name;
-          min-width: 11.888888rem;
+          min-width: toRem(214, 18);
         }
         .item__qty {
           grid-area: qty;
-          min-width: 2.555555rem;
+          min-width: toRem(46, 18);
         }
         .item__price {
           grid-area: price;
-          min-width: 5.555555rem;
+          min-width: toRem(100, 18);
         }
         .item__total {
           grid-area: total;
@@ -1772,20 +1775,20 @@ function toDollarsCurrency(value) {
     }
 
     .item-cta {
-      margin-bottom: 2.611111rem; // 47px
+      margin-bottom: toRem(47, 18); // 47px
     }
 
     .form-error-alert {
-      padding: 0 3.111111rem;
-      margin-bottom: calc(6.888888rem + 1.333333rem); // 124px + 24px
+      padding: 0 toRem(56, 18);
+      margin-bottom: calc(toRem(124, 18) + toRem(24, 18)); // 124px + 24px
     }
 
     .form-cta {
       position: fixed;
-      width: 34.222222rem;
+      width: toRem(616, 18);
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      padding: 1.777777rem 3.111111rem 1.777777rem 3.111111rem;
+      padding: toRem(32, 18) toRem(56, 18) toRem(32, 18) toRem(56, 18);
 
       .cancel-cell {
         grid-area: cancel;
@@ -1800,29 +1803,29 @@ function toDollarsCurrency(value) {
 
     .form-cta--new {
       display: grid;
-      column-gap: 0.444444rem;
+      column-gap: toRem(8, 18);
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      grid-template-columns: 1fr 7.388888rem 7.111111rem;
+      grid-template-columns: 1fr toRem(133, 18) toRem(128, 18);
     }
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .root {
-    padding-top: 3.111111rem; // 56 px
-    width: 39.944444rem; // 719px
+    padding-top: toRem(56, 18); // 56 px
+    width: toRem(719, 18); // 719px
     h1 {
-      padding-left: 8.833333rem;
+      padding-left: toRem(159, 18);
     }
 
     .group {
-      padding: 0 3.111111rem 0 8.833333rem;
+      padding: 0 toRem(56, 18) 0 toRem(159, 18);
     }
 
     .from,
     .to {
-      margin-bottom: 2.666666rem;
+      margin-bottom: toRem(48, 18);
     }
 
     .from {
@@ -1830,7 +1833,7 @@ function toDollarsCurrency(value) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(2, 1fr);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "f-str f-str f-str"
           "f-city f-psc f-ctry";
@@ -1858,7 +1861,7 @@ function toDollarsCurrency(value) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(4, 1fr);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "t-clt-name t-clt-name  t-clt-name"
           "t-email    t-email     t-email"
@@ -1890,12 +1893,12 @@ function toDollarsCurrency(value) {
     }
 
     .invoice {
-      margin-bottom: 1.333333rem;
+      margin-bottom: toRem(24, 18);
       > .invoice__fields {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
-        column-gap: 1.333333rem;
+        column-gap: toRem(24, 18);
         grid-template-areas:
           "inv-date inv-terms"
           "desc     desc";
@@ -1922,7 +1925,7 @@ function toDollarsCurrency(value) {
         margin-bottom: 1rem;
         grid-template-columns: auto auto auto auto 1fr;
         grid-template-rows: 1fr;
-        column-gap: 0.888888rem;
+        column-gap: toRem(16, 18);
         grid-template-areas: "name  qty  price  total cta";
 
         .field {
@@ -1931,15 +1934,15 @@ function toDollarsCurrency(value) {
 
         .item__name {
           grid-area: name;
-          min-width: 11.888888rem;
+          min-width: toRem(214, 18);
         }
         .item__qty {
           grid-area: qty;
-          min-width: 2.555555rem;
+          min-width: toRem(46, 18);
         }
         .item__price {
           grid-area: price;
-          min-width: 5.555555rem;
+          min-width: toRem(100, 18);
         }
         .item__total {
           grid-area: total;
@@ -1952,17 +1955,17 @@ function toDollarsCurrency(value) {
     }
 
     .item-cta {
-      margin-bottom: 2.611111rem; // 47px
+      margin-bottom: toRem(47, 18); // 47px
     }
 
     .form-error-alert {
-      padding: 0 0 0 8.833333rem;
+      padding: 0 0 0 toRem(159, 18);
     }
 
     .form-cta {
-      width: 39.944444rem; // 719px
+      width: toRem(719, 18); // 719px
 
-      padding-left: 8.833333rem;
+      padding-left: toRem(159, 18);
 
       .cancel-cell {
         grid-area: cancel;
@@ -1977,10 +1980,10 @@ function toDollarsCurrency(value) {
 
     .form-cta--new {
       display: grid;
-      grid-template-columns: 1fr 7.388888rem 7.111111rem;
+      grid-template-columns: 1fr toRem(133, 18) toRem(128, 18);
       grid-template-rows: 1fr;
       grid-template-areas: "cancel draft save";
-      column-gap: 0.444444rem;
+      column-gap: toRem(8, 18);
       justify-content: flex-end;
     }
   }
