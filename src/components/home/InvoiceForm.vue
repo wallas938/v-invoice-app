@@ -590,8 +590,6 @@ const form_mode_is_edit = computed(
   () => store.getters["layout/form_mode_is_edit"]
 );
 
-console.log(form_mode_is_edit.value);
-
 // Lifecycle Hooks
 onMounted(() => {
   streetInput.value.focus();
@@ -694,7 +692,7 @@ function submitForm() {
         itemName: item.itemName.value,
         quantity: item.quantity.value,
         price: toNumber(item.price.value).toFixed(2),
-        total: +item.price.value * +item.quantity.value,
+        total: (+item.price.value * +item.quantity.value).toFixed(2),
       };
     }),
     totalAmount: `£ ${toDollarsCurrency(computeBigTotal(itemFields.value))}`,
