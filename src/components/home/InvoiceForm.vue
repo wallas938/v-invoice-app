@@ -483,7 +483,6 @@ import { required, email } from "@vuelidate/validators";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { toNumber } from "@vue/shared";
 const store = useStore();
 const router = useRouter();
 
@@ -651,7 +650,7 @@ function saveAsDraft() {
           itemFields.value[index].price.status === "pending" ||
           itemFields.value[index].price.status === "invalid"
             ? 0
-            : toNumber(item.price.value).toFixed(2),
+            : (+item.price.value).toFixed(2),
         total: +item.price.value * +item.quantity.value,
       };
     }),
@@ -691,7 +690,7 @@ function submitForm() {
       return {
         itemName: item.itemName.value,
         quantity: item.quantity.value,
-        price: toNumber(item.price.value).toFixed(2),
+        price: (+item.price.value).toFixed(2),
         total: (+item.price.value * +item.quantity.value).toFixed(2),
       };
     }),
