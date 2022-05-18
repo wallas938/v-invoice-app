@@ -1,11 +1,28 @@
-@mixin breakpoint-up($min, $max) {
-    @media screen and (min-width: $min) and (max-width: $max) {
+@use './breakpoints'as v;
+
+
+@mixin breakpoint-up($size) {
+    @media screen and (min-width: map-get(v.$breakpoints-up, $size)) {
         @content;
     }
 }
+
+@mixin breakpoint-down($size) {
+    @media screen and (max-width: map-get(v.$breakpoints-down, $size)) {
+        @content;
+    }
+}
+
+/* @mixin breakpoint-up-old($min, $max) {
+    @media screen and (min-width: $min) and (max-width: $max) {
+        @content;
+    }
+} */
+
+/*
 
 @mixin breakpoint-down($max, $min) {
     @media screen and (max-width: $max) and (min-width: $min) {
         @content;
     }
-}
+} */

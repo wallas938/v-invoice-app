@@ -73,12 +73,14 @@ function toggleMode() {
 </script>
 
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 
 .root {
   display: grid;
-  grid-template-columns: 4.333333rem 1fr 4.444444rem;
+  grid-template-columns: toRem(78, 18) 1fr toRem(80, 18);
   grid-template-rows: 4rem;
   grid-template-areas: "logo modeBtn picture";
   position: relative;
@@ -95,8 +97,8 @@ function toggleMode() {
     border-radius: 0px 20px 20px 0px;
 
     img {
-      width: 1.555555rem;
-      height: 1.532222rem;
+      width: toRem(28, 18);
+      height: toRem(27.58, 18);
       z-index: 5;
       position: absolute;
     }
@@ -131,7 +133,7 @@ function toggleMode() {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-right: 1.333333rem;
+    padding-right: toRem(24, 18);
 
     & > svg {
       cursor: pointer;
@@ -150,8 +152,8 @@ function toggleMode() {
     }
 
     img {
-      width: 1.111111rem;
-      height: 1.111111rem;
+      width: toRem(20, 18);
+      height: toRem(20, 18);
     }
   }
 
@@ -162,8 +164,8 @@ function toggleMode() {
     align-items: center;
     border-left: 1px solid #494e6e;
     img {
-      width: 1.777777rem;
-      height: 1.777777rem;
+      width: toRem(32, 18);
+      height: toRem(32, 18);
       border-radius: 100%;
     }
   }
@@ -177,30 +179,30 @@ function toggleMode() {
   background-color: $black-1;
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .root {
     display: grid;
-    grid-template-columns: 4.444444rem 1fr 5.333333rem;
-    grid-template-rows: 4.444444rem;
+    grid-template-columns: toRem(80, 18) 1fr toRem(96, 18);
+    grid-template-rows: toRem(80, 18);
     grid-template-areas: "logo modeBtn picture";
 
     .logo {
       grid-area: logo;
-      width: 4.444444rem;
+      width: toRem(80, 18);
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 0px 20px 20px 0px;
 
       img {
-        width: 1.722222rem;
-        height: 1.722222rem;
+        width: toRem(31, 18);
+        height: toRem(31, 18);
       }
     }
 
     .modeBtn {
       grid-area: modeBtn;
-      padding-right: 1.777777rem;
+      padding-right: toRem(32, 18);
     }
 
     .picture {
@@ -209,11 +211,11 @@ function toggleMode() {
   }
 }
 
-@media screen and (min-width: $desktop-min) {
+@include breakpoint-up(large) {
   .root {
     display: grid;
-    grid-template-columns: 5.722222rem;
-    grid-template-rows: 5.722222rem 1fr 4.888888rem;
+    grid-template-columns: toRem(103, 18);
+    grid-template-rows: toRem(103, 18) 1fr toRem(88, 18);
     grid-template-areas:
       "logo"
       "modeBtn"
@@ -222,27 +224,27 @@ function toggleMode() {
     .logo {
       grid-area: logo;
       width: 100%;
-      height: 5.722222rem;
+      height: toRem(103, 18);
       display: flex;
       flex-direction: column;
 
       img {
-        width: 2.222222rem;
-        height: 2.222222rem;
+        width: toRem(40, 18);
+        height: toRem(40, 18);
       }
     }
 
     .modeBtn {
       grid-area: modeBtn;
       flex-direction: column;
-      padding-bottom: 1.777777rem;
+      padding-bottom: toRem(32, 18);
       padding-right: unset;
     }
 
     .picture {
       grid-area: picture;
       width: 100%;
-      height: 4.888888rem;
+      height: toRem(88, 18);
       border-left: unset;
       border-top: 1px solid #494e6e;
     }

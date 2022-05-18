@@ -1,9 +1,52 @@
-@import "variables";
-@import "mixins";
+@use "breakpoints"as v;
+@use "mixins"as m;
+@use "functions"as f;
 
 // For responsive
 
 .hide-for-mobile {
+    @include m.breakpoint-down("small") {
+        // 375px => 767px
+        display: none !important;
+    }
+}
+
+.hide-for-tablet {
+    @include m.breakpoint-up("medium") {
+        // 768px => 1439px
+        display: none !important;
+    }
+}
+
+.hide-for-mobile-and-tablet {
+    @include m.breakpoint-up("large") {
+        // 768px => 1439px
+        display: none !important;
+    }
+}
+
+.hide-for-tablet-and-desktop {
+    @include m.breakpoint-up("medium") {
+        // 768px => 1439px
+        display: none !important;
+    }
+}
+
+/* .hide-for-desktop {
+    @include breakpoint-up($desktop-min, $desktop-max) {
+        // 1440px => 2440px
+        display: none !important;
+    }
+}
+
+.hide-for-tablet-and-desktop {
+    @include breakpoint-up($tablet-min, $desktop-max) {
+        // 375px => 767px
+        display: none;
+    }
+} */
+
+/* .hide-for-mobile {
     @include breakpoint-up($mobile-min, $mobile-max) {
         // 375px => 767px
         display: none !important;
@@ -36,7 +79,7 @@
         // 375px => 767px
         display: none;
     }
-}
+} */
 
 .show-flex {
     display: flex;

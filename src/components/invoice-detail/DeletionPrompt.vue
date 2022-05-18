@@ -57,26 +57,28 @@ function removeInvoice() {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../sass/variables";
-@import "../../sass/colors";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+@import "../../sass/breakpoints";
+@import "../../sass/colors";
+@import "../../sass/mixins";
+@import "../../sass/functions";
 .root {
   height: 100vh;
   .prompt-container {
     position: absolute;
-    width: 18.166666rem;
-    height: 12.222222rem;
+    width: toRem(327, 18);
+    height: toRem(220, 18);
     top: 50%;
     transform: translateY(-50%) translate(-50%);
     left: 50%;
 
     .content {
-      padding: 1.777777rem;
+      padding: toRem(32, 18);
       h1 {
         font-style: normal;
         font-weight: bold;
-        font-size: 1.111111rem;
-        line-height: 1.777777rem;
+        font-size: toRem(20, 18);
+        line-height: toRem(32, 18);
         letter-spacing: -0.416667px;
         color: $black-2;
       }
@@ -84,11 +86,11 @@ function removeInvoice() {
       p {
         font-style: normal;
         font-weight: 500;
-        font-size: 0.666666rem;
-        line-height: 1.222222rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(22, 18);
         letter-spacing: -0.25px;
         color: $violet-gray;
-        margin-bottom: 1.333333rem;
+        margin-bottom: toRem(24, 18);
       }
 
       .cta {
@@ -99,16 +101,16 @@ function removeInvoice() {
       .cta > button {
         font-style: normal;
         font-weight: bold;
-        font-size: 0.666666rem;
-        line-height: 0.8333333rem;
+        font-size: toRem(12, 18);
+        line-height: toRem(15, 18);
         letter-spacing: -0.25px;
-        padding: 0.944444rem 1.277777rem 0.888888rem 1.333333rem;
-        border-radius: 1.333333rem;
+        padding: toRem(17, 18) toRem(23, 18) toRem(16, 18) toRem(24, 18);
+        border-radius: toRem(24, 18);
         border: transparent;
       }
 
       .cta > button:first-child {
-        margin-right: 0.444444rem;
+        margin-right: toRem(8, 18);
       }
 
       .cta > .cancel {
@@ -193,25 +195,25 @@ function removeInvoice() {
   }
 }
 
-@media screen and (min-width: $tablet-min) {
+@include breakpoint-up(medium) {
   .root {
     height: 100vh;
     .prompt-container {
       position: absolute;
-      width: 26.666666rem; // 480px
-      height: 13.833333rem; // 249px
+      width: toRem(480, 18); // 480px
+      height: toRem(249, 18); // 249px
 
       .content {
-        padding: 2.666666rem; // 48px
+        padding: toRem(48, 18); // 48px
         h1 {
-          font-size: 1.333333rem;
-          line-height: 1.777777rem;
+          font-size: toRem(24, 18);
+          line-height: toRem(32, 18);
           letter-spacing: -0.5px;
-          margin-bottom: 0.722222rem;
+          margin-bottom: toRem(13, 18);
         }
 
         p {
-          margin-bottom: 0.888888rem;
+          margin-bottom: toRem(16, 18);
         }
 
         .cta {

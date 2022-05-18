@@ -21,8 +21,9 @@ function getStatusColor(status) {
 }
 </script>
 <style lang="scss" setup>
-@import "../../sass/_variables";
+@import "../../sass/breakpoints";
 @import "../../sass/_colors";
+@import "../../sass/functions";
 
 .status-indicator {
   mix-blend-mode: normal;
@@ -32,15 +33,15 @@ function getStatusColor(status) {
   justify-content: center;
   align-items: center;
   z-index: 0;
-  width: 5.777777rem;
-  height: 2.222222rem;
+  width: toRem(104, 18);
+  height: toRem(40, 18);
   justify-self: flex-end;
   padding-left: 8px;
   span {
     font-style: normal;
     font-weight: 700;
-    font-size: 0.666666rem;
-    line-height: 0.833333rem;
+    font-size: toRem(12, 18);
+    line-height: toRem(15, 18);
     letter-spacing: -0.25px;
     position: relative;
     z-index: 1;
@@ -48,12 +49,12 @@ function getStatusColor(status) {
 
   span::before {
     content: "";
-    top: 0.222222rem;
-    left: -0.888888rem;
+    top: toRem(4, 18);
+    left: -(toRem(16, 18));
     bottom: 0;
     position: absolute;
-    width: 0.444444rem;
-    height: 0.444444rem;
+    width: toRem(8, 18);
+    height: toRem(8, 18);
     border-radius: 100%;
   }
 }

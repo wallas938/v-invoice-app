@@ -5,8 +5,9 @@
 </template>
 <script setup></script>
 <style lang="scss" scoped>
-@import "../../sass/variables";
+@import "../../sass/breakpoints";
 @import "../../sass/colors";
+@import "../../sass/functions";
 .v-container {
   background-color: #fff;
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);

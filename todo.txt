@@ -1,10 +1,5 @@
 Invoice App - Vue
 
-    Invoice List && Detail
-
-    -> Formater les prix totaux
-
-
     Invoice Detail
 
-    -> Prompter l'utilisateur avant suppression d'invoice
+    -> Revoir ajout d'item dans le formulaire a l'edit d'un invoice
