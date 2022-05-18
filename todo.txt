@@ -1,5 +1,5 @@
 Invoice App - Vue
 
-    Invoice Detail
+    Invoice formulaire
 
-    -> Revoir ajout d'item dans le formulaire a l'edit d'un invoice
+    -> Lors de l'edit d'invoice, les prix des items sont affichés au format dollars "1,xxx.00" retirer la virgule
