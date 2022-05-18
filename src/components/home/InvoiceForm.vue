@@ -741,7 +741,7 @@ function initFormValue() {
         dirty: false,
       },
       price: {
-        value: item.price,
+        value: convertToNumber(item.price),
         status: "valid",
         dirty: false,
       },
@@ -917,6 +917,15 @@ function toDollarsCurrency(value) {
       return arr.join("") + num.substring(dotIndex);
     }
   }
+
+  return num;
+}
+
+function convertToNumber(value) {
+  let num = value
+    .split("")
+    .filter((car, i) => car !== ",")
+    .join("");
 
   return num;
 }
