@@ -71,7 +71,7 @@ function removeInvoice() {
     top: 50%;
     transform: translateY(-50%) translate(-50%);
     left: 50%;
-
+    z-index: 5;
     .content {
       padding: toRem(32, 18);
       h1 {
