@@ -1794,7 +1794,7 @@ function convertToNumber(value) {
       width: toRem(616, 18);
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      padding: toRem(32, 18) toRem(56, 18) toRem(32, 18) toRem(56, 18);
+      padding-left: toRem(56, 18);
 
       .cancel-cell {
         grid-area: cancel;

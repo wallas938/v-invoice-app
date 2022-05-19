@@ -149,13 +149,14 @@ function formatDate(toFormat) {
     padding-top: toRem(32, 18);
     padding-bottom: toRem(105, 18);
     .item-container {
-      border: 1px solid transparent;
+      transition: border 250ms ease-in-out;
+      border: transparent;
       &:not(:last-child) {
         margin-bottom: toRem(16, 18);
       }
 
       &:hover {
-        border: 1px solid $violet-1; // used for dark and light mode !!!
+        border: 1px solid $violet-1;
       }
 
       .invoice-item {
@@ -239,10 +240,6 @@ function formatDate(toFormat) {
   .no-empty-list {
     background-color: $global-bg;
     .item-container {
-      &:hover {
-        border: 1px solid $violet-1;
-      }
-
       .invoice-item {
         .code:hover {
           color: $dark-blue;

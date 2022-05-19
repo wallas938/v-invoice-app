@@ -6,13 +6,13 @@
       '--bg-prompt': getCurrentView === 'deletion-prompt',
     }"
   >
+    <!-- <div class="modals-container">
     <transition
       enter-active-class="animate__animated animate__fadeIn animate__faster"
       leave-active-class="animate__animated animate__fadeOut animate__faster"
       appear
-    >
-      <div class="backdrop" @click="closeForm"></div>
-    </transition>
+    > -->
+    <div class="backdrop" @click="closeForm" v-if="getCurrentView !== ''"></div>
     <transition
       enter-active-class="animate__animated animate__fadeInLeft animate__faster"
       leave-active-class="animate__animated animate__fadeOutLeft animate__faster"
@@ -56,14 +56,14 @@ function closeForm() {
 @import "../../sass/functions";
 .modals-container {
   position: absolute;
+  width: 100%;
   left: 0;
   bottom: 0;
-  right: 0;
-  /* min-height: 100%; */
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .backdrop {
     position: absolute;
+    width: 100%;
     background-color: rgba(#000, 0.25);
     z-index: 2;
     top: 0;

@@ -163,7 +163,7 @@ export default createStore({
                     fromCity: 'London',
                     fromPostCode: 'E1 3EZ',
                     fromCountry: 'United Kingdom',
-                    clientName: 'Anita Wainwright',
+                    clientName: 'Thomas Wayne',
                     email: 'thomas@dc.com',
                     toStreet: '3964 Queens Lane',
                     toCity: 'Gotham',
