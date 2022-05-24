@@ -1,5 +1,8 @@
 export default {
     invoices(state) {
+        return state.invoices;
+    },
+    filteredInvoices(state) {
         if (state.filters.length <= 0) {
             return state.invoices;
         }
