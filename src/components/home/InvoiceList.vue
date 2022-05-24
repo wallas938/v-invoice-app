@@ -73,7 +73,7 @@ const store = useStore();
 const router = useRouter();
 
 // COMPUTED
-const invoices = computed(() => store.getters.invoices);
+const invoices = computed(() => store.getters.filteredInvoices);
 const currentMode = computed(() => store.getters["layout/currentMode"]);
 const isInvoicesEmpty = computed(() => invoices.value.length === 0);
 
